@@ -56,9 +56,25 @@
 - **展示頁面**: https://jacobhsu.github.io/crypto-watch/screenshots/
 
 ### 設置方法
-1. 啟用 GitHub Actions 和 GitHub Pages
-2. 設置 repository 權限為 "Read and write permissions"
-3. 系統會自動每小時執行截圖
+
+#### 1. GitHub Actions 設定
+前往 Repository **Settings** → **Actions** → **General**：
+- ✅ 選擇 **"Allow all actions and reusable workflows"**
+- ✅ 在 **"Workflow permissions"** 選擇 **"Read and write permissions"**
+- ✅ 勾選 **"Allow GitHub Actions to create and approve pull requests"**
+
+#### 2. GitHub Pages 設定
+前往 Repository **Settings** → **Pages**：
+- ✅ **Source**: 選擇 **"Deploy from a branch"**
+- ✅ **Branch**: 選擇 **"main"** 和 **"/ (root)"**
+- ✅ 點擊 **Save**
+
+#### 3. Repository 要求
+- ✅ Repository 必須是 **Public**
+- ✅ 主分支名稱為 **main**
+
+#### 4. 手動測試
+前往 **Actions** 標籤 → 選擇 **"Hourly Crypto Watch Screenshot"** → 點擊 **"Run workflow"**
 
 ### 本地測試
 ```bash
