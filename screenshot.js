@@ -53,8 +53,7 @@ async function takeScreenshot() {
     // 拍攝完整頁面截圖
     const screenshot = await page.screenshot({
       fullPage: false,
-      type: 'png',
-      quality: 90
+      type: 'png'
     });
 
     // 只保存固定檔名的截圖 (覆蓋舊版本)
