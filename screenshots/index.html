@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Watch - 自動截圖系統</title>
+    <title>Crypto Watch - 最新截圖</title>
     <style>
         body {
             margin: 0;
@@ -17,114 +17,35 @@
             max-width: 1920px;
             margin: 0 auto;
         }
-        .status {
-            margin-bottom: 30px;
-            padding: 20px;
-            background-color: #2a2e39;
-            border-radius: 8px;
-            border-left: 4px solid #4CAF50;
-        }
-        .screenshot-container {
-            background: #2a2e39;
-            border-radius: 8px;
-            padding: 20px;
-            min-height: 600px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .placeholder {
-            color: #888;
+        .timestamp {
+            margin-bottom: 20px;
             font-size: 18px;
-            text-align: center;
+            color: #888;
         }
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-        .info-card {
-            background: #2a2e39;
-            padding: 20px;
+        .screenshot {
+            width: 100%;
+            max-width: 1920px;
+            height: auto;
+            border: 1px solid #333;
             border-radius: 8px;
-            border-left: 4px solid #2196F3;
         }
-        .info-card h3 {
-            margin-top: 0;
-            color: #2196F3;
-        }
-        code {
-            background: #131722;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
+        .refresh-info {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 Crypto Watch 自動截圖系統</h1>
-        
-        <div class="status">
-            <h2>📊 系統狀態</h2>
-            <p>✅ 自動截圖系統已設置完成</p>
-            <p>⏰ 等待 GitHub Actions 首次執行...</p>
-            <p>🔄 執行頻率: 每小時一次 (UTC 時間)</p>
+        <h1>Crypto Watch - 最新截圖</h1>
+        <div class="timestamp">
+            最後更新時間: 2025/8/22 下午12:11:55 (台北時間)<br>
+            UTC 時間: 2025-08-22 04:11:55
         </div>
-
-        <div class="screenshot-container">
-            <div class="placeholder">
-                <h3>📸 截圖預覽區域</h3>
-                <p>首次截圖將在下一個整點時間自動生成</p>
-                <p>截圖來源: <code>https://jacobhsu.github.io/crypto-watch/ma</code></p>
-                <p>圖片尺寸: 1920 x 1080 像素</p>
-            </div>
-        </div>
-
-        <div class="info-grid">
-            <div class="info-card">
-                <h3>🔗 固定 URL</h3>
-                <p>最新截圖的固定網址:</p>
-                <code>crypto-watch-latest.png</code>
-                <p><small>此檔案會每小時更新</small></p>
-            </div>
-
-            <div class="info-card">
-                <h3>📁 歷史記錄</h3>
-                <p>帶時間戳的截圖檔案:</p>
-                <code>crypto-watch-YYYY-MM-DD_HH-MM-SS.png</code>
-                <p><small>保存所有歷史截圖</small></p>
-            </div>
-
-            <div class="info-card">
-                <h3>⚙️ 自動化</h3>
-                <p>GitHub Actions 工作流程:</p>
-                <code>.github/workflows/hourly-screenshot.yml</code>
-                <p><small>可手動觸發或自動執行</small></p>
-            </div>
-
-            <div class="info-card">
-                <h3>🎯 用途</h3>
-                <p>適用場景:</p>
-                <ul style="text-align: left; margin: 10px 0;">
-                    <li>交易監控</li>
-                    <li>報告生成</li>
-                    <li>歷史記錄</li>
-                    <li>API 整合</li>
-                </ul>
-            </div>
-        </div>
-
-        <div style="margin-top: 40px; padding: 20px; background: #1a1a2e; border-radius: 8px;">
-            <h3>📋 設置檢查清單</h3>
-            <div style="text-align: left; max-width: 600px; margin: 0 auto;">
-                <p>□ 代碼已推送到 GitHub</p>
-                <p>□ GitHub Actions 已啟用</p>
-                <p>□ GitHub Pages 已設置</p>
-                <p>□ Repository 權限已配置</p>
-                <p>□ 等待首次自動執行</p>
-            </div>
+        <img src="crypto-watch-latest.png" alt="Crypto Watch Screenshot" class="screenshot">
+        <div class="refresh-info">
+            此截圖每小時自動更新一次
         </div>
     </div>
 </body>
