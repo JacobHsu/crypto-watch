@@ -1,0 +1,38 @@
+name: Hourly Crypto Watch Screenshot
+
+on:
+  schedule:
+    # 每小時執行一次 (UTC 時間)
+    - cron: '0 * * * *'
+  workflow_dispatch: # 允許手動觸發
+
+jobs:
+  screenshot:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: |
+        npm install puppeteer
+        
+    - name: Take screenshot
+      run: |
+        node screenshot.js
+        
+    - name: Commit and push screenshot
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add screenshots/crypto-watch-latest.png screenshots/index.html
+        git commit -m "Update crypto watch screenshot $(date '+%Y-%m-%d %H:%M UTC')" || exit 0
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

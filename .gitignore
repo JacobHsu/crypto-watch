@@ -1,0 +1,21 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 臨時文件
+tmp_*
+*.tmp
+
+# 系統文件
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# 保留截圖文件
+!screenshots/*.png
+!screenshots/*.html
