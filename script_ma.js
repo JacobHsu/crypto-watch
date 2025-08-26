@@ -65,24 +65,23 @@ function createChart(containerId, symbol, interval) {
   }
 }
 
-// 等待頁面載入完成後初始化圖表
-document.addEventListener("DOMContentLoaded", function () {
-  // 等待 TradingView 腳本載入
-  const checkTradingView = setInterval(() => {
-    if (typeof TradingView !== "undefined") {
-      clearInterval(checkTradingView);
-      initializeCharts();
-    }
-  }, 100);
+// 檢查 TradingView 是否已載入並初始化圖表
+function initializeIfReady() {
+  if (typeof TradingView !== "undefined") {
+    initializeCharts();
+  } else {
+    console.log("等待 TradingView 載入...");
+    // 如果 TradingView 還沒載入，等待一下再試
+    setTimeout(initializeIfReady, 100);
+  }
+}
 
-  // 超時處理
-  setTimeout(() => {
-    if (typeof TradingView === "undefined") {
-      clearInterval(checkTradingView);
-      console.error("TradingView 載入超時");
-    }
-  }, 10000);
-});
+// 立即檢查是否可以初始化
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeIfReady);
+} else {
+  initializeIfReady();
+}
 
 // 初始化所有圖表
 function initializeCharts() {
