@@ -47,12 +47,14 @@
 ## 📸 自動截圖系統
 
 ### 功能說明
-- 每小時自動拍攝 MA 分析頁面截圖
-- 固定檔名：`crypto-watch-latest.png`
+- 每小時自動拍攝兩個頁面的截圖
+- **主頁面截圖**：`crypto-watch-index.png` (BB+KC+Supertrend 技術指標)
+- **MA分析頁面截圖**：`crypto-watch-latest.png` (MA+Alligator 技術指標)
 - 每次更新覆蓋舊檔案，提供穩定的固定 URL
 
 ### 訪問截圖
-- **固定 URL**: https://jacobhsu.github.io/crypto-watch/screenshots/crypto-watch-latest.png
+- **主頁面截圖**: https://jacobhsu.github.io/crypto-watch/screenshots/crypto-watch-index.png
+- **MA分析截圖**: https://jacobhsu.github.io/crypto-watch/screenshots/crypto-watch-latest.png
 - **展示頁面**: https://jacobhsu.github.io/crypto-watch/screenshots/
 
 ### 設置方法

@@ -26,16 +26,6 @@ async function takeScreenshot() {
       deviceScaleFactor: 1
     });
 
-    console.log('導航到目標網站...');
-    await page.goto('https://jacobhsu.github.io/crypto-watch/ma', {
-      waitUntil: 'networkidle0',
-      timeout: 60000
-    });
-
-    // 等待 TradingView 圖表完全載入
-    console.log('等待圖表載入...');
-    await page.waitForTimeout(15000);
-
     // 確保截圖目錄存在
     const screenshotDir = path.join(__dirname, 'screenshots');
     if (!fs.existsSync(screenshotDir)) {
@@ -44,21 +34,47 @@ async function takeScreenshot() {
 
     // 生成時間戳 (僅用於顯示)
     const now = new Date();
-    
-    // 只保存固定檔名的截圖
-    const fixedFilename = path.join(screenshotDir, 'crypto-watch-latest.png');
 
-    console.log('拍攝截圖...');
-    
-    // 拍攝完整頁面截圖
-    const screenshot = await page.screenshot({
-      fullPage: false,
-      type: 'png'
-    });
+    // 截圖配置
+    const screenshots = [
+      {
+        url: 'https://jacobhsu.github.io/crypto-watch',
+        filename: 'crypto-watch-index.png',
+        description: '主頁面 (BB+KC+Supertrend)'
+      },
+      {
+        url: 'https://jacobhsu.github.io/crypto-watch/ma',
+        filename: 'crypto-watch-latest.png',
+        description: 'MA分析頁面 (MA+Alligator)'
+      }
+    ];
 
-    // 只保存固定檔名的截圖 (覆蓋舊版本)
-    fs.writeFileSync(fixedFilename, screenshot);
-    console.log(`截圖已保存: ${fixedFilename}`);
+    // 依序截取每個頁面
+    for (const config of screenshots) {
+      console.log(`導航到 ${config.description}...`);
+      await page.goto(config.url, {
+        waitUntil: 'networkidle0',
+        timeout: 60000
+      });
+
+      // 等待 TradingView 圖表完全載入
+      console.log('等待圖表載入...');
+      await page.waitForTimeout(15000);
+
+      const filename = path.join(screenshotDir, config.filename);
+
+      console.log(`拍攝 ${config.description} 截圖...`);
+      
+      // 拍攝完整頁面截圖
+      const screenshot = await page.screenshot({
+        fullPage: false,
+        type: 'png'
+      });
+
+      // 保存截圖
+      fs.writeFileSync(filename, screenshot);
+      console.log(`截圖已保存: ${filename}`);
+    }
 
     // 創建或更新 index.html 來顯示最新截圖
     const indexHtml = `<!DOCTYPE html>
@@ -81,9 +97,22 @@ async function takeScreenshot() {
             margin: 0 auto;
         }
         .timestamp {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             font-size: 18px;
             color: #888;
+        }
+        .screenshot-section {
+            margin-bottom: 40px;
+        }
+        .screenshot-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        .screenshot-description {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #aaa;
         }
         .screenshot {
             width: 100%;
@@ -91,9 +120,16 @@ async function takeScreenshot() {
             height: auto;
             border: 1px solid #333;
             border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .screenshot-url {
+            font-size: 14px;
+            color: #666;
+            font-family: monospace;
+            word-break: break-all;
         }
         .refresh-info {
-            margin-top: 20px;
+            margin-top: 30px;
             font-size: 14px;
             color: #666;
         }
@@ -106,9 +142,23 @@ async function takeScreenshot() {
             最後更新時間: ${now.toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })} (台北時間)<br>
             UTC 時間: ${now.toISOString().replace('T', ' ').slice(0, 19)}
         </div>
-        <img src="crypto-watch-latest.png" alt="Crypto Watch Screenshot" class="screenshot">
+        
+        <div class="screenshot-section">
+            <div class="screenshot-title">主頁面 - 技術指標分析</div>
+            <div class="screenshot-description">Bollinger Bands + Keltner Channels + Supertrend</div>
+            <img src="crypto-watch-index.png" alt="Crypto Watch Index Page Screenshot" class="screenshot">
+            <div class="screenshot-url">固定 URL: https://jacobhsu.github.io/crypto-watch/screenshots/crypto-watch-index.png</div>
+        </div>
+        
+        <div class="screenshot-section">
+            <div class="screenshot-title">MA 分析頁面</div>
+            <div class="screenshot-description">移動平均交叉 + 威廉鱷魚線</div>
+            <img src="crypto-watch-latest.png" alt="Crypto Watch MA Page Screenshot" class="screenshot">
+            <div class="screenshot-url">固定 URL: https://jacobhsu.github.io/crypto-watch/screenshots/crypto-watch-latest.png</div>
+        </div>
+        
         <div class="refresh-info">
-            此截圖每小時自動更新一次
+            這些截圖每小時自動更新一次
         </div>
     </div>
 </body>

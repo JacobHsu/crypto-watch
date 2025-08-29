@@ -29,12 +29,12 @@ jobs:
       run: |
         node screenshot.js
         
-    - name: Commit and push screenshot
+    - name: Commit and push screenshots
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add screenshots/crypto-watch-latest.png screenshots/index.html
-        git commit -m "Update crypto watch screenshot $(date '+%Y-%m-%d %H:%M UTC')" || exit 0
+        git add screenshots/crypto-watch-index.png screenshots/crypto-watch-latest.png screenshots/index.html
+        git commit -m "Update crypto watch screenshots $(date '+%Y-%m-%d %H:%M UTC')" || exit 0
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
