@@ -18,9 +18,22 @@
             margin: 0 auto;
         }
         .timestamp {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             font-size: 18px;
             color: #888;
+        }
+        .screenshot-section {
+            margin-bottom: 40px;
+        }
+        .screenshot-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        .screenshot-description {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #aaa;
         }
         .screenshot {
             width: 100%;
@@ -28,9 +41,16 @@
             height: auto;
             border: 1px solid #333;
             border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .screenshot-url {
+            font-size: 14px;
+            color: #666;
+            font-family: monospace;
+            word-break: break-all;
         }
         .refresh-info {
-            margin-top: 20px;
+            margin-top: 30px;
             font-size: 14px;
             color: #666;
         }
@@ -40,12 +60,26 @@
     <div class="container">
         <h1>Crypto Watch - 最新截圖</h1>
         <div class="timestamp">
-            最後更新時間: 2025/8/29 上午11:25:20 (台北時間)<br>
-            UTC 時間: 2025-08-29 03:25:20
+            最後更新時間: 2025/9/3 上午9:38:00 (台北時間)<br>
+            UTC 時間: 2025-09-03 01:38:00
         </div>
-        <img src="crypto-watch-latest.png" alt="Crypto Watch Screenshot" class="screenshot">
+        
+        <div class="screenshot-section">
+            <div class="screenshot-title">主頁面 - 技術指標分析</div>
+            <div class="screenshot-description">Bollinger Bands + Keltner Channels + Supertrend</div>
+            <img src="crypto-watch-index.png" alt="Crypto Watch Index Page Screenshot" class="screenshot">
+            <div class="screenshot-url">固定 URL: https://jacobhsu.github.io/crypto-watch/screenshots/crypto-watch-index.png</div>
+        </div>
+        
+        <div class="screenshot-section">
+            <div class="screenshot-title">MA 分析頁面</div>
+            <div class="screenshot-description">移動平均交叉 + 威廉鱷魚線</div>
+            <img src="crypto-watch-latest.png" alt="Crypto Watch MA Page Screenshot" class="screenshot">
+            <div class="screenshot-url">固定 URL: https://jacobhsu.github.io/crypto-watch/screenshots/crypto-watch-latest.png</div>
+        </div>
+        
         <div class="refresh-info">
-            此截圖每小時自動更新一次
+            這些截圖每小時自動更新一次
         </div>
     </div>
 </body>
