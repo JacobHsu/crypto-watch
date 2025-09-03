@@ -35,7 +35,7 @@ const baseChartConfig = {
   },
 };
 
-// 三組不同的技術指標配置
+// 四組不同的技術指標配置
 const indicatorSets = {
   column1: ["BB@tv-basicstudies", "KLTNR@tv-basicstudies", "STD;Supertrend"],
   column2: [
@@ -47,6 +47,11 @@ const indicatorSets = {
     "STD;PSAR",
     "MACD@tv-basicstudies",
     "RSI@tv-basicstudies"
+  ],
+  column4: [
+    "STD;VWMA",
+    "STD;DMI",
+    "OBV@tv-basicstudies"
   ]
 };
 
@@ -96,20 +101,23 @@ if (document.readyState === 'loading') {
 function initializeCharts() {
   console.log("TradingView 已載入，開始創建WLD技術分析圖表...");
 
-  // 1分鐘圖表 - 三個不同指標組合
+  // 1分鐘圖表 - 四個不同指標組合
   setTimeout(() => createChart("tradingview_wld_1m_col1", "WLDUSDT", "1", indicatorSets.column1), 100);
   setTimeout(() => createChart("tradingview_wld_1m_col2", "WLDUSDT", "1", indicatorSets.column2), 200);
   setTimeout(() => createChart("tradingview_wld_1m_col3", "WLDUSDT", "1", indicatorSets.column3), 300);
+  setTimeout(() => createChart("tradingview_wld_1m_col4", "WLDUSDT", "1", indicatorSets.column4), 400);
 
-  // 5分鐘圖表 - 三個不同指標組合
-  setTimeout(() => createChart("tradingview_wld_5m_col1", "WLDUSDT", "5", indicatorSets.column1), 400);
-  setTimeout(() => createChart("tradingview_wld_5m_col2", "WLDUSDT", "5", indicatorSets.column2), 500);
-  setTimeout(() => createChart("tradingview_wld_5m_col3", "WLDUSDT", "5", indicatorSets.column3), 600);
+  // 5分鐘圖表 - 四個不同指標組合
+  setTimeout(() => createChart("tradingview_wld_5m_col1", "WLDUSDT", "5", indicatorSets.column1), 500);
+  setTimeout(() => createChart("tradingview_wld_5m_col2", "WLDUSDT", "5", indicatorSets.column2), 600);
+  setTimeout(() => createChart("tradingview_wld_5m_col3", "WLDUSDT", "5", indicatorSets.column3), 700);
+  setTimeout(() => createChart("tradingview_wld_5m_col4", "WLDUSDT", "5", indicatorSets.column4), 800);
 
-  // 15分鐘圖表 - 三個不同指標組合
-  setTimeout(() => createChart("tradingview_wld_15m_col1", "WLDUSDT", "15", indicatorSets.column1), 700);
-  setTimeout(() => createChart("tradingview_wld_15m_col2", "WLDUSDT", "15", indicatorSets.column2), 800);
-  setTimeout(() => createChart("tradingview_wld_15m_col3", "WLDUSDT", "15", indicatorSets.column3), 900);
+  // 15分鐘圖表 - 四個不同指標組合
+  setTimeout(() => createChart("tradingview_wld_15m_col1", "WLDUSDT", "15", indicatorSets.column1), 900);
+  setTimeout(() => createChart("tradingview_wld_15m_col2", "WLDUSDT", "15", indicatorSets.column2), 1000);
+  setTimeout(() => createChart("tradingview_wld_15m_col3", "WLDUSDT", "15", indicatorSets.column3), 1100);
+  setTimeout(() => createChart("tradingview_wld_15m_col4", "WLDUSDT", "15", indicatorSets.column4), 1200);
 }
 
 // 錯誤處理
