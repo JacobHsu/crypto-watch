@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WLD Coin Technical Analysis</title>
+    <link rel="stylesheet" href="styles.css" />
+
+    <script>
+      // 載入超時檢查和錯誤處理
+      let tvTimeout = setTimeout(() => {
+        if (typeof TradingView === "undefined") {
+          document.querySelectorAll('[id^="tradingview_"]').forEach((el) => {
+            el.innerHTML =
+              '<div class="fallback-content"><p>圖表暫時無法載入</p><button onclick="location.reload()">重新載入</button></div>';
+          });
+        }
+      }, 10000);
+
+      window.addEventListener("load", () => clearTimeout(tvTimeout));
+    </script>
+
+    <!-- 使用 defer 載入腳本，加上錯誤處理 -->
+    <script
+      defer
+      src="https://s3.tradingview.com/tv.js"
+      onerror="document.querySelectorAll('[id^=tradingview_]').forEach(el => el.innerHTML='<div class=fallback-content><p>圖表載入失敗</p><button onclick=location.reload()>重新載入</button></div>')"
+    ></script>
+    <script defer src="script_wld.js"></script>
+  </head>
+  <body>
+    <div class="charts-grid-3x3">
+      <!-- 第一行 - 1分鐘 -->
+      <div id="tradingview_wld_1m_col1"></div>
+      <div id="tradingview_wld_1m_col2"></div>
+      <div id="tradingview_wld_1m_col3"></div>
+
+      <!-- 第二行 - 5分鐘 -->
+      <div id="tradingview_wld_5m_col1"></div>
+      <div id="tradingview_wld_5m_col2"></div>
+      <div id="tradingview_wld_5m_col3"></div>
+
+      <!-- 第三行 - 15分鐘 -->
+      <div id="tradingview_wld_15m_col1"></div>
+      <div id="tradingview_wld_15m_col2"></div>
+      <div id="tradingview_wld_15m_col3"></div>
+    </div>
+
+    <script>
+      // 顯示載入狀態
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll('[id^="tradingview_"]').forEach((el) => {
+          el.innerHTML = '<div class="loading-placeholder"></div>';
+        });
+      });
+    </script>
+  </body>
+</html>
