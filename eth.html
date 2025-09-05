@@ -26,9 +26,9 @@
       src="https://s3.tradingview.com/tv.js"
       onerror="document.querySelectorAll('[id^=tradingview_]').forEach(el => el.innerHTML='<div class=fallback-content><p>圖表載入失敗</p><button onclick=location.reload()>重新載入</button></div>')"
     ></script>
-    <script defer src="script_eth.js"></script>
+    <script defer src="script_crypto.js"></script>
   </head>
-  <body>
+  <body data-crypto="ETH">
     <div class="charts-grid-3x5">
       <!-- 第一行 - 5分鐘 -->
       <div id="tradingview_eth_5m_col1"></div>

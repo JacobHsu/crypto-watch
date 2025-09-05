@@ -1,4 +1,4 @@
-// TradingView 圖表配置 - WLD 技術分析版本
+// TradingView 圖表配置 - 通用加密貨幣技術分析版本
 const baseChartConfig = {
   width: "100%",
   height: "100%",
@@ -35,7 +35,7 @@ const baseChartConfig = {
   },
 };
 
-// 四組不同的技術指標配置
+// 五組不同的技術指標配置
 const indicatorSets = {
   column1: ["BB@tv-basicstudies", "KLTNR@tv-basicstudies", "STD;Supertrend"],
   column2: [
@@ -52,8 +52,27 @@ const indicatorSets = {
     "STD;VWMA",
     "STD;DMI",
     "OBV@tv-basicstudies"
+  ],
+  column5: [
+    "STD;Arnaud%1Legoux%1Moving%1Average",
+    "STD;Willams_R",
+    "STD;Aroon"
   ]
 };
+
+// 加密貨幣符號映射
+const cryptoSymbols = {
+  BTC: "BTCUSDT",
+  ETH: "ETHUSDT",
+  SOL: "SOLUSDT",
+  WLD: "WLDUSDT"
+};
+
+// 獲取當前頁面的加密貨幣類型
+function getCurrentCrypto() {
+  const cryptoAttr = document.body.getAttribute('data-crypto');
+  return cryptoAttr || 'ETH'; // 默認為 ETH
+}
 
 // 創建圖表的函數
 function createChart(containerId, symbol, interval, indicatorSet) {
@@ -69,9 +88,9 @@ function createChart(containerId, symbol, interval, indicatorSet) {
 
   try {
     new TradingView.widget(config);
-    console.log(`WLD圖表已創建: ${symbol} - ${interval} - ${containerId}`);
+    console.log(`圖表已創建: ${symbol} - ${interval} - ${containerId}`);
   } catch (error) {
-    console.error(`創建WLD圖表失敗 ${symbol}:`, error);
+    console.error(`創建圖表失敗 ${symbol}:`, error);
     const container = document.getElementById(containerId);
     if (container) {
       container.innerHTML = '<div class="loading">載入失敗</div>';
@@ -99,25 +118,32 @@ if (document.readyState === 'loading') {
 
 // 初始化所有圖表
 function initializeCharts() {
-  console.log("TradingView 已載入，開始創建WLD技術分析圖表...");
+  const currentCrypto = getCurrentCrypto();
+  const symbol = cryptoSymbols[currentCrypto];
+  const cryptoLower = currentCrypto.toLowerCase();
+  
+  console.log(`TradingView 已載入，開始創建 ${currentCrypto} 技術分析圖表...`);
 
-  // 1分鐘圖表 - 四個不同指標組合
-  setTimeout(() => createChart("tradingview_wld_1m_col1", "WLDUSDT", "1", indicatorSets.column1), 100);
-  setTimeout(() => createChart("tradingview_wld_1m_col2", "WLDUSDT", "1", indicatorSets.column2), 200);
-  setTimeout(() => createChart("tradingview_wld_1m_col3", "WLDUSDT", "1", indicatorSets.column3), 300);
-  setTimeout(() => createChart("tradingview_wld_1m_col4", "WLDUSDT", "1", indicatorSets.column4), 400);
+  // 5分鐘圖表 - 五個不同指標組合
+  setTimeout(() => createChart(`tradingview_${cryptoLower}_5m_col1`, symbol, "5", indicatorSets.column1), 100);
+  setTimeout(() => createChart(`tradingview_${cryptoLower}_5m_col2`, symbol, "5", indicatorSets.column2), 200);
+  setTimeout(() => createChart(`tradingview_${cryptoLower}_5m_col3`, symbol, "5", indicatorSets.column3), 300);
+  setTimeout(() => createChart(`tradingview_${cryptoLower}_5m_col4`, symbol, "5", indicatorSets.column4), 400);
+  setTimeout(() => createChart(`tradingview_${cryptoLower}_5m_col5`, symbol, "5", indicatorSets.column5), 500);
 
-  // 5分鐘圖表 - 四個不同指標組合
-  setTimeout(() => createChart("tradingview_wld_5m_col1", "WLDUSDT", "5", indicatorSets.column1), 500);
-  setTimeout(() => createChart("tradingview_wld_5m_col2", "WLDUSDT", "5", indicatorSets.column2), 600);
-  setTimeout(() => createChart("tradingview_wld_5m_col3", "WLDUSDT", "5", indicatorSets.column3), 700);
-  setTimeout(() => createChart("tradingview_wld_5m_col4", "WLDUSDT", "5", indicatorSets.column4), 800);
+  // 15分鐘圖表 - 五個不同指標組合
+  setTimeout(() => createChart(`tradingview_${cryptoLower}_15m_col1`, symbol, "15", indicatorSets.column1), 600);
+  setTimeout(() => createChart(`tradingview_${cryptoLower}_15m_col2`, symbol, "15", indicatorSets.column2), 700);
+  setTimeout(() => createChart(`tradingview_${cryptoLower}_15m_col3`, symbol, "15", indicatorSets.column3), 800);
+  setTimeout(() => createChart(`tradingview_${cryptoLower}_15m_col4`, symbol, "15", indicatorSets.column4), 900);
+  setTimeout(() => createChart(`tradingview_${cryptoLower}_15m_col5`, symbol, "15", indicatorSets.column5), 1000);
 
-  // 15分鐘圖表 - 四個不同指標組合
-  setTimeout(() => createChart("tradingview_wld_15m_col1", "WLDUSDT", "15", indicatorSets.column1), 900);
-  setTimeout(() => createChart("tradingview_wld_15m_col2", "WLDUSDT", "15", indicatorSets.column2), 1000);
-  setTimeout(() => createChart("tradingview_wld_15m_col3", "WLDUSDT", "15", indicatorSets.column3), 1100);
-  setTimeout(() => createChart("tradingview_wld_15m_col4", "WLDUSDT", "15", indicatorSets.column4), 1200);
+  // 30分鐘圖表 - 五個不同指標組合
+  setTimeout(() => createChart(`tradingview_${cryptoLower}_30m_col1`, symbol, "30", indicatorSets.column1), 1100);
+  setTimeout(() => createChart(`tradingview_${cryptoLower}_30m_col2`, symbol, "30", indicatorSets.column2), 1200);
+  setTimeout(() => createChart(`tradingview_${cryptoLower}_30m_col3`, symbol, "30", indicatorSets.column3), 1300);
+  setTimeout(() => createChart(`tradingview_${cryptoLower}_30m_col4`, symbol, "30", indicatorSets.column4), 1400);
+  setTimeout(() => createChart(`tradingview_${cryptoLower}_30m_col5`, symbol, "30", indicatorSets.column5), 1500);
 }
 
 // 錯誤處理
