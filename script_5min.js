@@ -21,6 +21,13 @@ const chartConfig = {
     "STD;MA%1Cross",
   ],
 
+  // ETH 技術分析專用配置 - MACD, PSAR, VWMA
+  ethTechStudies: [
+    "STD;PSAR",
+    "MACD@tv-basicstudies",
+    "STD;VWMA",              
+  ],
+
   // 圖表樣式
   overrides: {
     "paneProperties.background": "#131722",
@@ -43,7 +50,7 @@ const chartConfig = {
 };
 
 // 創建圖表的函數
-function createChart(containerId, symbol, interval) {
+function createChart(containerId, symbol, interval, isEthTech = false) {
   const config = {
     ...chartConfig,
     container_id: containerId,
@@ -51,11 +58,12 @@ function createChart(containerId, symbol, interval) {
     interval: interval,
     timezone: "Asia/Taipei",
     autosize: true,
+    studies: isEthTech ? chartConfig.ethTechStudies : chartConfig.studies,
   };
 
   try {
     new TradingView.widget(config);
-    console.log(`圖表已創建: ${symbol} - ${interval}`);
+    console.log(`圖表已創建: ${symbol} - ${interval}${isEthTech ? ' (技術分析)' : ''}`);
   } catch (error) {
     console.error(`創建圖表失敗 ${symbol}:`, error);
     const container = document.getElementById(containerId);
@@ -89,21 +97,21 @@ function initializeCharts() {
 
   // 1分鐘圖表
   setTimeout(() => createChart("tradingview_eth_1m", "ETHUSDT", "1"), 100);
-  setTimeout(() => createChart("tradingview_btc_1m", "BTCUSDT", "1"), 200);
-  setTimeout(() => createChart("tradingview_wld_1m", "WLDUSDT", "1"), 300);
-  setTimeout(() => createChart("tradingview_wlfi_1m", "WLFIUSDT", "1"), 400);
+  setTimeout(() => createChart("tradingview_eth_tech_1m", "ETHUSDT", "1", true), 200);
+  setTimeout(() => createChart("tradingview_btc_1m", "BTCUSDT", "1"), 300);
+  setTimeout(() => createChart("tradingview_wld_1m", "WLDUSDT", "1"), 400);
 
   // 3分鐘圖表
   setTimeout(() => createChart("tradingview_eth_3m", "ETHUSDT", "3"), 500);
-  setTimeout(() => createChart("tradingview_btc_3m", "BTCUSDT", "3"), 600);
-  setTimeout(() => createChart("tradingview_wld_3m", "WLDUSDT", "3"), 700);
-  setTimeout(() => createChart("tradingview_wlfi_3m", "WLFIUSDT", "3"), 800);
+  setTimeout(() => createChart("tradingview_eth_tech_3m", "ETHUSDT", "3", true), 600);
+  setTimeout(() => createChart("tradingview_btc_3m", "BTCUSDT", "3"), 700);
+  setTimeout(() => createChart("tradingview_wld_3m", "WLDUSDT", "3"), 800);
 
   // 5分鐘圖表
   setTimeout(() => createChart("tradingview_eth_5m", "ETHUSDT", "5"), 900);
-  setTimeout(() => createChart("tradingview_btc_5m", "BTCUSDT", "5"), 1000);
-  setTimeout(() => createChart("tradingview_wld_5m", "WLDUSDT", "5"), 1100);
-  setTimeout(() => createChart("tradingview_wlfi_5m", "WLFIUSDT", "5"), 1200);
+  setTimeout(() => createChart("tradingview_eth_tech_5m", "ETHUSDT", "5", true), 1000);
+  setTimeout(() => createChart("tradingview_btc_5m", "BTCUSDT", "5"), 1100);
+  setTimeout(() => createChart("tradingview_wld_5m", "WLDUSDT", "5"), 1200);
 }
 
 // 錯誤處理
