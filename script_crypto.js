@@ -65,7 +65,10 @@ const cryptoSymbols = {
   BTC: "BTCUSDT",
   ETH: "ETHUSDT",
   SOL: "SOLUSDT",
-  WLD: "WLDUSDT"
+  WLD: "WLDUSDT",
+  XRP: "XRPUSDT",
+  ADA: "ADAUSDT",
+  DOGE: "DOGEUSDT"
 };
 
 // 獲取當前頁面的加密貨幣類型
