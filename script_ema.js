@@ -10,7 +10,7 @@ const chartConfig = {
   hide_top_toolbar: true,
   hide_legend: false,
   save_image: false,
-  hide_side_toolbar: true,
+  hide_side_toolbar: false,
   allow_symbol_change: false,
   container_id: "",
 
