@@ -38,6 +38,22 @@ html, body {
     position: relative;
 }
 
+/* TSM專用的3x4網格布局 */
+.charts-grid-3x4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    height: 100vh;
+    width: 100vw;
+    gap: 1px;
+    background-color: #2a2e39;
+}
+
+.charts-grid-3x4 > div {
+    background-color: #131722;
+    position: relative;
+}
+
 /* ETH專用的3x5網格布局 */
 .charts-grid-3x5 {
     display: grid;
