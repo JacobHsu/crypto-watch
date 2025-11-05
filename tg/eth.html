@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ETHUSDT Technical Analysis</title>
-    <link rel="icon" type="image/png" href="icons/eth.png" />
+    <title>ETH Coin Technical Analysis</title>
+    <link rel="icon" type="image/png" href="icons/eth.png">
     <link rel="stylesheet" href="styles.css" />
 
     <script>
@@ -27,27 +27,30 @@
       src="https://s3.tradingview.com/tv.js"
       onerror="document.querySelectorAll('[id^=tradingview_]').forEach(el => el.innerHTML='<div class=fallback-content><p>圖表載入失敗</p><button onclick=location.reload()>重新載入</button></div>')"
     ></script>
-    <script defer src="crypto.js"></script>
+    <script defer src="script_crypto.js"></script>
   </head>
-  <body>
-    <div class="charts-grid-3x4">
-      <!-- 第一行 - 1小時 -->
-      <div id="tradingview_ethusdt_1h_col1"></div>
-      <div id="tradingview_ethusdt_1h_col2"></div>
-      <div id="tradingview_ethusdt_1h_col3"></div>
-      <div id="tradingview_ethusdt_1h_col4"></div>
+  <body data-crypto="ETH">
+    <div class="charts-grid-3x5">
+      <!-- 第一行 - 5分鐘 -->
+      <div id="tradingview_eth_5m_col1"></div>
+      <div id="tradingview_eth_5m_col2"></div>
+      <div id="tradingview_eth_5m_col3"></div>
+      <div id="tradingview_eth_5m_col4"></div>
+      <div id="tradingview_eth_5m_col5"></div>
 
-      <!-- 第二行 - 4小時 -->
-      <div id="tradingview_ethusdt_4h_col1"></div>
-      <div id="tradingview_ethusdt_4h_col2"></div>
-      <div id="tradingview_ethusdt_4h_col3"></div>
-      <div id="tradingview_ethusdt_4h_col4"></div>
+      <!-- 第二行 - 15分鐘 -->
+      <div id="tradingview_eth_15m_col1"></div>
+      <div id="tradingview_eth_15m_col2"></div>
+      <div id="tradingview_eth_15m_col3"></div>
+      <div id="tradingview_eth_15m_col4"></div>
+      <div id="tradingview_eth_15m_col5"></div>
 
-      <!-- 第三行 - 1天 -->
-      <div id="tradingview_ethusdt_1d_col1"></div>
-      <div id="tradingview_ethusdt_1d_col2"></div>
-      <div id="tradingview_ethusdt_1d_col3"></div>
-      <div id="tradingview_ethusdt_1d_col4"></div>
+      <!-- 第三行 - 30分鐘 -->
+      <div id="tradingview_eth_30m_col1"></div>
+      <div id="tradingview_eth_30m_col2"></div>
+      <div id="tradingview_eth_30m_col3"></div>
+      <div id="tradingview_eth_30m_col4"></div>
+      <div id="tradingview_eth_30m_col5"></div>
     </div>
 
     <script>

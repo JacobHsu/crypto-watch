@@ -1,0 +1,155 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background-color: #131722;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    height: 100vh;
+    width: 100vw;
+    gap: 1px;
+    background-color: #2a2e39;
+}
+
+/* WLD專用的3x4網格布局 */
+.charts-grid-3x3 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    height: 100vh;
+    width: 100vw;
+    gap: 1px;
+    background-color: #2a2e39;
+}
+
+.charts-grid-3x3 > div {
+    background-color: #131722;
+    position: relative;
+}
+
+/* TSM專用的3x4網格布局 */
+.charts-grid-3x4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    height: 100vh;
+    width: 100vw;
+    gap: 1px;
+    background-color: #2a2e39;
+}
+
+.charts-grid-3x4 > div {
+    background-color: #131722;
+    position: relative;
+}
+
+/* ETH專用的3x5網格布局 */
+.charts-grid-3x5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    height: 100vh;
+    width: 100vw;
+    gap: 1px;
+    background-color: #2a2e39;
+}
+
+.charts-grid-3x5 > div {
+    background-color: #131722;
+    position: relative;
+}
+
+.charts-grid > div {
+    background-color: #131722;
+    position: relative;
+}
+
+/* 載入狀態 */
+.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #787b86;
+    font-size: 14px;
+    z-index: 1;
+}
+
+.loading-placeholder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #787b86;
+    font-size: 14px;
+    text-align: center;
+}
+
+.loading-placeholder::after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #787b86;
+    border-radius: 50%;
+    border-top-color: #2196f3;
+    animation: spin 1s ease-in-out infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.fallback-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #787b86;
+    font-size: 14px;
+}
+
+.fallback-content button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.fallback-content button:hover {
+    background-color: #1976d2;
+}
+
+/* 響應式設計 - 平板 */
+@media (max-width: 1024px) {
+    .charts-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(6, 1fr);
+    }
+}
+
+/* 響應式設計 - 手機 */
+@media (max-width: 768px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(12, 1fr);
+        gap: 0;
+    }
+}
