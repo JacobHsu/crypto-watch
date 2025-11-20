@@ -158,7 +158,7 @@ async function takeScreenshot() {
         </div>
         
         <div class="refresh-info">
-            這些截圖每小時自動更新一次
+            這些截圖每天自動更新兩次 (台灣時間 8:00 & 21:00)
         </div>
     </div>
 </body>

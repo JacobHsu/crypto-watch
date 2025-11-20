@@ -8,7 +8,7 @@
 - **多頁面設計**: 四種不同的技術指標分析
 - **多幣種監控**: BTC/USDT, ETH/USDT, XRP/USDT, SOL/USDT
 - **多時間框架**: 15分鐘、1小時、4小時圖表
-- **自動截圖**: 每小時自動生成圖表截圖
+- **自動截圖**: 每天兩次自動生成圖表截圖 (台灣時間 8:00 & 21:00)
 - **響應式設計**: 適配各種螢幕尺寸
 - **深色主題**: 專業的交易介面風格
 
@@ -59,7 +59,7 @@
 ## 📸 自動截圖系統
 
 ### 功能說明
-- 每小時自動拍攝兩個頁面的截圖
+- 每天兩次自動拍攝兩個頁面的截圖 (台灣時間 8:00 & 21:00)
 - **主頁面截圖**：`crypto-watch-index.png` (BB+KC+Supertrend 技術指標)
 - **MA分析頁面截圖**：`crypto-watch-latest.png` (MA+Alligator 技術指標)
 - 每次更新覆蓋舊檔案，提供穩定的固定 URL
@@ -88,7 +88,7 @@
 - ✅ 主分支名稱為 **main**
 
 #### 4. 手動測試
-前往 **Actions** 標籤 → 選擇 **"Hourly Crypto Watch Screenshot"** → 點擊 **"Run workflow"**
+前往 **Actions** 標籤 → 選擇 **"Daily Crypto Watch Screenshot"** → 點擊 **"Run workflow"**
 
 ### 本地測試
 ```bash

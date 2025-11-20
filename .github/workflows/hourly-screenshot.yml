@@ -1,9 +1,11 @@
-name: Hourly Crypto Watch Screenshot
+name: Daily Crypto Watch Screenshot
 
 on:
   schedule:
-    # 每小時執行一次 (UTC 時間)
-    - cron: '0 * * * *'
+    # 台灣時間上午 8:00 (UTC 0:00)
+    - cron: '0 0 * * *'
+    # 台灣時間晚上 21:00 (UTC 13:00)
+    - cron: '0 13 * * *'
   workflow_dispatch: # 允許手動觸發
 
 jobs:
