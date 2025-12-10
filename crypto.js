@@ -247,3 +247,12 @@ window.addEventListener("resize", function () {
     console.log("視窗大小已改變，圖表將自動調整");
   }, 250);
 });
+
+// 鍵盤快捷鍵：Shift+M 開啟 TradingView Widgets 頁面
+window.addEventListener("keydown", function (e) {
+  if (e.shiftKey && (e.key === 'M' || e.key === 'm')) {
+    e.preventDefault();
+    window.open('https://jacobhsu.github.io/tradingview-widgets/', '_blank');
+    console.log('已開啟 TradingView Widgets 頁面');
+  }
+});
