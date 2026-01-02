@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Read(//c/Users/user/Downloads/FireShot/**)"
+      "Read(//c/Users/user/Downloads/FireShot/**)",
+      "WebFetch(domain:www.tradingview.com)",
+      "WebSearch"
     ],
     "deny": [],
     "ask": []

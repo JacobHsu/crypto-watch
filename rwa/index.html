@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Watch - RWA</title>
+    <link rel="icon" type="image/svg+xml" href="https://cryptologos.cc/logos/tether-gold-xaut-logo.svg">
+
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+</head>
+<body>
+    <script>
+        // 幣種配置（全部為永續合約）
+        const CRYPTO_SYMBOLS = [
+          { symbol: "SLVXUSDT.P", prefix: "slvx", exchange: "PIONEX" },
+          { symbol: "XAUTUSDT.P", prefix: "xaut", exchange: "PIONEX" },
+          { symbol: "PAXGUSDT.P", prefix: "paxg_usdt", exchange: "PIONEX" },
+          { symbol: "PAXGBTC.P", prefix: "paxg_btc", exchange: "PIONEX" }
+        ];
+
+        // 時間框架配置
+        const TIMEFRAMES = [
+          { interval: "15", suffix: "15m", label: "15分鐘" },
+          { interval: "60", suffix: "1h", label: "1小時" },
+          { interval: "240", suffix: "4h", label: "4小時" }
+        ];
+
+        // 生成所有圖表的 HTML
+        let chartsHTML = '';
+        TIMEFRAMES.forEach(({ suffix, label }) => {
+          CRYPTO_SYMBOLS.forEach(({ prefix }) => {
+            chartsHTML += `<div id="tradingview_${prefix}_${suffix}"><div class="loading-placeholder"></div></div>`;
+          });
+        });
+
+        // 一次性寫入完整的容器結構
+        document.write(`
+          <div class="charts-grid">
+            ${chartsHTML}
+          </div>
+        `);
+
+        console.log('✅ 已生成圖表容器，共', CRYPTO_SYMBOLS.length * TIMEFRAMES.length, '個');
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
