@@ -4,7 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WLD Coin Technical Analysis</title>
+    <link rel="icon" type="image/png" id="favicon">
     <link rel="stylesheet" href="styles.css" />
+    <script>
+      // 動態載入 favicon - 使用 CoinCap CDN
+      (function() {
+        const symbol = 'wld';
+        const favicon = document.getElementById('favicon');
+        const img = new Image();
+        img.onload = () => { favicon.href = img.src; };
+        img.src = `https://assets.coincap.io/assets/icons/${symbol}@2x.png`;
+      })();
+    </script>
 
     <script>
       // 載入超時檢查和錯誤處理

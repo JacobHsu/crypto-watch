@@ -3,17 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BTCUSDT Technical Analysis</title>
-    <link rel="icon" type="image/png" id="favicon" href="icons/btc.png">
+    <title>XAUTUSDT Technical Analysis</title>
+    <link rel="icon" type="image/png" id="favicon">
     <link rel="stylesheet" href="styles.css" />
     <script>
-      // 動態載入 favicon - 優先使用 CoinCap CDN
+      // 動態載入 favicon - 使用 CoinCap CDN
       (function() {
-        const symbol = 'btc';
+        const symbol = 'xaut';
         const favicon = document.getElementById('favicon');
         const img = new Image();
         img.onload = () => { favicon.href = img.src; };
-        img.onerror = () => { /* 保持本地 fallback */ };
         img.src = `https://assets.coincap.io/assets/icons/${symbol}@2x.png`;
       })();
     </script>
@@ -43,22 +42,22 @@
   <body>
     <div class="charts-grid-3x4">
       <!-- 第一行 - 1小時 -->
-      <div id="tradingview_btcusdt_1h_col1"></div>
-      <div id="tradingview_btcusdt_1h_col2"></div>
-      <div id="tradingview_btcusdt_1h_col3"></div>
-      <div id="tradingview_btcusdt_1h_col4"></div>
+      <div id="tradingview_xautusdt_1h_col1"></div>
+      <div id="tradingview_xautusdt_1h_col2"></div>
+      <div id="tradingview_xautusdt_1h_col3"></div>
+      <div id="tradingview_xautusdt_1h_col4"></div>
 
       <!-- 第二行 - 4小時 -->
-      <div id="tradingview_btcusdt_4h_col1"></div>
-      <div id="tradingview_btcusdt_4h_col2"></div>
-      <div id="tradingview_btcusdt_4h_col3"></div>
-      <div id="tradingview_btcusdt_4h_col4"></div>
+      <div id="tradingview_xautusdt_4h_col1"></div>
+      <div id="tradingview_xautusdt_4h_col2"></div>
+      <div id="tradingview_xautusdt_4h_col3"></div>
+      <div id="tradingview_xautusdt_4h_col4"></div>
 
       <!-- 第三行 - 1天 -->
-      <div id="tradingview_btcusdt_1d_col1"></div>
-      <div id="tradingview_btcusdt_1d_col2"></div>
-      <div id="tradingview_btcusdt_1d_col3"></div>
-      <div id="tradingview_btcusdt_1d_col4"></div>
+      <div id="tradingview_xautusdt_1d_col1"></div>
+      <div id="tradingview_xautusdt_1d_col2"></div>
+      <div id="tradingview_xautusdt_1d_col3"></div>
+      <div id="tradingview_xautusdt_1d_col4"></div>
     </div>
 
     <script>

@@ -136,7 +136,11 @@ function detectCryptoSymbol() {
   const title = document.title;
   const url = window.location.pathname;
   
-  if (title.includes('ETHUSDT') || url.includes('eth')) {
+  if (title.includes('XAUTUSDT') || url.includes('xaut')) {
+    return { symbol: 'PIONEX:XAUTUSDT.P', prefix: 'xautusdt' };
+  } else if (title.includes('SLVXUSDT') || url.includes('slvx')) {
+    return { symbol: 'PIONEX:SLVXUSDT.P', prefix: 'slvxusdt' };
+  } else if (title.includes('ETHUSDT') || url.includes('eth')) {
     return { symbol: 'BINANCE:ETHUSDT', prefix: 'ethusdt' };
   } else if (title.includes('BTCUSDT') || url.includes('btc')) {
     return { symbol: 'BINANCE:BTCUSDT', prefix: 'btcusdt' };
@@ -145,7 +149,7 @@ function detectCryptoSymbol() {
   } else if (title.includes('XRPUSDT') || url.includes('xrp')) {
     return { symbol: 'BINANCE:XRPUSDT', prefix: 'xrpusdt' };
   }
-  
+
   // 預設為 ETHUSDT
   return { symbol: 'BINANCE:ETHUSDT', prefix: 'ethusdt' };
 }
