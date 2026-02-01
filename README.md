@@ -18,11 +18,13 @@
 - **技術指標**: Bollinger Bands + Keltner Channels + Supertrend
 - **適用場景**: 波動性分析、趨勢確認
 - **訪問**: https://jacobhsu.github.io/crypto-watch/
-
+    
 ### MA 分析頁面 (`ma.html`)
 - **技術指標**: 移動平均交叉 + 威廉鱷魚線
 - **適用場景**: 趨勢跟隨、多時間框架分析
 - **訪問**: https://jacobhsu.github.io/crypto-watch/ma
+
+
 
 ### 振盪器分析頁面 (`oscillator.html`)
 - **技術指標**: PSAR + MACD + RSI
@@ -52,6 +54,7 @@
 ### 線上訪問
 - **主頁面**: https://jacobhsu.github.io/crypto-watch/
 - **MA分析**: https://jacobhsu.github.io/crypto-watch/ma
+
 - **振盪器分析**: https://jacobhsu.github.io/crypto-watch/oscillator
 - **WLD深度分析**: https://jacobhsu.github.io/crypto-watch/wld
 - **自動截圖**: https://jacobhsu.github.io/crypto-watch/screenshots/
@@ -62,11 +65,13 @@
 - 每天兩次自動拍攝兩個頁面的截圖 (台灣時間 8:00 & 21:00)
 - **主頁面截圖**：`crypto-watch-index.png` (BB+KC+Supertrend 技術指標)
 - **MA分析頁面截圖**：`crypto-watch-latest.png` (MA+Alligator 技術指標)
+
 - 每次更新覆蓋舊檔案，提供穩定的固定 URL
 
 ### 訪問截圖
 - **主頁面截圖**: https://jacobhsu.github.io/crypto-watch/screenshots/crypto-watch-index.png
 - **MA分析截圖**: https://jacobhsu.github.io/crypto-watch/screenshots/crypto-watch-latest.png
+
 - **展示頁面**: https://jacobhsu.github.io/crypto-watch/screenshots/
 
 ### 設置方法
@@ -118,6 +123,8 @@ node screenshot.js
 - **移動平均交叉 (MA Cross)**: 多條移動平均線的交叉信號，金叉看漲死叉看跌
 - **威廉鱷魚線 (Williams Alligator)**: 三線趨勢跟隨指標，線條發散表示趨勢開始
 
+
+
 ### 振盪器分析頁面指標 (oscillator.html)
 - **拋物線SAR (PSAR)**: 點狀趨勢指標，點在價格下方看漲，上方看跌
 - **MACD**: 趨勢動量指標，金叉看漲死叉看跌，柱狀圖顯示動能強弱
@@ -147,10 +154,12 @@ node screenshot.js
 crypto-watch/
 ├── index.html              # 主頁面 (BB+KC+Supertrend)
 ├── ma.html                 # MA分析頁面 (MA+Alligator)
+
 ├── oscillator.html         # 振盪器分析頁面 (PSAR+MACD+RSI)
 ├── wld.html                # WLD深度分析頁面 (四組指標)
 ├── script.js              # 主頁面腳本
 ├── script_ma.js           # MA頁面腳本
+
 ├── script_oscillator.js   # 振盪器頁面腳本
 ├── script_wld.js          # WLD頁面腳本
 ├── styles.css             # 共用樣式

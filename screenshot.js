@@ -4,7 +4,7 @@ const path = require('path');
 
 async function takeScreenshot() {
   console.log('啟動瀏覽器...');
-  
+
   const browser = await puppeteer.launch({
     headless: 'new',
     args: [
@@ -18,7 +18,7 @@ async function takeScreenshot() {
 
   try {
     const page = await browser.newPage();
-    
+
     // 設置視窗大小
     await page.setViewport({
       width: 1920,
@@ -64,7 +64,7 @@ async function takeScreenshot() {
       const filename = path.join(screenshotDir, config.filename);
 
       console.log(`拍攝 ${config.description} 截圖...`);
-      
+
       // 拍攝完整頁面截圖
       const screenshot = await page.screenshot({
         fullPage: false,

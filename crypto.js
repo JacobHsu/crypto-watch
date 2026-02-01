@@ -135,7 +135,7 @@ const column3ChartConfig = {
 function detectCryptoSymbol() {
   const title = document.title;
   const url = window.location.pathname;
-  
+
   if (title.includes('XAUTUSDT') || url.includes('xaut')) {
     return { symbol: 'PIONEX:XAUTUSDT.P', prefix: 'xautusdt' };
   } else if (title.includes('SLVXUSDT') || url.includes('slvx')) {
@@ -216,26 +216,50 @@ function initializeCharts() {
   const cryptoInfo = detectCryptoSymbol();
   const cryptoSymbol = cryptoInfo.symbol;
   const prefix = cryptoInfo.prefix;
-  
+
+
   console.log(`TradingView 已載入，開始創建 ${cryptoSymbol} 技術分析圖表...`);
 
-  // 1小時圖表 - 四個不同指標組合
-  setTimeout(() => createChart(`tradingview_${prefix}_1h_col1`, cryptoSymbol, "60", indicatorSets.column1, false), 100);
-  setTimeout(() => createChart(`tradingview_${prefix}_1h_col2`, cryptoSymbol, "60", indicatorSets.column2, false), 200);
-  setTimeout(() => createChart(`tradingview_${prefix}_1h_col3`, cryptoSymbol, "60", indicatorSets.column3, true), 300);
-  setTimeout(() => createChart(`tradingview_${prefix}_1h_col4`, cryptoSymbol, "60", indicatorSets.column4, false), 400);
+  // Detect if we should use long-term intervals (folder 'm')
+  const isLongTerm = window.location.pathname.includes('/m/');
 
-  // 4小時圖表 - 四個不同指標組合
-  setTimeout(() => createChart(`tradingview_${prefix}_4h_col1`, cryptoSymbol, "240", indicatorSets.column1, false), 500);
-  setTimeout(() => createChart(`tradingview_${prefix}_4h_col2`, cryptoSymbol, "240", indicatorSets.column2, false), 600);
-  setTimeout(() => createChart(`tradingview_${prefix}_4h_col3`, cryptoSymbol, "240", indicatorSets.column3, true), 700);
-  setTimeout(() => createChart(`tradingview_${prefix}_4h_col4`, cryptoSymbol, "240", indicatorSets.column4, false), 800);
+  if (isLongTerm) {
+    // 1週圖表
+    setTimeout(() => createChart(`tradingview_${prefix}_1w_col1`, cryptoSymbol, "1W", indicatorSets.column1, false), 100);
+    setTimeout(() => createChart(`tradingview_${prefix}_1w_col2`, cryptoSymbol, "1W", indicatorSets.column2, false), 200);
+    setTimeout(() => createChart(`tradingview_${prefix}_1w_col3`, cryptoSymbol, "1W", indicatorSets.column3, true), 300);
+    setTimeout(() => createChart(`tradingview_${prefix}_1w_col4`, cryptoSymbol, "1W", indicatorSets.column4, false), 400);
 
-  // 1天圖表 - 四個不同指標組合
-  setTimeout(() => createChart(`tradingview_${prefix}_1d_col1`, cryptoSymbol, "1D", indicatorSets.column1, false), 900);
-  setTimeout(() => createChart(`tradingview_${prefix}_1d_col2`, cryptoSymbol, "1D", indicatorSets.column2, false), 1000);
-  setTimeout(() => createChart(`tradingview_${prefix}_1d_col3`, cryptoSymbol, "1D", indicatorSets.column3, true), 1100);
-  setTimeout(() => createChart(`tradingview_${prefix}_1d_col4`, cryptoSymbol, "1D", indicatorSets.column4, false), 1200);
+    // 1月圖表
+    setTimeout(() => createChart(`tradingview_${prefix}_1M_col1`, cryptoSymbol, "1M", indicatorSets.column1, false), 500);
+    setTimeout(() => createChart(`tradingview_${prefix}_1M_col2`, cryptoSymbol, "1M", indicatorSets.column2, false), 600);
+    setTimeout(() => createChart(`tradingview_${prefix}_1M_col3`, cryptoSymbol, "1M", indicatorSets.column3, true), 700);
+    setTimeout(() => createChart(`tradingview_${prefix}_1M_col4`, cryptoSymbol, "1M", indicatorSets.column4, false), 800);
+
+    // 3月圖表
+    setTimeout(() => createChart(`tradingview_${prefix}_3M_col1`, cryptoSymbol, "3M", indicatorSets.column1, false), 900);
+    setTimeout(() => createChart(`tradingview_${prefix}_3M_col2`, cryptoSymbol, "3M", indicatorSets.column2, false), 1000);
+    setTimeout(() => createChart(`tradingview_${prefix}_3M_col3`, cryptoSymbol, "3M", indicatorSets.column3, true), 1100);
+    setTimeout(() => createChart(`tradingview_${prefix}_3M_col4`, cryptoSymbol, "3M", indicatorSets.column4, false), 1200);
+  } else {
+    // 1小時圖表
+    setTimeout(() => createChart(`tradingview_${prefix}_1h_col1`, cryptoSymbol, "60", indicatorSets.column1, false), 100);
+    setTimeout(() => createChart(`tradingview_${prefix}_1h_col2`, cryptoSymbol, "60", indicatorSets.column2, false), 200);
+    setTimeout(() => createChart(`tradingview_${prefix}_1h_col3`, cryptoSymbol, "60", indicatorSets.column3, true), 300);
+    setTimeout(() => createChart(`tradingview_${prefix}_1h_col4`, cryptoSymbol, "60", indicatorSets.column4, false), 400);
+
+    // 4小時圖表
+    setTimeout(() => createChart(`tradingview_${prefix}_4h_col1`, cryptoSymbol, "240", indicatorSets.column1, false), 500);
+    setTimeout(() => createChart(`tradingview_${prefix}_4h_col2`, cryptoSymbol, "240", indicatorSets.column2, false), 600);
+    setTimeout(() => createChart(`tradingview_${prefix}_4h_col3`, cryptoSymbol, "240", indicatorSets.column3, true), 700);
+    setTimeout(() => createChart(`tradingview_${prefix}_4h_col4`, cryptoSymbol, "240", indicatorSets.column4, false), 800);
+
+    // 1天圖表
+    setTimeout(() => createChart(`tradingview_${prefix}_1d_col1`, cryptoSymbol, "1D", indicatorSets.column1, false), 900);
+    setTimeout(() => createChart(`tradingview_${prefix}_1d_col2`, cryptoSymbol, "1D", indicatorSets.column2, false), 1000);
+    setTimeout(() => createChart(`tradingview_${prefix}_1d_col3`, cryptoSymbol, "1D", indicatorSets.column3, true), 1100);
+    setTimeout(() => createChart(`tradingview_${prefix}_1d_col4`, cryptoSymbol, "1D", indicatorSets.column4, false), 1200);
+  }
 }
 
 // 錯誤處理

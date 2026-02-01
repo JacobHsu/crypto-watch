@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ETHUSDT Technical Analysis</title>
+    <link rel="icon" type="image/png" id="favicon" href="icons/eth.png" />
+    <link rel="stylesheet" href="../styles.css" />
+    <script>
+      // 動態載入 favicon - 優先使用 CoinCap CDN
+      (function() {
+        const symbol = 'eth';
+        const favicon = document.getElementById('favicon');
+        const img = new Image();
+        img.onload = () => { favicon.href = img.src; };
+        img.onerror = () => { /* 保持本地 fallback */ };
+        img.src = `https://assets.coincap.io/assets/icons/${symbol}@2x.png`;
+      })();
+    </script>
+
+    <script>
+      // 載入超時檢查和錯誤處理
+      let tvTimeout = setTimeout(() => {
+        if (typeof TradingView === "undefined") {
+          document.querySelectorAll('[id^="tradingview_"]').forEach((el) => {
+            el.innerHTML =
+              '<div class="fallback-content"><p>圖表暫時無法載入</p><button onclick="location.reload()">重新載入</button></div>';
+          });
+        }
+      }, 10000);
+
+      window.addEventListener("load", () => clearTimeout(tvTimeout));
+    </script>
+
+    <!-- 使用 defer 載入腳本，加上錯誤處理 -->
+    <script
+      defer
+      src="https://s3.tradingview.com/tv.js"
+      onerror="document.querySelectorAll('[id^=tradingview_]').forEach(el => el.innerHTML='<div class=fallback-content><p>圖表載入失敗</p><button onclick=location.reload()>重新載入</button></div>')"
+    ></script>
+    <script defer src="../crypto.js"></script>
+  </head>
+  <body>
+    <div class="charts-grid-3x4">
+      <!-- 第一行 - 1週 -->
+      <div id="tradingview_ethusdt_1w_col1"></div>
+      <div id="tradingview_ethusdt_1w_col2"></div>
+      <div id="tradingview_ethusdt_1w_col3"></div>
+      <div id="tradingview_ethusdt_1w_col4"></div>
+
+      <!-- 第二行 - 1月 -->
+      <div id="tradingview_ethusdt_1M_col1"></div>
+      <div id="tradingview_ethusdt_1M_col2"></div>
+      <div id="tradingview_ethusdt_1M_col3"></div>
+      <div id="tradingview_ethusdt_1M_col4"></div>
+
+      <!-- 第三行 - 3月 -->
+      <div id="tradingview_ethusdt_3M_col1"></div>
+      <div id="tradingview_ethusdt_3M_col2"></div>
+      <div id="tradingview_ethusdt_3M_col3"></div>
+      <div id="tradingview_ethusdt_3M_col4"></div>
+    </div>
+
+    <script>
+      // 顯示載入狀態
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll('[id^="tradingview_"]').forEach((el) => {
+          el.innerHTML = '<div class="loading-placeholder"></div>';
+        });
+      });
+    </script>
+  </body>
+</html>
