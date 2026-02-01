@@ -38,14 +38,14 @@ async function takeScreenshot() {
     // 截圖配置
     const screenshots = [
       {
-        url: 'https://jacobhsu.github.io/crypto-watch',
-        filename: 'crypto-watch-index.png',
-        description: '主頁面 (BB+KC+Supertrend)'
+        url: 'https://jacobhsu.github.io/crypto-watch/btc',
+        filename: 'btc.png',
+        description: 'BTC Technical Analysis'
       },
       {
-        url: 'https://jacobhsu.github.io/crypto-watch/ma',
-        filename: 'crypto-watch-latest.png',
-        description: 'MA分析頁面 (MA+Alligator)'
+        url: 'https://jacobhsu.github.io/crypto-watch/eth',
+        filename: 'eth.png',
+        description: 'ETH Technical Analysis'
       }
     ];
 
@@ -83,82 +83,155 @@ async function takeScreenshot() {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crypto Watch - 最新截圖</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 20px;
-            background-color: #131722;
-            color: white;
-            font-family: Arial, sans-serif;
-            text-align: center;
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bg: '#000000',
+                        card: '#000000',
+                        hover: '#2a2e39',
+                        active: '#2962ff'
+                    }
+                }
+            }
         }
-        .container {
-            max-width: 1920px;
-            margin: 0 auto;
+
+        async function copyToClipboard(text, btn) {
+            try {
+                await navigator.clipboard.writeText(text);
+                const icon = btn.querySelector('.material-icons-outlined');
+                const originalText = icon.innerText;
+                
+                icon.innerText = 'check_circle';
+                icon.classList.add('text-green-500');
+                
+                setTimeout(() => {
+                    icon.innerText = originalText;
+                    icon.classList.remove('text-green-500');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+            }
         }
-        .timestamp {
-            margin-bottom: 30px;
-            font-size: 18px;
-            color: #888;
+
+        function switchTab(tab) {
+            // Update Tab Styles
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                const isActive = btn.dataset.tab === tab;
+                if (isActive) {
+                    btn.classList.add('bg-[#2a2e39]', 'text-white', 'shadow-lg');
+                    btn.classList.remove('bg-[#1e222d]', 'text-gray-400', 'hover:bg-[#2a2e39]');
+                } else {
+                    btn.classList.add('bg-[#1e222d]', 'text-gray-400', 'hover:bg-[#2a2e39]');
+                    btn.classList.remove('bg-[#2a2e39]', 'text-white', 'shadow-lg');
+                }
+            });
+
+            // Show/Hide Content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                if (content.id === tab + '-content') {
+                    content.classList.remove('hidden');
+                    content.classList.add('flex');
+                } else {
+                    content.classList.add('hidden');
+                    content.classList.remove('flex');
+                }
+            });
         }
-        .screenshot-section {
-            margin-bottom: 40px;
-        }
-        .screenshot-title {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: #fff;
-        }
-        .screenshot-description {
-            font-size: 16px;
-            margin-bottom: 20px;
-            color: #aaa;
-        }
-        .screenshot {
-            width: 100%;
-            max-width: 1920px;
-            height: auto;
-            border: 1px solid #333;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-        .screenshot-url {
-            font-size: 14px;
-            color: #666;
-            font-family: monospace;
-            word-break: break-all;
-        }
-        .refresh-info {
-            margin-top: 30px;
-            font-size: 14px;
-            color: #666;
-        }
-    </style>
+    </script>
 </head>
-<body>
-    <div class="container">
-        <h1>Crypto Watch - 最新截圖</h1>
-        <div class="timestamp">
-            最後更新時間: ${now.toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })} (台北時間)<br>
-            UTC 時間: ${now.toISOString().replace('T', ' ').slice(0, 19)}
+<body class="bg-bg text-white h-screen flex flex-col p-4 font-sans overflow-hidden">
+    <div class="max-w-[1920px] mx-auto w-full flex flex-col h-full">
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-4 pb-2 shrink-0">
+            <h1 class="text-xl font-bold text-gray-100 flex items-center gap-2">
+                Crypto Watch 
+                <span class="px-2 py-0.5 rounded text-xs bg-card text-gray-400 font-normal">最新截圖</span>
+            </h1>
+            
+            <!-- Tabs -->
+            <div class="flex gap-3 mt-2 sm:mt-0 bg-[#0f1115] p-1 rounded-xl">
+                <button 
+                    class="tab-btn px-6 py-1.5 rounded-lg text-sm font-medium transition-all bg-blue-600 text-white shadow-lg flex items-center justify-center gap-2"
+                    data-tab="btc"
+                    onclick="switchTab('btc')"
+                >
+                    <img src="https://assets.coincap.io/assets/icons/btc@2x.png" alt="BTC" class="w-5 h-5 block translate-y-[0.5px]">
+                    <span class="font-bold">BTC</span>
+                </button>
+                <button 
+                    class="tab-btn px-6 py-1.5 rounded-lg text-sm font-medium transition-all bg-[#1e222d] text-gray-400 hover:bg-[#2a2e39] flex items-center justify-center gap-2 group"
+                    data-tab="eth"
+                    onclick="switchTab('eth')"
+                >
+                    <img src="https://assets.coincap.io/assets/icons/eth@2x.png" alt="ETH" class="w-5 h-5 grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 block transition-all translate-y-[0.5px]">
+                    <span class="font-bold">ETH</span>
+                </button>
+            </div>
+
+            <div class="text-xs text-gray-500 font-mono hidden sm:block">
+                更新: ${now.toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })} (台北時間)
+            </div>
         </div>
         
-        <div class="screenshot-section">
-            <div class="screenshot-title">主頁面 - 技術指標分析</div>
-            <div class="screenshot-description">Bollinger Bands + Keltner Channels + Supertrend</div>
-            <img src="crypto-watch-index.png" alt="Crypto Watch Index Page Screenshot" class="screenshot">
-            <div class="screenshot-url">固定 URL: https://jacobhsu.github.io/crypto-watch/screenshots/crypto-watch-index.png</div>
+        <!-- Main Content Area (Flex to take remaining height) -->
+        <div class="relative flex-1 bg-black rounded-lg overflow-hidden">
+            
+            <!-- BTC Content -->
+            <div id="btc-content" class="tab-content w-full h-full flex flex-col">
+                <!-- Toolbar -->
+                <div class="flex justify-between items-center bg-card p-2 px-4 shrink-0">
+                    <div class="font-semibold text-white flex items-center gap-2 text-sm">
+                        <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+                        BTC 分析頁面
+                    </div>
+                    <button 
+                        onclick="copyToClipboard('https://jacobhsu.github.io/crypto-watch/screenshots/btc.png', this)"
+                        class="flex items-center gap-2 bg-hover hover:bg-gray-700 px-3 py-1.5 rounded transition-all group"
+                        title="複製圖片連結"
+                    >
+                        <span class="text-xs text-gray-400 font-mono hidden md:inline group-hover:text-gray-200 transition-colors">https://jacobhsu.github.io/crypto-watch/screenshots/btc.png</span>
+                        <span class="material-icons-outlined text-sm text-gray-400 group-hover:text-white transition-colors">content_copy</span>
+                    </button>
+                </div>
+                <!-- Image Container -->
+                <div class="flex-1 overflow-auto p-2 flex items-center justify-center bg-black">
+                    <img src="btc.png" alt="BTC Screenshot" class="max-w-full max-h-full object-contain shadow-lg rounded">
+                </div>
+            </div>
+
+            <!-- ETH Content (Hidden by default) -->
+            <div id="eth-content" class="tab-content w-full h-full hidden flex-col">
+                <!-- Toolbar -->
+                <div class="flex justify-between items-center bg-card p-2 px-4 shrink-0">
+                    <div class="font-semibold text-white flex items-center gap-2 text-sm">
+                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                        ETH 分析頁面
+                    </div>
+                    <button 
+                        onclick="copyToClipboard('https://jacobhsu.github.io/crypto-watch/screenshots/eth.png', this)"
+                        class="flex items-center gap-2 bg-hover hover:bg-gray-700 px-3 py-1.5 rounded transition-all group"
+                        title="複製圖片連結"
+                    >
+                        <span class="text-xs text-gray-400 font-mono hidden md:inline group-hover:text-gray-200 transition-colors">https://jacobhsu.github.io/crypto-watch/screenshots/eth.png</span>
+                        <span class="material-icons-outlined text-sm text-gray-400 group-hover:text-white transition-colors">content_copy</span>
+                    </button>
+                </div>
+                <!-- Image Container -->
+                <div class="flex-1 overflow-auto p-2 flex items-center justify-center bg-black">
+                    <img src="eth.png" alt="ETH Screenshot" class="max-w-full max-h-full object-contain shadow-lg rounded">
+                </div>
+            </div>
+
         </div>
         
-        <div class="screenshot-section">
-            <div class="screenshot-title">MA 分析頁面</div>
-            <div class="screenshot-description">移動平均交叉 + 威廉鱷魚線</div>
-            <img src="crypto-watch-latest.png" alt="Crypto Watch MA Page Screenshot" class="screenshot">
-            <div class="screenshot-url">固定 URL: https://jacobhsu.github.io/crypto-watch/screenshots/crypto-watch-latest.png</div>
-        </div>
-        
-        <div class="refresh-info">
-            這些截圖每天自動更新兩次 (台灣時間 8:00 & 21:00)
+        <div class="text-center mt-2 text-xs text-gray-600 shrink-0">
+            自動更新排程: 每日 8:00 & 21:00 (GMT+8) • <span class="sm:hidden">更新: ${now.toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })} (台北時間)</span>
         </div>
     </div>
 </body>

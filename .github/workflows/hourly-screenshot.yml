@@ -35,7 +35,7 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add screenshots/crypto-watch-index.png screenshots/crypto-watch-latest.png screenshots/index.html
+        git add screenshots/btc.png screenshots/eth.png screenshots/index.html
         git commit -m "Update crypto watch screenshots $(date '+%Y-%m-%d %H:%M UTC')" || exit 0
         git push
       env:

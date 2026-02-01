@@ -63,15 +63,13 @@
 
 ### 功能說明
 - 每天兩次自動拍攝兩個頁面的截圖 (台灣時間 8:00 & 21:00)
-- **主頁面截圖**：`crypto-watch-index.png` (BB+KC+Supertrend 技術指標)
-- **MA分析頁面截圖**：`crypto-watch-latest.png` (MA+Alligator 技術指標)
-
+- **BTC頁面截圖**：`btc.png` (BTCUSDT Technical Analysis)
+- **ETH頁面截圖**：`eth.png` (ETHUSDT Technical Analysis)
 - 每次更新覆蓋舊檔案，提供穩定的固定 URL
 
 ### 訪問截圖
-- **主頁面截圖**: https://jacobhsu.github.io/crypto-watch/screenshots/crypto-watch-index.png
-- **MA分析截圖**: https://jacobhsu.github.io/crypto-watch/screenshots/crypto-watch-latest.png
-
+- **BTC分析截圖**: https://jacobhsu.github.io/crypto-watch/screenshots/btc.png
+- **ETH分析截圖**: https://jacobhsu.github.io/crypto-watch/screenshots/eth.png
 - **展示頁面**: https://jacobhsu.github.io/crypto-watch/screenshots/
 
 ### 設置方法
