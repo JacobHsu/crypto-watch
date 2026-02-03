@@ -82,7 +82,7 @@ const indicatorSets = {
   column4: [
     "STD;MA%Ribbon",
     "STD;PSAR",
-    "STD;Pivot%1Points%1High%1Low"
+    "STD;Linear_Regression",
   ]
 };
 

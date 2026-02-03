@@ -157,7 +157,7 @@ async function takeScreenshot() {
             <!-- Tabs -->
             <div class="flex gap-3 mt-2 sm:mt-0 bg-[#0f1115] p-1 rounded-xl">
                 <button 
-                    class="tab-btn px-6 py-1.5 rounded-lg text-sm font-medium transition-all bg-blue-600 text-white shadow-lg flex items-center justify-center gap-2"
+                    class="tab-btn px-6 py-1.5 rounded-lg text-sm font-medium transition-all bg-[#2a2e39] text-white shadow-lg flex items-center justify-center gap-2"
                     data-tab="btc"
                     onclick="switchTab('btc')"
                 >
