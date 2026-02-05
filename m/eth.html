@@ -4,19 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ETHUSDT Technical Analysis</title>
-    <link rel="icon" type="image/png" id="favicon" href="icons/eth.png" />
+    <link rel="icon" type="image/png" id="favicon" href="https://assets.coincap.io/assets/icons/eth@2x.png" />
     <link rel="stylesheet" href="../styles.css" />
-    <script>
-      // 動態載入 favicon - 優先使用 CoinCap CDN
-      (function() {
-        const symbol = 'eth';
-        const favicon = document.getElementById('favicon');
-        const img = new Image();
-        img.onload = () => { favicon.href = img.src; };
-        img.onerror = () => { /* 保持本地 fallback */ };
-        img.src = `https://assets.coincap.io/assets/icons/${symbol}@2x.png`;
-      })();
-    </script>
 
     <script>
       // 載入超時檢查和錯誤處理
