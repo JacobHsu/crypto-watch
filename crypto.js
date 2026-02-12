@@ -13,26 +13,6 @@ const baseChartConfig = {
   hide_side_toolbar: true,
   allow_symbol_change: false,
   container_id: "",
-
-  // 圖表樣式
-  overrides: {
-    "paneProperties.background": "#131722",
-    "paneProperties.backgroundType": "solid",
-    "paneProperties.vertGridProperties.color": "#363c4e",
-    "paneProperties.horzGridProperties.color": "#363c4e",
-    "symbolWatermarkProperties.transparency": 90,
-    "scalesProperties.textColor": "#d1d4dc",
-    "scalesProperties.backgroundColor": "#131722",
-    "mainSeriesProperties.candleStyle.upColor": "#089981",
-    "mainSeriesProperties.candleStyle.downColor": "#f23645",
-    "mainSeriesProperties.candleStyle.drawWick": true,
-    "mainSeriesProperties.candleStyle.drawBorder": true,
-    "mainSeriesProperties.candleStyle.borderColor": "#378658",
-    "mainSeriesProperties.candleStyle.borderUpColor": "#089981",
-    "mainSeriesProperties.candleStyle.borderDownColor": "#f23645",
-    "mainSeriesProperties.candleStyle.wickUpColor": "#089981",
-    "mainSeriesProperties.candleStyle.wickDownColor": "#f23645",
-  },
 };
 
 // 四組不同的技術指標配置
@@ -73,11 +53,8 @@ const indicatorSets = {
       }
     },
     {
-      "id": "MAExp@tv-basicstudies",
-      "inputs": {
-        "length": 100
-      }
-    }
+      "id": "STD;Donchian_Channels"
+    },
   ],
   column4: [
     "STD;MA%Ribbon",
@@ -108,26 +85,7 @@ const column3ChartConfig = {
   // 指標顏色覆蓋配置
   studies_overrides: {
     "moving average.ma.color.0": "#ff9800",
-  },
-
-  // 圖表樣式
-  overrides: {
-    "paneProperties.background": "#131722",
-    "paneProperties.backgroundType": "solid",
-    "paneProperties.vertGridProperties.color": "#363c4e",
-    "paneProperties.horzGridProperties.color": "#363c4e",
-    "symbolWatermarkProperties.transparency": 90,
-    "scalesProperties.textColor": "#d1d4dc",
-    "scalesProperties.backgroundColor": "#131722",
-    "mainSeriesProperties.candleStyle.upColor": "#089981",
-    "mainSeriesProperties.candleStyle.downColor": "#f23645",
-    "mainSeriesProperties.candleStyle.drawWick": true,
-    "mainSeriesProperties.candleStyle.drawBorder": true,
-    "mainSeriesProperties.candleStyle.borderColor": "#378658",
-    "mainSeriesProperties.candleStyle.borderUpColor": "#089981",
-    "mainSeriesProperties.candleStyle.borderDownColor": "#f23645",
-    "mainSeriesProperties.candleStyle.wickUpColor": "#089981",
-    "mainSeriesProperties.candleStyle.wickDownColor": "#f23645",
+    "moving average exponential.ma.color.0": "#00bcd4",
   },
 };
 
