@@ -1,11 +1,9 @@
-name: Daily Crypto Watch Screenshot
+name: Weekly Crypto Watch Screenshot
 
 on:
   schedule:
-    # 台灣時間上午 8:00 (UTC 0:00)
-    - cron: '0 0 * * *'
-    # 台灣時間晚上 21:00 (UTC 13:00)
-    - cron: '0 13 * * *'
+    # 台灣時間週一上午 8:00 (UTC 週一 0:00)
+    - cron: '0 0 * * 1'
   workflow_dispatch: # 允許手動觸發
 
 jobs:
@@ -13,24 +11,24 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-      
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        
+
     - name: Install dependencies
       run: |
         npm install puppeteer
-        
+
     - name: Take screenshot
       run: |
         node screenshot.js
-        
+
     - name: Commit and push screenshots
       run: |
         git config --local user.email "action@github.com"
