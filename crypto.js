@@ -60,6 +60,11 @@ const indicatorSets = {
     "STD;MA%Ribbon",
     "STD;PSAR",
     "STD;Linear_Regression",
+  ],
+  column4Monthly: [
+    "STD;MA%Ribbon",
+    "STD;PSAR",
+    "STD;Technical%1Ratings",
   ]
 };
 
@@ -198,7 +203,7 @@ function initializeCharts() {
     setTimeout(() => createChart(`tradingview_${prefix}_3M_col1`, cryptoSymbol, "3M", indicatorSets.column1, false), 900);
     setTimeout(() => createChart(`tradingview_${prefix}_3M_col2`, cryptoSymbol, "3M", indicatorSets.column2, false), 1000);
     setTimeout(() => createChart(`tradingview_${prefix}_3M_col3`, cryptoSymbol, "3M", indicatorSets.column3, true), 1100);
-    setTimeout(() => createChart(`tradingview_${prefix}_3M_col4`, cryptoSymbol, "3M", indicatorSets.column4, false), 1200);
+    setTimeout(() => createChart(`tradingview_${prefix}_3M_col4`, cryptoSymbol, "3M", indicatorSets.column4Monthly, false), 1200);
   } else {
     // 1小時圖表
     setTimeout(() => createChart(`tradingview_${prefix}_1h_col1`, cryptoSymbol, "60", indicatorSets.column1, false), 100);
