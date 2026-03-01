@@ -18,7 +18,7 @@ const indicatorSets = {
     { "id": "STD;Donchian_Channels" },
   ],
   column4: [
-    "STD;MA%Ribbon",
+    "STD;Chandelier_Exit",
     "STD;PSAR",
     "STD;Linear_Regression",
   ],

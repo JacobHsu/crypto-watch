@@ -10,7 +10,7 @@ const indicatorSets = {
     "STD;On_Balance_Volume",
   ],
   column3: [
-    "STD;Ichimoku%1Cloud",
+    "STD;MA%Ribbon",
     "STD;Divergence%1Indicator"
   ],
   column4: [
