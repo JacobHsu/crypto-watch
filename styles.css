@@ -22,10 +22,10 @@ html, body {
     background-color: #2a2e39;
 }
 
-/* WLD專用的3x4網格布局 */
+/* 3欄 × 3行網格布局 */
 .charts-grid-3x3 {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     height: 100vh;
     width: 100vw;
@@ -50,6 +50,22 @@ html, body {
 }
 
 .charts-grid-3x4 > div {
+    background-color: #131722;
+    position: relative;
+}
+
+/* 3x2網格布局 */
+.charts-grid-3x2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    height: 100vh;
+    width: 100vw;
+    gap: 1px;
+    background-color: #2a2e39;
+}
+
+.charts-grid-3x2 > div {
     background-color: #131722;
     position: relative;
 }

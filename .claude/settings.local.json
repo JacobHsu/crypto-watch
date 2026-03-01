@@ -3,7 +3,9 @@
     "allow": [
       "Read(//c/Users/user/Downloads/FireShot/**)",
       "WebFetch(domain:www.tradingview.com)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(ls:*)",
+      "Bash(__NEW_LINE_06aaec98c5ac4689__ echo:*)"
     ],
     "deny": [],
     "ask": []
