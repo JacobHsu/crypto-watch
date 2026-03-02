@@ -17,6 +17,11 @@ const baseChartConfig = {
 
 // 從頁面標題或 URL 自動檢測加密貨幣符號
 function detectCryptoSymbol() {
+  // rwa.html 透過 ?s= 參數注入設定
+  if (window.__RWA_CONFIG__) {
+    return window.__RWA_CONFIG__;
+  }
+
   const title = document.title;
   const url = window.location.pathname;
 
