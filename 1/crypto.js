@@ -20,6 +20,11 @@ const indicatorSets = {
     "BookerReversal@tv-basicstudies",
     "STD;Divergence%1Indicator"
   ],
+  column5: [
+    "MACD@tv-basicstudies",
+    "STD;PSAR",
+    "STD;ENV"
+  ],
 };
 
 // 初始化圖表：1h / 1d × 4欄
@@ -32,12 +37,14 @@ function initializeCharts() {
   setTimeout(() => createChart(`tradingview_${prefix}_1h_col2`, symbol, "60", indicatorSets.column2, false), 200);
   setTimeout(() => createChart(`tradingview_${prefix}_1h_col3`, symbol, "60", indicatorSets.column3, false), 300);
   setTimeout(() => createChart(`tradingview_${prefix}_1h_col4`, symbol, "60", indicatorSets.column4, false), 400);
+  setTimeout(() => createChart(`tradingview_${prefix}_1h_col5`, symbol, "60", indicatorSets.column5, false), 500);
 
   // 1天
-  setTimeout(() => createChart(`tradingview_${prefix}_1d_col1`, symbol, "1D", indicatorSets.column1, false), 500);
-  setTimeout(() => createChart(`tradingview_${prefix}_1d_col2`, symbol, "1D", indicatorSets.column2, false), 600);
-  setTimeout(() => createChart(`tradingview_${prefix}_1d_col3`, symbol, "1D", indicatorSets.column3, false), 700);
-  setTimeout(() => createChart(`tradingview_${prefix}_1d_col4`, symbol, "1D", indicatorSets.column4, false), 800);
+  setTimeout(() => createChart(`tradingview_${prefix}_1d_col1`, symbol, "1D", indicatorSets.column1, false), 600);
+  setTimeout(() => createChart(`tradingview_${prefix}_1d_col2`, symbol, "1D", indicatorSets.column2, false), 700);
+  setTimeout(() => createChart(`tradingview_${prefix}_1d_col3`, symbol, "1D", indicatorSets.column3, false), 800);
+  setTimeout(() => createChart(`tradingview_${prefix}_1d_col4`, symbol, "1D", indicatorSets.column4, false), 900);
+  setTimeout(() => createChart(`tradingview_${prefix}_1d_col5`, symbol, "1D", indicatorSets.column5, false), 1000);
 }
 
 // 啟動
