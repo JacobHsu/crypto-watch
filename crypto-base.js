@@ -100,11 +100,29 @@ window.addEventListener("resize", function () {
   }, 250);
 });
 
-// 鍵盤快捷鍵：Shift+M 開啟 TradingView Widgets 頁面
+// 鍵盤快捷鍵：Shift+W 開啟 TradingView Widgets 頁面
 window.addEventListener("keydown", function (e) {
-  if (e.shiftKey && (e.key === 'M' || e.key === 'm')) {
+  if (e.shiftKey && (e.key === 'W' || e.key === 'w')) {
     e.preventDefault();
     window.open('https://jacobhsu.github.io/tradingview-widgets/', '_blank');
     console.log('已開啟 TradingView Widgets 頁面');
+  }
+
+  // Shift+1 開啟 /1/ 對應檔案
+  if (e.shiftKey && e.key === '!') {
+    e.preventDefault();
+    const filename = window.location.pathname.split('/').pop();
+    const target = '1/' + filename;
+    window.open(target, '_blank');
+    console.log('已開啟 ' + target);
+  }
+
+  // m 開啟 /m/ 對應檔案
+  if (!e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey && e.key === 'm') {
+    e.preventDefault();
+    const filename = window.location.pathname.split('/').pop();
+    const target = 'm/' + filename;
+    window.open(target, '_blank');
+    console.log('已開啟 ' + target);
   }
 });
