@@ -2,21 +2,23 @@
 const indicatorSets = {
   column1: [
     "STD;Ichimoku%1Cloud",
+    "STD;Zig_Zag",
     "STD;Chaikin_Money_Flow"
   ],
   column2: [
-    "STD;PSAR",
     "STD;VWAP",
+    "STD;VWMA",
     "STD;On_Balance_Volume",
   ],
   column3: [
-    "STD;MA%Ribbon",
-    "STD;Divergence%1Indicator"
+    "STD;Volatility_Stop",
+    "STD;Supertrend",
+    "STD;Average_True_Range"
   ],
   column4: [
     "STD;MA%1Cross",
     "BookerReversal@tv-basicstudies",
-    "MACD@tv-basicstudies"
+    "STD;Divergence%1Indicator"
   ],
 };
 
