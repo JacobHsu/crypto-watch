@@ -117,8 +117,8 @@ window.addEventListener("keydown", function (e) {
     console.log('已開啟 ' + target);
   }
 
-  // m 開啟 /m/ 對應檔案
-  if (!e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey && e.key === 'm') {
+  // Shift+m 開啟 /m/ 對應檔案
+  if (e.shiftKey && (e.key === 'M' || e.key === 'm')) {
     e.preventDefault();
     const filename = window.location.pathname.split('/').pop();
     const target = 'm/' + filename;
