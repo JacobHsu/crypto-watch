@@ -6,7 +6,7 @@ const indicatorSets = {
     "STD;Chaikin_Money_Flow"
   ],
   column2: [
-    "STD;VWAP",
+    "STD;MA%Ribbon",
     "STD;VWMA",
     "STD;On_Balance_Volume",
   ],
