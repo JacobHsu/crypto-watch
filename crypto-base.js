@@ -117,7 +117,7 @@ window.addEventListener("keydown", function (e) {
   if (e.shiftKey && e.key === '!') {
     e.preventDefault();
     const filename = window.location.pathname.split('/').pop();
-    const target = '1/' + filename;
+    const target = '1/' + filename + window.location.search;
     window.open(target, '_blank');
     console.log('已開啟 ' + target);
   }
@@ -126,7 +126,7 @@ window.addEventListener("keydown", function (e) {
   if (e.shiftKey && (e.key === 'M' || e.key === 'm')) {
     e.preventDefault();
     const filename = window.location.pathname.split('/').pop();
-    const target = 'm/' + filename;
+    const target = 'm/' + filename + window.location.search;
     window.open(target, '_blank');
     console.log('已開啟 ' + target);
   }
