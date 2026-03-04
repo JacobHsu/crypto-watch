@@ -27,20 +27,34 @@ const indicatorSets = {
   ],
 };
 
-// 初始化圖表：1h / 1d × 4欄
+// column1 專用：顯示側邊工具列
+function createCol1Chart(containerId, symbol, interval) {
+  new TradingView.widget({
+    ...baseChartConfig,
+    hide_side_toolbar: false,
+    container_id: containerId,
+    symbol: symbol,
+    interval: interval,
+    timezone: "Asia/Taipei",
+    autosize: true,
+    studies: indicatorSets.column1,
+  });
+}
+
+// 初始化圖表：1h / 1d × 5欄
 function initializeCharts() {
   const { symbol, prefix } = detectCryptoSymbol();
   console.log(`TradingView 已載入，開始創建 ${symbol} 技術分析圖表...`);
 
   // 1小時
-  setTimeout(() => createChart(`tradingview_${prefix}_1h_col1`, symbol, "60", indicatorSets.column1, false), 100);
+  setTimeout(() => createCol1Chart(`tradingview_${prefix}_1h_col1`, symbol, "60"), 100);
   setTimeout(() => createChart(`tradingview_${prefix}_1h_col2`, symbol, "60", indicatorSets.column2, false), 200);
   setTimeout(() => createChart(`tradingview_${prefix}_1h_col3`, symbol, "60", indicatorSets.column3, false), 300);
   setTimeout(() => createChart(`tradingview_${prefix}_1h_col4`, symbol, "60", indicatorSets.column4, false), 400);
   setTimeout(() => createChart(`tradingview_${prefix}_1h_col5`, symbol, "60", indicatorSets.column5, false), 500);
 
   // 1天
-  setTimeout(() => createChart(`tradingview_${prefix}_1d_col1`, symbol, "1D", indicatorSets.column1, false), 600);
+  setTimeout(() => createCol1Chart(`tradingview_${prefix}_1d_col1`, symbol, "1D"), 600);
   setTimeout(() => createChart(`tradingview_${prefix}_1d_col2`, symbol, "1D", indicatorSets.column2, false), 700);
   setTimeout(() => createChart(`tradingview_${prefix}_1d_col3`, symbol, "1D", indicatorSets.column3, false), 800);
   setTimeout(() => createChart(`tradingview_${prefix}_1d_col4`, symbol, "1D", indicatorSets.column4, false), 900);

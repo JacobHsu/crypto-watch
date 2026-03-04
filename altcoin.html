@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SOLUSDT Technical Analysis</title>
+    <link rel="icon" type="image/png" id="favicon">
+    <link rel="stylesheet" href="styles.css" />
+    <script>
+      // 山寨幣符號對照表（Binance 現貨）
+      const ALTCOIN_SYMBOLS = {
+        'SOL':  { symbol: 'BINANCE:SOLUSDT',  prefix: 'solusdt'  },
+        'XRP':  { symbol: 'BINANCE:XRPUSDT',  prefix: 'xrpusdt'  },
+        'BNB':  { symbol: 'BINANCE:BNBUSDT',  prefix: 'bnbusdt'  },
+        'DOGE': { symbol: 'BINANCE:DOGEUSDT', prefix: 'dogeusdt' },
+        'ADA':  { symbol: 'BINANCE:ADAUSDT',  prefix: 'adausdt'  },
+        'SUI':  { symbol: 'BINANCE:SUIUSDT',  prefix: 'suiusdt'  },
+        'PEPE': { symbol: 'BINANCE:PEPEUSDT', prefix: 'pepeusdt' },
+      };
+
+      const params = new URLSearchParams(window.location.search);
+      const s = (params.get('s') || 'SOL').toUpperCase();
+      const altConfig = ALTCOIN_SYMBOLS[s] || {
+        symbol: 'BINANCE:' + s + 'USDT',
+        prefix: s.toLowerCase() + 'usdt',
+      };
+
+      document.title = s + 'USDT Technical Analysis';
+      window.__RWA_CONFIG__ = altConfig;
+
+      // favicon
+      (function() {
+        const favicon = document.getElementById('favicon');
+        const img = new Image();
+        img.onload = () => { favicon.href = img.src; };
+        img.onerror = () => { favicon.href = 'https://assets.coincap.io/assets/icons/usdt@2x.png'; };
+        img.src = `https://assets.coincap.io/assets/icons/${s.toLowerCase()}@2x.png`;
+      })();
+    </script>
+
+    <script>
+      let tvTimeout = setTimeout(() => {
+        if (typeof TradingView === "undefined") {
+          document.querySelectorAll('[id^="tradingview_"]').forEach((el) => {
+            el.innerHTML =
+              '<div class="fallback-content"><p>圖表暫時無法載入</p><button onclick="location.reload()">重新載入</button></div>';
+          });
+        }
+      }, 10000);
+
+      window.addEventListener("load", () => clearTimeout(tvTimeout));
+    </script>
+
+    <script
+      defer
+      src="https://s3.tradingview.com/tv.js"
+      onerror="document.querySelectorAll('[id^=tradingview_]').forEach(el => el.innerHTML='<div class=fallback-content><p>圖表載入失敗</p><button onclick=location.reload()>重新載入</button></div>')"
+    ></script>
+    <script defer src="crypto-base.js"></script>
+    <script defer src="crypto.js"></script>
+  </head>
+  <body>
+    <div class="charts-grid-3x4" id="charts-container"></div>
+
+    <script>
+      // 依 prefix 動態生成圖表容器
+      (function() {
+        const container = document.getElementById('charts-container');
+        const prefix = window.__RWA_CONFIG__.prefix;
+        ['1h', '4h', '1d'].forEach(function(tf) {
+          for (var col = 1; col <= 4; col++) {
+            var div = document.createElement('div');
+            div.id = 'tradingview_' + prefix + '_' + tf + '_col' + col;
+            div.innerHTML = '<div class="loading-placeholder"></div>';
+            container.appendChild(div);
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

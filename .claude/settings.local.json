@@ -5,7 +5,8 @@
       "WebFetch(domain:www.tradingview.com)",
       "WebSearch",
       "Bash(ls:*)",
-      "Bash(__NEW_LINE_06aaec98c5ac4689__ echo:*)"
+      "Bash(__NEW_LINE_06aaec98c5ac4689__ echo:*)",
+      "Bash(grep:*)"
     ],
     "deny": [],
     "ask": []
