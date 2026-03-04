@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>🚀 To The Moon Checklist</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+  <style>
+    :root {
+      --bg:     #131722;
+      --bg2:    #1c2030;
+      --border: #2a2e39;
+      --text:   #d1d4dc;
+      --dim:    #787b86;
+      --buy:    #26a69a;
+      --sell:   #ef5350;
+      --wait:   #9598a1;
+      --accent: #2196f3;
+      --font:   'Courier New', 'Lucida Console', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 12px;
+      line-height: 1.6;
+      padding: 10px;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    /* ── HEADER ─────────────────────── */
+    .hdr {
+      border: 1px solid var(--dim);
+      padding: 10px 12px 8px;
+      margin-bottom: 14px;
+    }
+    .hdr-title {
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      text-align: center;
+      padding-bottom: 6px;
+      margin-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hdr-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      font-size: 10px;
+      color: var(--dim);
+    }
+    .hdr-meta span {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1px;
+    }
+    .hdr-meta .lbl { color: var(--dim); font-size: 9px; display: block; }
+
+    .symbol-val {
+      cursor: pointer;
+      letter-spacing: 1px;
+      font-weight: bold;
+      color: var(--text);
+    }
+    .symbol-val:hover { color: var(--accent); }
+    .symbol-input {
+      background: none;
+      border: none;
+      border-bottom: 1px solid var(--accent);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      width: 80px;
+      outline: none;
+      padding: 0;
+    }
+
+    .tf-btns { display: flex; gap: 4px; flex-wrap: wrap; }
+    .tf-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--dim);
+      font-family: var(--font);
+      font-size: 10px;
+      padding: 1px 6px;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+    .tf-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── SECTION ────────────────────── */
+    .sec { margin-bottom: 18px; }
+    .sec-hdr {
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent);
+      padding-bottom: 2px;
+      margin-bottom: 8px;
+    }
+
+    /* ── COL GROUP ──────────────────── */
+    .cg { margin-bottom: 6px; }
+    .cg-name {
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: var(--dim);
+      padding-left: 2px;
+      margin-bottom: 1px;
+    }
+
+    /* ── ITEM ROW ───────────────────── */
+    .item { margin-bottom: 1px; }
+    .item-row {
+      display: flex;
+      align-items: baseline;
+      padding: 3px 2px;
+      cursor: pointer;
+      border-radius: 2px;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .item-row:hover  { background: var(--bg2); }
+    .item-row:active { background: #1a2540; }
+
+    .item-name {
+      font-size: 11px;
+      letter-spacing: 0.3px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .dots {
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      color: var(--border);
+      padding: 0 3px;
+      font-size: 11px;
+    }
+    .dots::before {
+      content: ' ··················································································';
+      letter-spacing: 1px;
+    }
+    .item-status {
+      flex-shrink: 0;
+      font-size: 10px;
+      font-weight: bold;
+      min-width: 58px;
+      text-align: right;
+      letter-spacing: 0.5px;
+      color: var(--dim);
+    }
+    .item-status.buy  { color: var(--buy); }
+    .item-status.sell { color: var(--sell); }
+    .item-status.wait { color: var(--wait); }
+
+    /* ── PANEL ──────────────────────── */
+    .panel {
+      display: none;
+      margin: 2px 0 8px 10px;
+      border-left: 2px solid var(--accent);
+      padding: 10px 10px 8px;
+      background: var(--bg2);
+      border-radius: 0 2px 2px 0;
+    }
+    .panel.open { display: block; }
+
+    .panel-q {
+      font-size: 11px;
+      color: var(--text);
+      margin-bottom: 8px;
+      font-style: italic;
+    }
+    .panel-hint {
+      font-size: 9px;
+      color: var(--dim);
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .panel-opts { display: flex; flex-direction: column; gap: 5px; }
+
+    .opt-btn {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 11px;
+      padding: 8px 10px;
+      text-align: left;
+      cursor: pointer;
+      border-radius: 2px;
+      line-height: 1.5;
+    }
+    .opt-btn:hover, .opt-btn:active { border-color: var(--accent); }
+    .opt-btn small {
+      display: block;
+      font-size: 9px;
+      color: var(--dim);
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    .result {
+      padding: 8px 10px;
+      border-radius: 2px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+    .result.buy  { background: rgba(38,166,154,.12);  border: 1px solid var(--buy);  color: var(--buy); }
+    .result.sell { background: rgba(239,83,80,.12);   border: 1px solid var(--sell); color: var(--sell); }
+    .result.wait { background: rgba(150,152,161,.08); border: 1px solid var(--wait); color: var(--wait); }
+
+    .redo-btn {
+      font-family: var(--font);
+      font-size: 9px;
+      color: var(--dim);
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-top: 5px;
+      text-decoration: underline;
+      padding: 0;
+    }
+
+    /* ── CHART COLORS ───────────────── */
+    .cg { color: #4caf50; }   /* green  - Lips  / Supertrend buy */
+    .cr { color: #e91e63; }   /* red    - Teeth / Supertrend sell */
+    .cb { color: #2196f3; }   /* blue   - Jaw   / SAR */
+    .co { color: #ff9800; }   /* orange - MA simple */
+    .cc { color: #00bcd4; }   /* cyan   - EMA */
+    .cw { color: #9c27b0; }   /* purple - special */
+
+    /* ── SCORES ─────────────────────── */
+    .sec-score {
+      font-size: 10px;
+      text-align: right;
+      color: var(--dim);
+      padding: 3px 2px;
+      border-top: 1px solid var(--border);
+      margin-top: 3px;
+    }
+    .sec-score .b { color: var(--buy); }
+    .sec-score .s { color: var(--sell); }
+
+    /* ── FINAL ──────────────────────── */
+    .final {
+      border: 1px solid var(--dim);
+      padding: 12px;
+      text-align: center;
+      margin-top: 16px;
+      margin-bottom: 20px;
+    }
+    .final-lbl { font-size: 10px; color: var(--dim); letter-spacing: 2px; margin-bottom: 6px; }
+    .final-val { font-size: 20px; font-weight: bold; letter-spacing: 4px; }
+    .final-val.buy  { color: var(--buy); }
+    .final-val.sell { color: var(--sell); }
+    .final-val.wait { color: var(--wait); }
+    .final-score { font-size: 10px; color: var(--dim); margin-top: 6px; }
+    .final-score .b { color: var(--buy); }
+    .final-score .s { color: var(--sell); }
+
+    /* ── SECTION HEADER ─────────────── */
+    .sec-hdr-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sec-hdr-desc {
+      font-size: 9px;
+      color: var(--dim);
+      letter-spacing: 0.5px;
+      margin-top: 3px;
+    }
+
+    /* ── RESET BTN ──────────────────── */
+    .reset-all {
+      font-family: var(--font);
+      font-size: 10px;
+      color: var(--dim);
+      background: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      padding: 3px 8px;
+      border-radius: 2px;
+    }
+
+    /* ── PRINT ──────────────────────── */
+    @media print {
+      body {
+        background: #fff;
+        color: #000;
+        font-size: 8pt;
+        max-width: none;
+        padding: 8mm;
+        line-height: 1.4;
+      }
+      :root {
+        --bg: #fff; --bg2: #f8f8f8; --border: #ddd;
+        --text: #000; --dim: #555;
+        --buy: #006b5e; --sell: #c0392b; --wait: #555;
+        --accent: #000;
+      }
+      .panel.open  { display: none !important; }
+      .item-row:hover { background: none; }
+      .reset-all   { display: none; }
+      .cg, .cr, .cb, .co, .cc { color: #000 !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-title">🚀 TO THE MOON CHECKLIST</div>
+  <div class="hdr-meta">
+    <div>
+      <span class="lbl">SYMBOL</span>
+      <span id="symbol-display" class="symbol-val" onclick="editSymbol()">BTC</span>
+    </div>
+    <div><span class="lbl">DATE</span><span id="hdr-date">&nbsp;</span></div>
+    <div>
+      <span class="lbl">TIMEFRAME</span>
+      <div class="tf-btns">
+        <button class="tf-btn active" onclick="setTF(this)">1H</button>
+        <button class="tf-btn" onclick="setTF(this)">4H</button>
+        <button class="tf-btn" onclick="setTF(this)">1D</button>
+        <button class="tf-btn" onclick="setTF(this)">1W</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTIONS injected by JS -->
+<div id="cl"></div>
+
+<!-- FINAL -->
+<div class="final">
+  <div class="final-lbl">━━ FINAL DECISION ━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+  <div class="final-val wait" id="final-val">◈ WAIT</div>
+  <div class="final-score" id="final-score">
+    <span class="b">▲ BUY: 0</span> &nbsp;·&nbsp; ─ WAIT: 0 &nbsp;·&nbsp; <span class="s">▼ SELL: 0</span>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// DECISION TREES  (l = label HTML, sub = sub HTML, r = result, n = next node)
+// ═══════════════════════════════════════════════
+const T = {
+
+  alligator: {
+    name: "WILLIAMS ALLIGATOR",
+    tree: { q: "三條線的狀態？",
+      opts: [
+        { l: "三條線糾纏在一起",
+          r: { s: "WAIT", t: "鱷魚睡覺 ─ 市場盤整，暫時觀望" } },
+        { l: "三條線分開展開",
+          n: { q: "價格與三條線的位置關係？",
+            opts: [
+              { l: "價格在三線<b>上方</b>",
+                sub: "由上到下：<span class='cg'>綠線</span>（唇）· <span class='cr'>紅線</span>（牙）· <span class='cb'>藍線</span>（顎）",
+                r: { s: "BUY",  t: "鱷魚張口向上 ─ 買入訊號" } },
+              { l: "價格在三線<b>下方</b>",
+                sub: "由上到下：<span class='cb'>藍線</span>（顎）· <span class='cr'>紅線</span>（牙）· <span class='cg'>綠線</span>（唇）",
+                r: { s: "SELL", t: "鱷魚張口向下 ─ 賣出訊號" } }
+            ] } }
+      ] }
+  },
+
+  fractals: {
+    name: "WILLIAMS FRACTALS",
+    tree: {
+      q: "圖表上有沒有新的小箭頭出現？",
+      hint: "碎形指標會在 K 線上下方出現小 △▽ 箭頭，標記近期高低點。",
+      opts: [
+        { l: "出現 <b>△ 向上箭頭</b>，且目前 K 線已向上穿過那根箭頭的位置",
+          r: { s: "BUY",  t: "突破上方碎形高點 ─ 多頭突破確認" } },
+        { l: "有箭頭但 K 線尚未突破，或看不出明顯訊號",
+          r: { s: "WAIT", t: "碎形存在但未突破 ─ 等待確認" } },
+        { l: "出現 <b>▽ 向下箭頭</b>，且目前 K 線已向下穿過那根箭頭的位置",
+          r: { s: "SELL", t: "跌破下方碎形低點 ─ 空頭跌破確認" } }
+      ] }
+  },
+
+  multi_time: {
+    name: "MULTI-TIME PERIOD",
+    tree: { q: "畫面上各時間框架的趨勢方向？",
+      hint: "指標會在 K 線旁顯示多個時間框架的趨勢標記。",
+      opts: [
+        { l: "大多數框架顯示向上（多頭）", r: { s: "BUY",  t: "多框架共振看漲 ─ 趨勢強勢" } },
+        { l: "方向混合，不一致",            r: { s: "WAIT", t: "趨勢分歧 ─ 等待確認" } },
+        { l: "大多數框架顯示向下（空頭）", r: { s: "SELL", t: "多框架共振看跌 ─ 趨勢弱勢" } }
+      ] }
+  },
+
+  bb: {
+    name: "BOLLINGER BANDS",
+    tree: { q: "目前 K 線在布林通道的位置？",
+      hint: "布林通道有上軌、中軌、下軌三條線，K 線在通道內移動。",
+      opts: [
+        { l: "K 線觸碰或突破<b>上軌</b>",
+          n: { q: "上下兩條線之間的距離（帶寬）？",
+            opts: [
+              { l: "通道明顯張開（帶寬擴大）", r: { s: "BUY",  t: "強勢突破上軌 ─ 動能看漲" } },
+              { l: "通道緊縮（帶寬很窄）",     r: { s: "WAIT", t: "帶寬收窄注意假突破 ─ 謹慎" } }
+            ] } },
+        { l: "K 線在中軌附近游走",
+          r: { s: "WAIT", t: "中軌整理 ─ 方向待定" } },
+        { l: "K 線觸碰或跌破<b>下軌</b>",
+          n: { q: "上下兩條線之間的距離（帶寬）？",
+            opts: [
+              { l: "通道明顯張開（帶寬擴大）", r: { s: "SELL", t: "強勢跌破下軌 ─ 動能看跌" } },
+              { l: "通道緊縮（帶寬很窄）",     r: { s: "WAIT", t: "帶寬收窄可能反彈 ─ 觀察" } }
+            ] } }
+      ] }
+  },
+
+  bb_kc_squeeze: {
+    name: "BB / KC SQUEEZE",
+    tree: { q: "BB（布林）兩條線是否收進 KC（肯特納）通道裡面？",
+      hint: "同時看兩個通道的寬窄：BB 比 KC 窄且在 KC 裡面 = 擠壓中（能量積聚）；BB 比 KC 寬且突出 KC 外 = 擠壓釋放（行情啟動）。",
+      opts: [
+        { l: "<b>BB 收在 KC 裡面</b>（BB 比 KC 窄）",
+          sub: "擠壓中 ─ 市場在蓄勢，尚未方向",
+          r: { s: "WAIT", t: "BB/KC 擠壓中 ─ 蓄勢待發，等待突破確認" } },
+        { l: "<b>BB 突出 KC 外側</b>（BB 比 KC 寬），K 線向<b>上</b>突破",
+          r: { s: "BUY",  t: "擠壓釋放向上 ─ 看漲突破啟動" } },
+        { l: "<b>BB 突出 KC 外側</b>（BB 比 KC 寬），K 線向<b>下</b>突破",
+          r: { s: "SELL", t: "擠壓釋放向下 ─ 看跌突破啟動" } }
+      ] }
+  },
+
+  keltner: {
+    name: "KELTNER CHANNEL",
+    tree: { q: "K 線在肯特納通道的位置？",
+      opts: [
+        { l: "突破<b>上軌</b>且站穩",  r: { s: "BUY",  t: "突破肯特納上軌 ─ 強勢上漲" } },
+        { l: "在通道<b>內部</b>游走",  r: { s: "WAIT", t: "通道內整理 ─ 無明確方向" } },
+        { l: "跌破<b>下軌</b>且站穩",  r: { s: "SELL", t: "跌破肯特納下軌 ─ 強勢下跌" } }
+      ] }
+  },
+
+  supertrend: {
+    name: "SUPERTREND",
+    tree: { q: "K 線（蠟燭）在超級趨勢線的哪一側？",
+      hint: "以 K 線位置為準，不要看線的顏色。線在K線下方=多頭，在上方=空頭。顏色是結果，位置才是訊號。",
+      opts: [
+        { l: "K 線在線的<b>上方</b>",
+          sub: "線在K線下方（不管線是<span class='cg'>綠</span>或<span class='cr'>紅</span>）",
+          r: { s: "BUY",  t: "K線在超級趨勢線上方 ─ 多頭訊號" } },
+        { l: "K 線在線的<b>下方</b>",
+          sub: "線在K線上方（不管線是<span class='cg'>綠</span>或<span class='cr'>紅</span>）",
+          r: { s: "SELL", t: "K線在超級趨勢線下方 ─ 空頭訊號" } }
+      ] }
+  },
+
+  ma: {
+    name: "MA 20 / 50",
+    tree: { q: "兩條移動平均線與 K 線的排列？",
+      hint: "MA20（橙色較敏感），MA50（較慢）。",
+      opts: [
+        { l: "K 線 &gt; <span class='co'>MA20</span> &gt; MA50",
+          sub: "多頭排列 ─ 由上到下 K線 · <span class='co'>橙線</span> · 白線",
+          r: { s: "BUY",  t: "均線多頭排列 ─ 上升趨勢確認" } },
+        { l: "兩條均線糾纏 / 交叉混亂",
+          r: { s: "WAIT", t: "均線整理 ─ 趨勢不明確" } },
+        { l: "MA50 &gt; <span class='co'>MA20</span> &gt; K 線",
+          sub: "空頭排列 ─ 由上到下 白線 · <span class='co'>橙線</span> · K線",
+          r: { s: "SELL", t: "均線空頭排列 ─ 下降趨勢確認" } }
+      ] }
+  },
+
+  ema: {
+    name: "EMA 20 / 50",
+    tree: { q: "兩條指數移動平均線與 K 線的排列？",
+      hint: "EMA20（青色較敏感），EMA50（較慢）。",
+      opts: [
+        { l: "K 線 &gt; <span class='cc'>EMA20</span> &gt; EMA50",
+          sub: "多頭排列 ─ K線在<span class='cc'>青線</span>上方",
+          r: { s: "BUY",  t: "EMA 多頭排列 ─ 上升趨勢確認" } },
+        { l: "EMA 糾纏 / 排列混亂",
+          r: { s: "WAIT", t: "EMA 整理 ─ 趨勢不明確" } },
+        { l: "EMA50 &gt; <span class='cc'>EMA20</span> &gt; K 線",
+          sub: "空頭排列 ─ K線在<span class='cc'>青線</span>下方",
+          r: { s: "SELL", t: "EMA 空頭排列 ─ 下降趨勢確認" } }
+      ] }
+  },
+
+  donchian: {
+    name: "DONCHIAN CHANNELS",
+    tree: { q: "K 線在唐奇安通道的位置？",
+      hint: "通道上軌 = 近期最高點，下軌 = 近期最低點。",
+      opts: [
+        { l: "K 線突破<b>上軌</b>（創近期新高）", r: { s: "BUY",  t: "突破唐奇安上軌 ─ 多頭突破確認" } },
+        { l: "K 線在通道<b>中間</b>區域",          r: { s: "WAIT", t: "通道中部整理 ─ 方向待定" } },
+        { l: "K 線跌破<b>下軌</b>（創近期新低）", r: { s: "SELL", t: "跌破唐奇安下軌 ─ 空頭跌破確認" } }
+      ] }
+  },
+
+  chandelier: {
+    name: "CHANDELIER EXIT",
+    tree: { q: "吊燈出場線的狀態？",
+      hint: "有兩條線：藍色 Long Exit（追蹤多頭）跟在K線下方；橙色 Short Exit（追蹤空頭）跟在K線上方。",
+      opts: [
+        { l: "<span class='cb'>藍色 Long Exit</span> 在 K 線<b>下方</b>（持續）",
+          r: { s: "BUY",  t: "Long Exit 支撐多頭 ─ 持多訊號" } },
+        { l: "K 線<b>剛跌破</b> <span class='cb'>藍色 Long Exit</span> 線",
+          r: { s: "SELL", t: "Long Exit 被跌破 ─ 多頭出場訊號" } },
+        { l: "<span class='co'>橙色 Short Exit</span> 在 K 線<b>上方</b>（持續）",
+          r: { s: "SELL", t: "Short Exit 壓制空頭 ─ 持空訊號" } },
+        { l: "K 線<b>剛突破</b> <span class='co'>橙色 Short Exit</span> 線",
+          r: { s: "BUY",  t: "Short Exit 被突破 ─ 空頭出場 / 買入訊號" } }
+      ] }
+  },
+
+  psar: {
+    name: "PARABOLIC SAR",
+    tree: { q: "SAR 小圓點的位置？",
+      hint: "SAR 是一排小點，跟著趨勢出現在 K 線上方或下方。",
+      opts: [
+        { l: "小點在 K 線<b>下方</b>（持續一段時間）",
+          r: { s: "BUY",  t: "SAR 支撐多頭 ─ 上升趨勢" } },
+        { l: "小點<b>剛翻到下方</b>（新訊號，剛出現）",
+          r: { s: "BUY",  t: "SAR 剛轉多 ─ 趨勢轉換入場" } },
+        { l: "小點在 K 線<b>上方</b>（持續一段時間）",
+          r: { s: "SELL", t: "SAR 壓制空頭 ─ 下降趨勢" } },
+        { l: "小點<b>剛翻到上方</b>（新訊號，剛出現）",
+          r: { s: "SELL", t: "SAR 剛轉空 ─ 出場訊號" } }
+      ] }
+  },
+
+  linear_reg: {
+    name: "LINEAR REGRESSION",
+    tree: { q: "迴歸線的方向與 K 線位置？",
+      hint: "線性迴歸是一條穿越 K 線中間的趨勢直線。",
+      opts: [
+        { l: "K 線在線的<b>上方</b>，線的斜率向<b>上</b>",
+          r: { s: "BUY",  t: "線性迴歸多頭 ─ 上升趨勢確認" } },
+        { l: "K 線在線<b>附近</b>，線幾乎<b>水平</b>",
+          r: { s: "WAIT", t: "迴歸線平緩 ─ 趨勢不明" } },
+        { l: "K 線在線的<b>下方</b>，線的斜率向<b>下</b>",
+          r: { s: "SELL", t: "線性迴歸空頭 ─ 下降趨勢確認" } }
+      ] }
+  },
+
+  ichimoku: {
+    name: "ICHIMOKU CLOUD",
+    tree: { q: "K 線相對雲層（色塊）的位置？",
+      hint: "一目均衡表的雲層是圖中的彩色色塊區域。",
+      opts: [
+        { l: "K 線在雲層<b>上方</b>",
+          n: { q: "雲層（右側未來雲）是什麼顏色？",
+            opts: [
+              { l: "<span class='cg'>綠色雲</span>（看漲雲）",
+                r: { s: "BUY",  t: "強勢多頭 ─ 雲上綠雲確認" } },
+              { l: "<span class='cr'>紅色雲</span>（看跌雲）",
+                r: { s: "WAIT", t: "多頭偏弱 ─ 謹慎持多" } }
+            ] } },
+        { l: "K 線在雲層<b>之內</b>",
+          r: { s: "WAIT", t: "雲中整理 ─ 方向不明" } },
+        { l: "K 線在雲層<b>下方</b>",
+          r: { s: "SELL", t: "空頭格局 ─ 雲下壓制" } }
+      ] }
+  },
+
+  zigzag: {
+    name: "ZIG ZAG",
+    tree: { q: "折線的高點和低點序列？",
+      hint: "Zig Zag 連接重要的高低點，形成 W 型或 M 型折線。",
+      opts: [
+        { l: "每個波段的高點比上個高，低點也比上個高",
+          sub: "高點遞升 + 低點遞升",
+          r: { s: "BUY",  t: "上升趨勢結構 ─ 多頭確認" } },
+        { l: "高低點無明顯規律",
+          r: { s: "WAIT", t: "結構不明 ─ 等待方向" } },
+        { l: "每個波段的高點比上個低，低點也比上個低",
+          sub: "高點遞降 + 低點遞降",
+          r: { s: "SELL", t: "下降趨勢結構 ─ 空頭確認" } }
+      ] }
+  },
+
+  cmf: {
+    name: "CHAIKIN MONEY FLOW",
+    tree: { q: "CMF 指標的數值在零軸哪一側？",
+      hint: "CMF 是零軸上下的柱狀圖，正值代表資金流入，負值代表流出。",
+      opts: [
+        { l: "數值在<b>零軸以上</b>（正值），且持續上升",
+          r: { s: "BUY",  t: "資金持續流入 ─ 多頭動能" } },
+        { l: "數值在零軸附近游走",
+          r: { s: "WAIT", t: "資金流向不明 ─ 觀望" } },
+        { l: "數值在<b>零軸以下</b>（負值），且持續下降",
+          r: { s: "SELL", t: "資金持續流出 ─ 空頭動能" } }
+      ] }
+  },
+
+  ma_ribbon: {
+    name: "MA RIBBON",
+    tree: { q: "多條均線帶的狀態？",
+      hint: "均線帶是一組不同週期的移動平均線疊在一起。",
+      opts: [
+        { l: "均線帶整體向<b>上</b>展開，像扇形張開",
+          r: { s: "BUY",  t: "均線帶多頭排列 ─ 趨勢強勢" } },
+        { l: "均線帶糾纏在一起，難以分辨方向",
+          r: { s: "WAIT", t: "均線帶整理 ─ 趨勢轉換中" } },
+        { l: "均線帶整體向<b>下</b>展開，像扇形向下張開",
+          r: { s: "SELL", t: "均線帶空頭排列 ─ 趨勢弱勢" } }
+      ] }
+  },
+
+  vwma: {
+    name: "VWMA",
+    tree: { q: "K 線與 VWMA 均線的關係？",
+      hint: "VWMA 是帶入成交量權重的移動平均線，比普通 MA 更可靠。",
+      opts: [
+        { l: "K 線在 VWMA 線<b>上方</b>，且均線向上",
+          r: { s: "BUY",  t: "量加權均線多頭 ─ 有量支撐" } },
+        { l: "K 線在 VWMA 線<b>附近</b>游走",
+          r: { s: "WAIT", t: "均線附近整理 ─ 方向不明" } },
+        { l: "K 線在 VWMA 線<b>下方</b>，且均線向下",
+          r: { s: "SELL", t: "量加權均線空頭 ─ 有量下壓" } }
+      ] }
+  },
+
+  obv: {
+    name: "ON BALANCE VOLUME",
+    tree: { q: "OBV 能量潮走勢與 K 線方向比較？",
+      hint: "OBV 是以成交量為基礎的趨勢線，方向應與價格一致。",
+      opts: [
+        { l: "OBV 線與 K 線都在<b>上升</b>",
+          r: { s: "BUY",  t: "量價齊揚 ─ 多頭確認" } },
+        { l: "OBV 線與 K 線方向<b>相反</b>（背離）",
+          r: { s: "WAIT", t: "量價背離 ─ 注意潛在反轉" } },
+        { l: "OBV 線與 K 線都在<b>下降</b>",
+          r: { s: "SELL", t: "量價齊跌 ─ 空頭確認" } }
+      ] }
+  },
+
+  vol_stop: {
+    name: "VOLATILITY STOP",
+    tree: { q: "波動停損線的顏色與位置？",
+      opts: [
+        { l: "<span class='cg'>綠色線</span>在 K 線<b>下方</b>",
+          r: { s: "BUY",  t: "波動停損多頭模式 ─ 買入" } },
+        { l: "<span class='cr'>紅色線</span>在 K 線<b>上方</b>",
+          r: { s: "SELL", t: "波動停損空頭模式 ─ 賣出" } }
+      ] }
+  },
+
+  atr: {
+    name: "AVG TRUE RANGE (ATR)",
+    tree: { q: "ATR 數值相對最近一段時間是高是低？",
+      hint: "ATR 代表波動幅度，數值高 = 波動大，數值低 = 波動小。",
+      opts: [
+        { l: "ATR 數值<b>上升</b>（波動擴大）",
+          n: { q: "波動擴大時，K 線方向？",
+            opts: [
+              { l: "K 線配合<b>上漲</b>", r: { s: "BUY",  t: "有力突破 ─ 波動支持上漲" } },
+              { l: "K 線配合<b>下跌</b>", r: { s: "SELL", t: "有力跌破 ─ 波動支持下跌" } }
+            ] } },
+        { l: "ATR 數值<b>下降</b>（波動收縮）",
+          r: { s: "WAIT", t: "波動收縮蓄勢 ─ 等待突破方向" } }
+      ] }
+  },
+
+  ma_cross: {
+    name: "MA CROSS",
+    tree: { q: "均線交叉狀態？",
+      hint: "MA Cross 會標記短線均線穿越長線均線的位置。",
+      opts: [
+        { l: "出現<b>金叉</b>（短均線從下往上穿越長均線）",
+          r: { s: "BUY",  t: "均線金叉 ─ 多頭轉換訊號" } },
+        { l: "均線平行走，<b>無交叉</b>",
+          r: { s: "WAIT", t: "無交叉 ─ 延續現有趨勢" } },
+        { l: "出現<b>死叉</b>（短均線從上往下穿越長均線）",
+          r: { s: "SELL", t: "均線死叉 ─ 空頭轉換訊號" } }
+      ] }
+  },
+
+  booker: {
+    name: "BOOKER REVERSAL",
+    tree: { q: "圖表上是否出現反轉標記？",
+      hint: "Booker Reversal 會在可能反轉的位置畫出彩色標記。",
+      opts: [
+        { l: "出現<span class='cg'>看漲</span>反轉標記",
+          r: { s: "BUY",  t: "看漲反轉型態 ─ 潛在買入機會" } },
+        { l: "無明顯標記出現",
+          r: { s: "WAIT", t: "無反轉訊號 ─ 趨勢延續" } },
+        { l: "出現<span class='cr'>看跌</span>反轉標記",
+          r: { s: "SELL", t: "看跌反轉型態 ─ 潛在賣出機會" } }
+      ] }
+  },
+
+  divergence: {
+    name: "DIVERGENCE INDICATOR",
+    tree: { q: "指標與 K 線是否出現背離？",
+      hint: "背離 = K 線創新高/低，但指標沒有同步創新高/低。",
+      opts: [
+        { l: "指標與 K 線<b>方向一致</b>，無背離",
+          r: { s: "WAIT", t: "無背離 ─ 繼承當前趨勢方向" } },
+        { l: "<span class='cg'>看漲背離</span>：K 線新低，指標未新低",
+          r: { s: "BUY",  t: "看漲背離 ─ 潛在底部反轉" } },
+        { l: "<span class='cr'>看跌背離</span>：K 線新高，指標未新高",
+          r: { s: "SELL", t: "看跌背離 ─ 潛在頂部反轉" } }
+      ] }
+  },
+
+  macd: {
+    name: "MACD",
+    tree: { q: "MACD 柱狀圖（Histogram）的狀態？",
+      hint: "柱狀圖在零軸上方為正（綠柱），下方為負（紅柱）。",
+      opts: [
+        { l: "<span class='cg'>正值柱</span>（零軸上方），且柱子持續<b>增高</b>",
+          r: { s: "BUY",  t: "MACD 多頭加速 ─ 買入動能強" } },
+        { l: "柱狀<b>縮小</b>或接近零軸",
+          r: { s: "WAIT", t: "MACD 動能減弱 ─ 趨勢轉換觀察" } },
+        { l: "<span class='cr'>負值柱</span>（零軸下方），且柱子持續<b>增高</b>",
+          r: { s: "SELL", t: "MACD 空頭加速 ─ 賣出動能強" } }
+      ] }
+  },
+
+  env: {
+    name: "ENVELOPE",
+    tree: { q: "K 線在包絡線的位置？",
+      hint: "包絡線 = 在均線上下方各平移一定百分比的通道。",
+      opts: [
+        { l: "K 線在<b>上方包絡線</b>附近",
+          n: { q: "趨勢動能如何？",
+            opts: [
+              { l: "趨勢強勁，K 線持續上升", r: { s: "BUY",  t: "包絡上軌強勢 ─ 多頭動能充足" } },
+              { l: "動能減弱，K 線開始橫盤", r: { s: "WAIT", t: "超買警示 ─ 謹慎追漲" } }
+            ] } },
+        { l: "K 線在<b>中線</b>附近游走",
+          r: { s: "WAIT", t: "包絡中線整理 ─ 方向不明" } },
+        { l: "K 線在<b>下方包絡線</b>附近或跌破",
+          r: { s: "SELL", t: "包絡下軌弱勢 ─ 空頭動能充足" } }
+      ] }
+  },
+
+  // ── COMBINATION CHECKS ────────────────────────────────────
+  alligator_fractal: {
+    name: "↳ ALLIGATOR × FRACTAL",
+    tree: { q: "鱷魚狀態 + 最近碎形訊號的組合？",
+      hint: "Bill Williams 原始設計：碎形只有在鱷魚張口的方向一致時才算有效訊號。鱷魚睡覺時出現的碎形請忽略。",
+      opts: [
+        { l: "鱷魚<b>張口向上</b>，且上方 △ 碎形剛被 K 線突破",
+          r: { s: "BUY",  t: "鱷魚確認碎形突破 ─ Bill Williams 強力買入訊號" } },
+        { l: "鱷魚<b>張口向下</b>，且下方 ▽ 碎形剛被 K 線跌破",
+          r: { s: "SELL", t: "鱷魚確認碎形跌破 ─ Bill Williams 強力賣出訊號" } },
+        { l: "鱷魚<b>睡覺</b>（三線糾纏），不管有沒有碎形",
+          r: { s: "WAIT", t: "鱷魚未醒，碎形訊號無效 ─ 等待趨勢確立再行動" } },
+        { l: "鱷魚方向與碎形訊號<b>相反</b>",
+          r: { s: "WAIT", t: "鱷魚與碎形矛盾 ─ 訊號不純，觀望" } }
+      ] }
+  },
+
+  ma_ema_agree: {
+    name: "↳ MA × EMA 共振",
+    tree: { q: "MA 和 EMA 兩組均線的方向是否一致？",
+      hint: "MA（橙色）反應較慢，EMA（青色）反應較快。兩者同向 = 趨勢共振，訊號更可靠。",
+      opts: [
+        { l: "MA 和 EMA <b>都是多頭排列</b>（K線在上，均線往上）",
+          r: { s: "BUY",  t: "MA × EMA 多頭共振 ─ 上升趨勢強力確認" } },
+        { l: "MA 和 EMA <b>方向不一致</b>（一個多頭一個空頭）",
+          r: { s: "WAIT", t: "MA × EMA 訊號分歧 ─ 趨勢轉換中，謹慎" } },
+        { l: "MA 和 EMA <b>都是空頭排列</b>（K線在下，均線往下）",
+          r: { s: "SELL", t: "MA × EMA 空頭共振 ─ 下降趨勢強力確認" } }
+      ] }
+  },
+
+  chandelier_psar: {
+    name: "↳ CHANDELIER × SAR",
+    tree: { q: "吊燈出場線和 SAR 點的方向是否一致？",
+      hint: "兩個指標都是追蹤趨勢的出場工具。方向相同時訊號更可靠，方向相反時要小心假訊號。",
+      opts: [
+        { l: "吊燈<span class='cg'>綠色</span>（下方）＋ SAR 點也在 K 線<b>下方</b>",
+          r: { s: "BUY",  t: "吊燈 × SAR 雙重多頭確認 ─ 持多訊號強" } },
+        { l: "吊燈和 SAR <b>方向不一致</b>（一個上一個下）",
+          r: { s: "WAIT", t: "吊燈 × SAR 訊號矛盾 ─ 謹慎，等待一致再行動" } },
+        { l: "吊燈<span class='cr'>紅色</span>（上方）＋ SAR 點也在 K 線<b>上方</b>",
+          r: { s: "SELL", t: "吊燈 × SAR 雙重空頭確認 ─ 持空訊號強" } }
+      ] }
+  },
+
+  macd_psar_agree: {
+    name: "↳ MACD × SAR 共振",
+    tree: { q: "MACD 柱狀圖方向和 SAR 點位置是否一致？",
+      hint: "MACD 看動能方向，SAR 看趨勢方向。兩者一致 = 動能與趨勢都對齊，進場勝率較高。",
+      opts: [
+        { l: "MACD 正值柱（向上）＋ SAR 點在 K 線<b>下方</b>",
+          r: { s: "BUY",  t: "MACD × SAR 多頭共振 ─ 動能趨勢雙確認" } },
+        { l: "MACD 與 SAR <b>方向不一致</b>",
+          r: { s: "WAIT", t: "MACD × SAR 訊號分歧 ─ 動能與趨勢方向矛盾" } },
+        { l: "MACD 負值柱（向下）＋ SAR 點在 K 線<b>上方</b>",
+          r: { s: "SELL", t: "MACD × SAR 空頭共振 ─ 動能趨勢雙確認" } }
+      ] }
+  },
+
+  tech_ratings: {
+    name: "TECHNICAL RATINGS",
+    tree: { q: "指標右下角顯示的評級文字？",
+      hint: "Technical Ratings 直接用文字顯示綜合技術分析評級。",
+      opts: [
+        { l: "顯示「<span class='cg'>強力買入</span>」或「<span class='cg'>買入</span>」",
+          r: { s: "BUY",  t: "技術指標綜合看漲 ─ 多頭訊號" } },
+        { l: "顯示「<span class='cw'>中性</span>」",
+          r: { s: "WAIT", t: "技術指標中性 ─ 無明確方向" } },
+        { l: "顯示「<span class='cr'>賣出</span>」或「<span class='cr'>強力賣出</span>」",
+          r: { s: "SELL", t: "技術指標綜合看跌 ─ 空頭訊號" } }
+      ] }
+  }
+};
+
+// ═══════════════════════════════════════════════
+// CHECKLIST STRUCTURE  (no timeframes — run once per TF)
+// ═══════════════════════════════════════════════
+const STRUCTURE = [
+  {
+    id: "pageI", label: "A", page: "PAGE I", desc: "Trend · Channel · MA · Exit",
+    cols: [
+      { name: "TREND",          items: ["alligator","fractals","multi_time","alligator_fractal"] },
+      { name: "CHANNEL",        items: ["bb","keltner","bb_kc_squeeze","supertrend"] },
+      { name: "MOVING AVERAGE", items: ["ma","ema","donchian","ma_ema_agree"] },
+      { name: "EXIT",           items: ["chandelier","psar","linear_reg","chandelier_psar"] }
+    ]
+  },
+  {
+    id: "pageII", label: "B", page: "PAGE II", desc: "Cloud · Volume · Signal · Momentum",
+    cols: [
+      { name: "CLOUD / STRUCTURE", items: ["ichimoku","zigzag","cmf"] },
+      { name: "TREND / VOLUME",    items: ["ma_ribbon","vwma","obv"] },
+      { name: "VOLATILITY",        items: ["vol_stop","supertrend","atr"] },
+      { name: "SIGNAL",            items: ["ma_cross","booker","divergence"] },
+      { name: "MOMENTUM",          items: ["macd","psar","env","macd_psar_agree"] }
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+const state = {};
+
+// ═══════════════════════════════════════════════
+// BUILD
+// ═══════════════════════════════════════════════
+function build() {
+  const root = document.getElementById('cl');
+  STRUCTURE.forEach(sec => {
+    const secDiv = document.createElement('div');
+    secDiv.className = 'sec';
+
+    const hdr = document.createElement('div');
+    hdr.className = 'sec-hdr';
+    hdr.innerHTML = `
+      <div class="sec-hdr-top">
+        <span>━━ ${sec.label} &nbsp;─&nbsp; ${sec.page}</span>
+        <button class="reset-all" onclick="resetSection('${sec.id}')">重置</button>
+      </div>
+      <div class="sec-hdr-desc">${sec.desc}</div>`;
+    secDiv.appendChild(hdr);
+
+    sec.cols.forEach(col => {
+      const cg = document.createElement('div');
+      cg.className = 'cg';
+      cg.innerHTML = `<div class="cg-name">${col.name}</div>`;
+      col.items.forEach(key => {
+        const def = T[key];
+        if (!def) return;
+        cg.appendChild(makeItem(`${sec.id}·${key}`, def));
+      });
+      secDiv.appendChild(cg);
+    });
+
+    const sc = document.createElement('div');
+    sc.className = 'sec-score';
+    sc.id = `sc·${sec.id}`;
+    sc.innerHTML = scoreHTML(0, 0, 0);
+    secDiv.appendChild(sc);
+
+    root.appendChild(secDiv);
+  });
+}
+
+function makeItem(id, def) {
+  const wrap = document.createElement('div');
+  wrap.className = 'item';
+  wrap.innerHTML = `
+    <div class="item-row" onclick="togglePanel('${id}')">
+      <span class="item-name">${def.name}</span>
+      <span class="dots"></span>
+      <span class="item-status" id="st·${id}">[ ]</span>
+    </div>
+    <div class="panel" id="p·${id}"></div>`;
+  return wrap;
+}
+
+// ═══════════════════════════════════════════════
+// PANEL
+// ═══════════════════════════════════════════════
+function togglePanel(id) {
+  const panel = document.getElementById(`p·${id}`);
+  if (panel.classList.contains('open')) { panel.classList.remove('open'); return; }
+  document.querySelectorAll('.panel.open').forEach(p => p.classList.remove('open'));
+
+  // find def
+  let def;
+  for (const sec of STRUCTURE) {
+    for (const col of sec.cols) {
+      if (col.items.some(k => `${sec.id}·${k}` === id)) {
+        const key = id.split('·')[1];
+        def = T[key]; break;
+      }
+    }
+    if (def) break;
+  }
+  if (!def) return;
+
+  panel.classList.add('open');
+  renderNode(panel, id, def.tree);
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function renderNode(panel, id, node) {
+  panel._node = node;
+  panel.innerHTML = `
+    <div class="panel-q">${node.q}</div>
+    ${node.hint ? `<div class="panel-hint">ℹ ${node.hint}</div>` : ''}
+    <div class="panel-opts">
+      ${node.opts.map((o, i) => `
+        <button class="opt-btn" onclick="pick('${id}',${i})">
+          ${o.l}${o.sub ? `<small>${o.sub}</small>` : ''}
+        </button>`).join('')}
+    </div>`;
+}
+
+function pick(id, i) {
+  const panel = document.getElementById(`p·${id}`);
+  const opt = panel._node.opts[i];
+  if (opt.r) showResult(panel, id, opt.r);
+  else if (opt.n) renderNode(panel, id, opt.n);
+}
+
+function showResult(panel, id, res) {
+  const cls  = res.s === 'BUY' ? 'buy' : res.s === 'SELL' ? 'sell' : 'wait';
+  const icon = res.s === 'BUY' ? '▲ BUY' : res.s === 'SELL' ? '▼ SELL' : '─ WAIT';
+  panel.innerHTML = `
+    <div class="result ${cls}">${icon} &nbsp;─&nbsp; ${res.t}</div>
+    <button class="redo-btn" onclick="resetItem('${id}')">重新判斷</button>`;
+
+  const st = document.getElementById(`st·${id}`);
+  st.className = `item-status ${cls}`;
+  st.textContent = icon;
+  state[id] = res.s;
+  updateScores();
+}
+
+function resetItem(id) {
+  const panel = document.getElementById(`p·${id}`);
+  panel.classList.remove('open');
+  const st = document.getElementById(`st·${id}`);
+  st.className = 'item-status';
+  st.textContent = '[ ]';
+  delete state[id];
+  updateScores();
+}
+
+function resetSection(secId) {
+  const sec = STRUCTURE.find(s => s.id === secId);
+  if (!sec) return;
+  sec.cols.forEach(col => col.items.forEach(key => resetItem(`${secId}·${key}`)));
+}
+
+// ═══════════════════════════════════════════════
+// SCORES
+// ═══════════════════════════════════════════════
+function scoreHTML(b, w, s) {
+  return `<span class="b">▲ BUY: ${b}</span> &nbsp;·&nbsp; ─ WAIT: ${w} &nbsp;·&nbsp; <span class="s">▼ SELL: ${s}</span>`;
+}
+
+function updateScores() {
+  let gb = 0, gw = 0, gs = 0;
+  STRUCTURE.forEach(sec => {
+    let b = 0, w = 0, s = 0;
+    sec.cols.forEach(col => col.items.forEach(key => {
+      const v = state[`${sec.id}·${key}`];
+      if      (v === 'BUY')  { b++; gb++; }
+      else if (v === 'SELL') { s++; gs++; }
+      else if (v === 'WAIT') { w++; gw++; }
+    }));
+    const el = document.getElementById(`sc·${sec.id}`);
+    if (el) el.innerHTML = scoreHTML(b, w, s);
+  });
+
+  const total = gb + gw + gs;
+  const fv = document.getElementById('final-val');
+  document.getElementById('final-score').innerHTML = scoreHTML(gb, gw, gs);
+
+  if (total === 0) { fv.className = 'final-val wait'; fv.textContent = '◈ WAIT'; return; }
+  const bPct = gb / total, sPct = gs / total;
+  if      (bPct >= 0.6) { fv.className = 'final-val buy';  fv.textContent = '▲ GO'; }
+  else if (sPct >= 0.6) { fv.className = 'final-val sell'; fv.textContent = '▼ NO-GO'; }
+  else                  { fv.className = 'final-val wait'; fv.textContent = '◈ WAIT'; }
+}
+
+function editSymbol() {
+  const el = document.getElementById('symbol-display');
+  const cur = el.textContent.trim();
+  el.outerHTML = `<input id="symbol-input" class="symbol-input" value="${cur}" maxlength="10"
+    onblur="saveSymbol(this)" onkeydown="if(event.key==='Enter')this.blur()">`;
+  const inp = document.getElementById('symbol-input');
+  inp.focus(); inp.select();
+}
+function saveSymbol(inp) {
+  const val = inp.value.trim().toUpperCase() || 'BTC';
+  inp.outerHTML = `<span id="symbol-display" class="symbol-val" onclick="editSymbol()">${val}</span>`;
+}
+
+function setTF(btn) {
+  document.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+build();
+
+const _d = new Date();
+document.getElementById('hdr-date').textContent =
+  `${_d.getFullYear()}-${String(_d.getMonth()+1).padStart(2,'0')}-${String(_d.getDate()).padStart(2,'0')}`;
+</script>
+</body>
+</html>
