@@ -4,7 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>🚀 To The Moon Checklist</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+  <link rel="icon" type="image/png" id="favicon" href="icons/btc.png">
+  <script>
+    (function() {
+      const favicon = document.getElementById('favicon');
+      const img = new Image();
+      img.onload = () => { favicon.href = img.src; };
+      img.src = 'https://assets.coincap.io/assets/icons/btc@2x.png';
+    })();
+  </script>
   <style>
     :root {
       --bg:     #131722;
@@ -294,6 +302,35 @@
       border-radius: 2px;
     }
 
+    /* ── QR CODE (floating, PC only) ── */
+    .qr-float {
+      position: fixed;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--bg2);
+      border: 1px solid var(--dim);
+      border-right: none;
+      padding: 10px 10px 8px;
+      text-align: center;
+      z-index: 999;
+    }
+    .qr-float-lbl {
+      font-size: 8px;
+      color: var(--dim);
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      white-space: nowrap;
+    }
+    .qr-float #qr-canvas canvas,
+    .qr-float #qr-canvas img {
+      display: block;
+      border: 3px solid #fff;
+    }
+    @media (max-width: 700px) {
+      .qr-float { display: none; }
+    }
+
     /* ── PRINT ──────────────────────── */
     @media print {
       body {
@@ -313,6 +350,7 @@
       .panel.open  { display: none !important; }
       .item-row:hover { background: none; }
       .reset-all   { display: none; }
+      .qr-float    { display: none; }
       .cg, .cr, .cb, .co, .cc { color: #000 !important; }
     }
   </style>
@@ -338,6 +376,12 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- QR CODE (floating right, PC only) -->
+<div class="qr-float">
+  <div class="qr-float-lbl">SCAN TO OPEN ON MOBILE</div>
+  <div id="qr-canvas"></div>
 </div>
 
 <!-- SECTIONS injected by JS -->
@@ -1031,6 +1075,24 @@ function setTF(btn) {
 }
 
 build();
+
+// QR Code
+(function() {
+  const url = window.location.href;
+  const script = document.createElement('script');
+  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+  script.onload = function() {
+    new QRCode(document.getElementById('qr-canvas'), {
+      text: url,
+      width: 120,
+      height: 120,
+      colorDark: '#000000',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  };
+  document.head.appendChild(script);
+})();
 
 const _d = new Date();
 document.getElementById('hdr-date').textContent =

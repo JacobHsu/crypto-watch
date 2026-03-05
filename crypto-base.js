@@ -130,4 +130,13 @@ window.addEventListener("keydown", function (e) {
     window.open(target, '_blank');
     console.log('已開啟 ' + target);
   }
+
+  // Shift+C 開啟 check.html
+  if (e.shiftKey && (e.key === 'C' || e.key === 'c')) {
+    e.preventDefault();
+    const base = window.location.href.replace(/\/[^/]*$/, '/');
+    const target = base + 'check.html';
+    window.open(target, '_blank');
+    console.log('已開啟 check.html');
+  }
 });
