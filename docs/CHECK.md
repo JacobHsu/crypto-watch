@@ -415,14 +415,14 @@ ATR 收縮（波動減少）  → ⬛ WAIT（蓄勢待發）
 
 ---
 
-#### BOOKER REVERSAL（布克反轉）
-> 在潛在反轉位置標記彩色訊號的型態識別指標。
+#### VWAP（量加權平均價）
+> Volume Weighted Average Price，以成交量為權重計算的平均成本線。每日重置，機構常以此為進出場基準，日內參考價值最高。
 
 **判斷邏輯：**
 ```
-出現看漲反轉標記（綠色）  → 🟢 BUY
-無明顯標記                → ⬛ WAIT
-出現看跌反轉標記（紅色）  → 🔴 SELL
+K 線在 VWAP 上方且持續站穩      → 🟢 BUY（多頭佔優，買方控制）
+K 線在 VWAP 附近反覆穿越        → ⬛ WAIT（多空均衡，方向不明）
+K 線在 VWAP 下方且持續站穩      → 🔴 SELL（空頭佔優，賣方控制）
 ```
 
 ---
@@ -531,7 +531,7 @@ MACD 負值柱 + SAR 點在上方  → 🔴 SELL（動能趨勢雙確認）
 | **ATR** · Average True Range | 平均真實波幅 | 波動性 | 衡量波動幅度，本身無方向；ATR 擴大 = 行情啟動 | B |
 | **BB** · Bollinger Bands | 布林帶 | 波動性 | 突破上軌+擴張 → BUY；跌破下軌+擴張 → SELL | A |
 | **BB/KC Squeeze** | 布林×肯特納擠壓 | 波動性（組合） | BB 收進 KC → 蓄勢；BB 突出 KC+方向 → 啟動 | A |
-| **Booker Reversal** · Rob Booker | 布克反轉 | 趨勢追蹤 | 看漲標記 → BUY；看跌標記 → SELL | B |
+| **VWAP** · Volume Weighted Average Price | 量加權平均價 | 成交量 | K線在 VWAP 上方站穩 → BUY；下方站穩 → SELL；穿越拉鋸 → WAIT | B |
 | **Chandelier Exit** | 吊燈停損 | 趨勢追蹤 | 藍色 Long Exit 在下 → BUY；橙色 Short Exit 在上 → SELL | A |
 | **CMF** · Chaikin Money Flow | 蔡金資金流量 | 成交量 | 正值上升 → BUY（資金流入）；負值下降 → SELL | B |
 | **Divergence Indicator** | 背離指標 | 振盪器 | 看漲背離 → BUY；看跌背離 → SELL；無背離 → WAIT | B |

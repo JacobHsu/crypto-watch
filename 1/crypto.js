@@ -17,7 +17,7 @@ const indicatorSets = {
   ],
   column4: [
     "STD;MA%1Cross",
-    "BookerReversal@tv-basicstudies",
+    "STD;VWAP",
     "STD;Divergence%1Indicator"
   ],
   column5: [

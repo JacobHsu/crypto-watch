@@ -739,17 +739,17 @@ const T = {
       ] }
   },
 
-  booker: {
-    name: "BOOKER REVERSAL",
-    tree: { q: "圖表上是否出現反轉標記？",
-      hint: "Booker Reversal 會在可能反轉的位置畫出彩色標記。",
+  vwap: {
+    name: "VWAP",
+    tree: { q: "K 線在 VWAP 線的哪一側？",
+      hint: "VWAP（量加權平均價）是當日成交量加權的平均成本線，機構投資人常以此為進出場基準。每日重置，日內參考價值最高。",
       opts: [
-        { l: "出現<span class='cg'>看漲</span>反轉標記",
-          r: { s: "BUY",  t: "看漲反轉型態 ─ 潛在買入機會" } },
-        { l: "無明顯標記出現",
-          r: { s: "WAIT", t: "無反轉訊號 ─ 趨勢延續" } },
-        { l: "出現<span class='cr'>看跌</span>反轉標記",
-          r: { s: "SELL", t: "看跌反轉型態 ─ 潛在賣出機會" } }
+        { l: "K 線在 VWAP 線<b>上方</b>，且持續站穩",
+          r: { s: "BUY",  t: "價格高於 VWAP ─ 多頭佔優，買方控制" } },
+        { l: "K 線在 VWAP 線<b>附近</b>反覆穿越",
+          r: { s: "WAIT", t: "VWAP 拉鋸 ─ 多空均衡，方向不明" } },
+        { l: "K 線在 VWAP 線<b>下方</b>，且持續站穩",
+          r: { s: "SELL", t: "價格低於 VWAP ─ 空頭佔優，賣方控制" } }
       ] }
   },
 
@@ -892,7 +892,7 @@ const STRUCTURE = [
       { name: "CLOUD / STRUCTURE", items: ["ichimoku","zigzag","cmf"] },
       { name: "TREND / VOLUME",    items: ["ma_ribbon","vwma","obv"] },
       { name: "VOLATILITY",        items: ["vol_stop","supertrend","atr"] },
-      { name: "SIGNAL",            items: ["ma_cross","booker","divergence"] },
+      { name: "SIGNAL",            items: ["ma_cross","vwap","divergence"] },
       { name: "MOMENTUM",          items: ["macd","psar","env","macd_psar_agree"] }
     ]
   }
