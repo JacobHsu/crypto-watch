@@ -139,4 +139,24 @@ window.addEventListener("keydown", function (e) {
     window.open(target, '_blank');
     console.log('已開啟 check.html');
   }
+
+  // Shift+T 開啟 Traders Union BTC 預測頁面（僅 BTC 頁面）
+  if (e.shiftKey && (e.key === 'T' || e.key === 't')) {
+    const { symbol } = detectCryptoSymbol();
+    if (symbol.includes('BTC')) {
+      e.preventDefault();
+      window.open('https://tradersunion.com/currencies/forecast/btc-usd/daily-and-weekly/', '_blank');
+      console.log('已開啟 Traders Union BTC 預測頁面');
+    }
+  }
+
+  // Shift+4 開啟 Kronos Demo 頁面（僅 BTC 頁面）
+  if (e.shiftKey && e.key === '$') {
+    const { symbol } = detectCryptoSymbol();
+    if (symbol.includes('BTC')) {
+      e.preventDefault();
+      window.open('https://shiyu-coder.github.io/Kronos-demo/', '_blank');
+      console.log('已開啟 Kronos Demo 頁面');
+    }
+  }
 });
