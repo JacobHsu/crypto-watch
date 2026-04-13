@@ -140,13 +140,17 @@ window.addEventListener("keydown", function (e) {
     console.log('已開啟 check.html');
   }
 
-  // Shift+T 開啟 Traders Union BTC 預測頁面（僅 BTC 頁面）
+  // Shift+T 開啟 Traders Union 預測頁面（BTC / ETH 頁面）
   if (e.shiftKey && (e.key === 'T' || e.key === 't')) {
     const { symbol } = detectCryptoSymbol();
     if (symbol.includes('BTC')) {
       e.preventDefault();
       window.open('https://tradersunion.com/currencies/forecast/btc-usd/daily-and-weekly/', '_blank');
       console.log('已開啟 Traders Union BTC 預測頁面');
+    } else if (symbol.includes('ETH')) {
+      e.preventDefault();
+      window.open('https://tradersunion.com/currencies/forecast/ethusd/daily-and-weekly/', '_blank');
+      console.log('已開啟 Traders Union ETH 預測頁面');
     }
   }
 

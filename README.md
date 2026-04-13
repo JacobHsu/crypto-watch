@@ -191,3 +191,14 @@ crypto-watch/
 3. **RWA 追蹤**: 監控白銀、石油、ETF 等實物資產代幣
 4. **報告生成**: 自動截圖功能便於生成每週報告
 5. **API 整合**: 固定截圖 URL 可嵌入其他應用
+
+
+## Star History
+
+<a href="https://www.star-history.com/?repos=JacobHsu%2Fcrypto-watch&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=JacobHsu/crypto-watch&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=JacobHsu/crypto-watch&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=JacobHsu/crypto-watch&type=date&legend=top-left" />
+ </picture>
+</a>
