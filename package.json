@@ -2,14 +2,12 @@
   "name": "crypto-watch-screenshot",
   "version": "1.0.0",
   "description": "Automated screenshot tool for crypto watch dashboard",
-  "main": "screenshot.js",
+  "main": "screenshot-api.js",
   "scripts": {
-    "screenshot": "node screenshot.js",
+    "screenshot": "node screenshot-api.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "puppeteer": "^21.11.0"
-  },
+  "dependencies": {},
   "keywords": [
     "crypto",
     "screenshot",

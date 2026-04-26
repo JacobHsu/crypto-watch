@@ -70,7 +70,7 @@
 - **前端**: HTML5, CSS3, JavaScript
 - **圖表**: TradingView Advanced Real-Time Chart
 - **數據源**: Binance 交易所 (主力幣種) / Pionex (RWA 資產)
-- **自動化**: GitHub Actions + Puppeteer
+- **自動化**: GitHub Actions + Microlink API
 - **樣式**: 現代化深色主題設計
 
 ## 四欄指標配置 (crypto.js)
@@ -121,9 +121,9 @@
 
 ### 本地測試
 ```bash
-npm install puppeteer
-node screenshot.js
+node screenshot-api.js
 ```
+> 零依賴，不需要 `npm install`，透過 [Microlink API](https://microlink.io) 截圖（免費 100 req/day）
 
 ## 監控幣種
 
@@ -160,7 +160,8 @@ crypto-watch/
 ├── script_ema.js           # EMA 頁面腳本
 ├── script_5min.js          # 5分鐘頁面腳本
 ├── styles.css              # 共用樣式
-├── screenshot.js           # 自動截圖腳本 (Puppeteer)
+├── screenshot-api.js       # 截圖腳本 (Microlink API，零依賴)
+├── screenshot.js           # 截圖腳本 (Puppeteer，備用)
 ├── package.json            # Node.js 依賴
 ├── 1/                      # Shift+1 子目錄 (1h/1d × 5欄)
 │   ├── altcoin.html        # 山寨幣 (?s=WLD|SOL|...)
@@ -187,7 +188,7 @@ crypto-watch/
 1. **交易監控**: 實時監控多個幣種的技術指標
 2. **趨勢分析**: 四欄指標組合全面分析市場趨勢
 3. **RWA 追蹤**: 監控白銀、石油、ETF 等實物資產代幣
-4. **報告生成**: 手動執行 `node screenshot.js` 生成截圖報告
+4. **報告生成**: 執行 `node screenshot-api.js` 生成截圖報告（或每週一自動執行）
 5. **API 整合**: 固定截圖 URL 可嵌入其他應用
 
 
