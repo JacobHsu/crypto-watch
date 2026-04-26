@@ -172,8 +172,6 @@ crypto-watch/
 │   ├── rwa.html / sol.html / xrp.html
 │   ├── btc.html / eth.html
 │   └── crypto.js           # m/ 專用長週期指標配置
-├── .github/workflows/
-│   └── weekly-screenshot.yml  # 每週截圖 GitHub Actions
 └── screenshots/            # 截圖輸出目錄
 ```
 
@@ -189,7 +187,7 @@ crypto-watch/
 1. **交易監控**: 實時監控多個幣種的技術指標
 2. **趨勢分析**: 四欄指標組合全面分析市場趨勢
 3. **RWA 追蹤**: 監控白銀、石油、ETF 等實物資產代幣
-4. **報告生成**: 自動截圖功能便於生成每週報告
+4. **報告生成**: 手動執行 `node screenshot.js` 生成截圖報告
 5. **API 整合**: 固定截圖 URL 可嵌入其他應用
 
 
