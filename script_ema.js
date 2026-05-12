@@ -67,7 +67,7 @@ function createChart(containerId, symbol, interval) {
 
   try {
     new TradingView.widget(config);
-    console.log(`圖表已創建: ${symbol} - ${interval}`);
+    // console.log(`圖表已創建: ${symbol} - ${interval}`);
   } catch (error) {
     console.error(`創建圖表失敗 ${symbol}:`, error);
     const container = document.getElementById(containerId);

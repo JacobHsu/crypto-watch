@@ -70,7 +70,7 @@ function createChart(containerId, symbol, interval, indicatorSet, isColumn3 = fa
 
   try {
     new TradingView.widget(config);
-    console.log(`圖表已創建: ${symbol} - ${interval} - ${containerId}`);
+    // console.log(`圖表已創建: ${symbol} - ${interval} - ${containerId}`);
   } catch (error) {
     console.error(`創建圖表失敗 ${symbol}:`, error);
     const container = document.getElementById(containerId);

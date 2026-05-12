@@ -1,3 +1,30 @@
+const BASE_URL = 'https://jacobhsu.github.io/crypto-watch';
+
+const SUPPORTED_LINKS = [
+  { name: 'BTC',     url: `${BASE_URL}/btc` },
+  { name: 'ETH',     url: `${BASE_URL}/eth` },
+  { name: 'SOL',     url: `${BASE_URL}/sol` },
+  { name: 'XRP',     url: `${BASE_URL}/xrp` },
+  { name: 'XAUT',    url: `${BASE_URL}/rwa?s=XAUT` },
+  { name: 'SLVX',    url: `${BASE_URL}/rwa?s=SLVX` },
+  { name: 'USOX',    url: `${BASE_URL}/rwa?s=USOX` },
+  { name: 'EWJX',    url: `${BASE_URL}/rwa?s=EWJX` },
+  { name: 'EWYX',    url: `${BASE_URL}/rwa?s=EWYX` },
+  { name: 'Altcoin', url: `${BASE_URL}/altcoin?s=WLD` },
+  { name: 'MA',      url: `${BASE_URL}/ma` },
+  { name: 'EMA',     url: `${BASE_URL}/ema` },
+];
+
+console.log('🔗 Crypto Watch supported links:');
+SUPPORTED_LINKS.forEach(({ name, url }) => console.log(`  ${name}: ${url}`));
+
+const SHORTCUTS = [
+  { key: 'Shift+1', page: '1/altcoin.html?s=X', timeframe: '1h / 1d',       columns: '5欄' },
+  { key: 'Shift+M', page: 'm/altcoin.html?s=X', timeframe: '1w / 1M / 3M',  columns: '4欄' },
+  { key: 'Shift+W', page: 'TradingView Widgets', timeframe: '—',             columns: '—'   },
+];
+console.table(SHORTCUTS);
+
 // TradingView 圖表配置
 const chartConfig = {
   width: "100%",
