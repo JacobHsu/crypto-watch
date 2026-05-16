@@ -41,12 +41,17 @@
 
 #### 鍵盤快捷鍵（在任意幣種頁面按下）
 
+> 所有快捷鍵均以新分頁開啟，不離開當前頁面。
+
 | 快捷鍵 | 動作 | 時間框架 | 欄數 |
 |--------|------|---------|------|
 | 無 | `altcoin.html?s=X` | 1h / 4h / 1d | 4欄 |
 | Shift+1 | `1/altcoin.html?s=X` | 1h / 1d | 5欄 |
 | Shift+M | `m/altcoin.html?s=X` | 1w / 1M / 3M | 4欄 |
 | Shift+W | 開啟 TradingView Widgets 頁面 | — | — |
+| Shift+C | 開啟 `check.html` 交易決策 Checklist（幣種分頁限定）| — | — |
+| Shift+T | 開啟 Traders Union 價格預測（BTC / ETH 頁面限定）| — | — |
+| Shift+4 | 開啟 Kronos Demo 頁面（BTC 頁面限定）| — | — |
 
 ### RWA 資產分析頁面 (`rwa.html`)
 - **說明**: 實物資產代幣 (RWA)，透過 `?s=` 參數切換幣種
@@ -63,6 +68,11 @@
 - **技術指標**: SMA20/50 + EMA20/50 + Donchian Channels
 - **適用場景**: 移動平均線分析
 - **訪問**: https://jacobhsu.github.io/crypto-watch/ema
+
+### 交易決策 Checklist (`check.html`)
+- **說明**: 買賣前的逐項檢查表，幫助確認進出場條件
+- **開啟方式**: 在幣種分頁（btc / eth / sol / xrp / altcoin / rwa）按 **Shift+C**，首頁無效
+- **訪問**: https://jacobhsu.github.io/crypto-watch/check
 
 
 ## 技術架構
