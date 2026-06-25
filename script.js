@@ -71,7 +71,7 @@ function createChart(containerId, symbol, interval) {
   const config = {
     ...chartConfig,
     container_id: containerId,
-    symbol: `BINANCE:${symbol}`,
+    symbol: symbol.includes(':') ? symbol : `BINANCE:${symbol}`,
     interval: interval,
     timezone: "Asia/Taipei",
     autosize: true,
@@ -117,20 +117,20 @@ function initializeCharts() {
   // 15分鐘圖表
   setTimeout(() => createChart("tradingview_btc_15m", "BTCUSDT", "15"), 100);
   setTimeout(() => createChart("tradingview_eth_15m", "ETHUSDT", "15"), 200);
-  setTimeout(() => createChart("tradingview_xrp_15m", "XRPUSDT", "15"), 300);
-  setTimeout(() => createChart("tradingview_sol_15m", "SOLUSDT", "15"), 400);
+  setTimeout(() => createChart("tradingview_xaut_15m", "PIONEX:XAUTUSDT.P", "15"), 300);
+  setTimeout(() => createChart("tradingview_usox_15m", "PIONEX:USOXUSDT.P", "15"), 400);
 
   // 1小時圖表
   setTimeout(() => createChart("tradingview_btc_1h", "BTCUSDT", "60"), 500);
   setTimeout(() => createChart("tradingview_eth_1h", "ETHUSDT", "60"), 600);
-  setTimeout(() => createChart("tradingview_xrp_1h", "XRPUSDT", "60"), 700);
-  setTimeout(() => createChart("tradingview_sol_1h", "SOLUSDT", "60"), 800);
+  setTimeout(() => createChart("tradingview_xaut_1h", "PIONEX:XAUTUSDT.P", "60"), 700);
+  setTimeout(() => createChart("tradingview_usox_1h", "PIONEX:USOXUSDT.P", "60"), 800);
 
   // 4小時圖表
   setTimeout(() => createChart("tradingview_btc_4h", "BTCUSDT", "240"), 900);
   setTimeout(() => createChart("tradingview_eth_4h", "ETHUSDT", "240"), 1000);
-  setTimeout(() => createChart("tradingview_xrp_4h", "XRPUSDT", "240"), 1100);
-  setTimeout(() => createChart("tradingview_sol_4h", "SOLUSDT", "240"), 1200);
+  setTimeout(() => createChart("tradingview_xaut_4h", "PIONEX:XAUTUSDT.P", "240"), 1100);
+  setTimeout(() => createChart("tradingview_usox_4h", "PIONEX:USOXUSDT.P", "240"), 1200);
 }
 
 // 錯誤處理
