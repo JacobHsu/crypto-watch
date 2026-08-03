@@ -91,6 +91,77 @@ html, body {
     position: relative;
 }
 
+/* o/ 專用：四組等寬圖表 + 最右側說明欄 4小時級別 */
+.charts-grid-4x4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) 340px;
+    grid-template-rows: 1fr;
+    height: 100vh;
+    width: 100vw;
+    gap: 1px;
+    background-color: #2a2e39;
+}
+
+.charts-grid-4x4 > .cell {
+    background-color: #131722;
+    position: relative;
+    overflow: hidden;
+}
+
+.charts-grid-4x4 .chart {
+    position: absolute;
+    inset: 0;
+}
+
+/* 最右側指標說明欄 */
+.info-panel {
+    background-color: #131722;
+    color: #d1d4dc;
+    overflow: hidden;
+    padding: 10px 13px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.info-panel h2 {
+    font-size: 13px;
+    color: #f0b90b;
+    margin: 10px 0 5px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #2a2e39;
+}
+
+.info-panel h2:first-child {
+    margin-top: 0;
+}
+
+.info-panel dl {
+    margin: 0;
+}
+
+.info-panel dt {
+    color: #4fc3f7;
+    font-weight: 600;
+    margin-top: 6px;
+}
+
+.info-panel dd {
+    margin: 1px 0 0;
+    color: #b2b5be;
+}
+
+.info-panel .tag {
+    display: inline-block;
+    font-size: 10px;
+    color: #787b86;
+    border: 1px solid #2a2e39;
+    border-radius: 3px;
+    padding: 0 4px;
+    margin-left: 4px;
+    vertical-align: middle;
+}
+
+/* 組別主題標籤（僅顯示於各組主圖右上角） */
 /* 載入狀態 */
 .loading {
     position: absolute;

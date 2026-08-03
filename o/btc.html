@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BTCUSDT Technical Analysis</title>
+    <link rel="icon" type="image/png" id="favicon" href="https://assets.coincap.io/assets/icons/btc@2x.png">
+    <link rel="stylesheet" href="../styles.css" />
+
+    <script>
+      // 載入超時檢查和錯誤處理
+      let tvTimeout = setTimeout(() => {
+        if (typeof TradingView === "undefined") {
+          document.querySelectorAll('[id^="tradingview_"]').forEach((el) => {
+            el.innerHTML =
+              '<div class="fallback-content"><p>圖表暫時無法載入</p><button onclick="location.reload()">重新載入</button></div>';
+          });
+        }
+      }, 10000);
+
+      window.addEventListener("load", () => clearTimeout(tvTimeout));
+    </script>
+
+    <!-- 使用 defer 載入腳本，加上錯誤處理 -->
+    <script
+      defer
+      src="https://s3.tradingview.com/tv.js"
+      onerror="document.querySelectorAll('[id^=tradingview_]').forEach(el => el.innerHTML='<div class=fallback-content><p>圖表載入失敗</p><button onclick=location.reload()>重新載入</button></div>')"
+    ></script>
+    <script defer src="../crypto-base.js"></script>
+    <script defer src="crypto.js"></script>
+  </head>
+  <body>
+    <!-- 四組並排，每組一張圖：主圖在最上（走勢圖 + 主圖指標），下方三個指標副圖窗格 -->
+    <div class="charts-grid-4x4">
+      <!-- 第一組 趨勢面：SuperTrend + MACD / Directional Movement / Aroon -->
+      <div class="cell">
+        <div class="chart" id="tradingview_btcusdt_group1"></div>
+      </div>
+
+      <!-- 第二組 動能面：EMA 20 + RSI / Stochastic RSI / Rate of Change -->
+      <div class="cell">
+        <div class="chart" id="tradingview_btcusdt_group2"></div>
+      </div>
+
+      <!-- 第三組 波動面：Bollinger Bands + ATR / Choppiness Index / Historical Volatility -->
+      <div class="cell">
+        <div class="chart" id="tradingview_btcusdt_group3"></div>
+      </div>
+
+      <!-- 第四組 量價面：VWMA 20 + On Balance Volume / Money Flow Index / Chaikin Money Flow -->
+      <div class="cell">
+        <div class="chart" id="tradingview_btcusdt_group4"></div>
+      </div>
+
+      <!-- 最右側：指標判讀說明欄（四組圖表維持等寬） -->
+      <aside class="info-panel">
+        <h2>第一組 · 趨勢面</h2>
+        <dl>
+          <dt>SuperTrend<span class="tag">主圖</span></dt>
+          <dd>翻到 K 線下方轉多、翻到上方轉空；可當順勢移動停損。</dd>
+          <dt>MACD<span class="tag">副圖</span></dt>
+          <dd>DIF 上穿 DEA＝黃金交叉(多)、下穿＝死亡交叉(空)；柱狀由負轉正動能轉多；頂背離轉弱。</dd>
+          <dt>DMI / ADX<span class="tag">副圖</span></dt>
+          <dd>+DI 高於 −DI＝多方佔優；ADX &gt; 25 趨勢強、&lt; 20 視為盤整。</dd>
+          <dt>Aroon<span class="tag">副圖</span></dt>
+          <dd>Up 接近 100 且高於 Down＝上升趨勢；兩線交叉＝趨勢轉換。</dd>
+        </dl>
+
+        <h2>第二組 · 動能面</h2>
+        <dl>
+          <dt>EMA 20<span class="tag">主圖</span></dt>
+          <dd>站上且均線上揚＝短多、跌破且下彎＝短空；可作動態支撐/壓力。</dd>
+          <dt>RSI<span class="tag">副圖</span></dt>
+          <dd>&gt; 70 超買、&lt; 30 超賣、50 為多空分界；價創高而 RSI 未同步＝頂背離。</dd>
+          <dt>Stochastic RSI<span class="tag">副圖</span></dt>
+          <dd>比 RSI 更敏感；低檔 %K 上穿 %D＝買進、高檔死叉＝賣出。</dd>
+          <dt>ROC 變動率<span class="tag">副圖</span></dt>
+          <dd>&gt; 0 偏多、&lt; 0 偏空；穿越零軸＝動能轉向；背離提示動能衰竭。</dd>
+        </dl>
+
+        <h2>第三組 · 波動面</h2>
+        <dl>
+          <dt>Bollinger Bands<span class="tag">主圖</span></dt>
+          <dd>帶寬收縮＝醞釀變盤、開口放大＝趨勢啟動；貼上軌偏強、下軌偏弱。</dd>
+          <dt>ATR<span class="tag">副圖</span></dt>
+          <dd>數值越大波動越大；常用來設停損(1.5～2 倍)；放大代表行情加速。</dd>
+          <dt>Choppiness Index<span class="tag">副圖</span></dt>
+          <dd>&gt; 61.8 盤整（別追勢）、&lt; 38.2 趨勢明顯（順勢操作）。</dd>
+          <dt>Historical Volatility<span class="tag">副圖</span></dt>
+          <dd>歷史波動率；低檔常先於大行情、高檔多見於行情末段。</dd>
+        </dl>
+
+        <h2>第四組 · 量價面</h2>
+        <dl>
+          <dt>VWMA 20<span class="tag">主圖</span></dt>
+          <dd>成交量加權均線；K 線在其上且上揚＝帶量走多，比一般 MA 更真實。</dd>
+          <dt>OBV 能量潮<span class="tag">副圖</span></dt>
+          <dd>與價格同步創高＝量價齊揚；價漲而 OBV 走平/下彎＝背離警訊。</dd>
+          <dt>MFI 資金流量<span class="tag">副圖</span></dt>
+          <dd>量加權的 RSI；&gt; 80 超買、&lt; 20 超賣；與價背離示資金轉弱。</dd>
+          <dt>CMF 蔡金資金流<span class="tag">副圖</span></dt>
+          <dd>&gt; 0 資金流入(買方主導)、&lt; 0 流出；零軸上方支撐多頭。</dd>
+        </dl>
+      </aside>
+    </div>
+
+    <script>
+      // 顯示載入狀態
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll('[id^="tradingview_"]').forEach((el) => {
+          el.innerHTML = '<div class="loading-placeholder"></div>';
+        });
+      });
+    </script>
+  </body>
+</html>
