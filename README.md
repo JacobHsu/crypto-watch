@@ -6,7 +6,7 @@
 
 - **實時圖表**: 使用 TradingView 的專業圖表技術
 - **多頁面設計**: 主頁面 + 各幣種深度分析 + 特殊分析模式
-- **多幣種監控**: BTC, ETH, XRP, SOL + RWA 資產 (SLVX, USOX, EWJX, EWYX)
+- **多幣種監控**: BTC, ETH, XRP, SOL + RWA 資產 (SLVX 白銀, USOX 石油, EWJX 日股, EWYX 韓股, XAUT 黃金…可用 `rwa?s=` 擴充)
 - **多時間框架**: 1小時、4小時、日線圖表
 - **四欄指標配置**: 每個時間框架顯示四組不同技術指標
 - **自動截圖**: 每週一台灣時間 8:00 自動生成圖表截圖
@@ -27,11 +27,11 @@
 |------|--------|--------|
 | `btc.html` | BTCUSDT | Binance |
 | `eth.html` | ETHUSDT | Binance |
-| `sol.html` | SOLUSDT | Binance |
-| `xrp.html` | XRPUSDT | Binance |
+
+> SOL / XRP 等改用 `altcoin.html?s=SOL`、`altcoin.html?s=XRP`（不再有獨立頁面）
 
 **訪問**: https://jacobhsu.github.io/crypto-watch/btc
-(eth / sol / xrp 同理)
+(eth 同理)
 
 ### 山寨幣通用頁面 (`altcoin.html`)
 - **說明**: 通用山寨幣分析，透過 `?s=` 參數切換幣種，未定義的幣種自動組成 `BINANCE:XUSDT`
@@ -55,9 +55,13 @@
 
 ### RWA 資產分析頁面 (`rwa.html`)
 - **說明**: 實物資產代幣 (RWA)，透過 `?s=` 參數切換幣種
-- **支援幣種**: SLVX (白銀)、USOX (美國石油)、EWJX (日本ETF)、EWYX (韓國ETF)
+- **內建幣種**: SLVX (白銀)、USOX (美國石油)、EWJX (日本ETF)、EWYX (韓國ETF)
+- **原油 CFD**: WTI (`TVC:USOIL` 西德州)、BRENT (`TVC:UKOIL` 布蘭特) — 24 小時連續、資料完整（非 Pionex 幣對）
+- **任意代號 (fallback)**: `?s=` 也可帶入內建清單以外的代號，會自動組成 `PIONEX:{代號}USDT.P`（prefix 為 `{代號小寫}usdt`）。是否有圖表取決於 Pionex 是否上架該交易對。
+  - 例：`?s=XAUT` → `PIONEX:XAUTUSDT.P`（黃金 / Tether Gold）
 - **交易所**: Pionex
 - **訪問**: https://jacobhsu.github.io/crypto-watch/rwa?s=SLVX
+  - 黃金：https://jacobhsu.github.io/crypto-watch/rwa?s=XAUT
 
 ### MA 分析頁面 (`ma.html`)
 - **技術指標**: MA Cross + Williams Alligator
@@ -71,8 +75,21 @@
 
 ### 交易決策 Checklist (`check.html`)
 - **說明**: 買賣前的逐項檢查表，幫助確認進出場條件
-- **開啟方式**: 在幣種分頁（btc / eth / sol / xrp / altcoin / rwa）按 **Shift+C**，首頁無效
+- **開啟方式**: 在幣種分頁（btc / eth / altcoin / rwa）按 **Shift+C**，首頁無效
 - **訪問**: https://jacobhsu.github.io/crypto-watch/check
+
+### 四組單頁儀表板 (`o/`)
+- **說明**: 4 小時級別的單頁多指標儀表板。四組並排（趨勢面 / 動能面 / 波動面 / 量價面），每組一張圖＝主圖（走勢圖 + 疊圖指標）＋ 三個副圖窗格，最右側附固定的指標判讀說明欄。
+- **四組配置**:
+  - 第一組 趨勢面：SuperTrend + MACD / DMI / Aroon
+  - 第二組 動能面：Hull MA (HMA) + RSI / Stochastic RSI / ROC
+  - 第三組 波動面：Bollinger Bands + ATR / Choppiness / Historical Volatility
+  - 第四組 量價面：VWMA 20 + OBV / MFI / CMF
+- **頁面**: `o/btc.html`、`o/eth.html`（SOL / XRP 等改用下方動態頁）
+- **動態頁面**:
+  - `o/altcoin.html?s=XRP`（山寨幣，支援 SOL / XRP / BNB / DOGE / ADA / SUI / PEPE… 未列出者 fallback `BINANCE:{代號}USDT`）
+  - `o/rwa.html?s=WTI`（RWA / 原油，支援 USOX / WTI / BRENT / XAUT / SLVX…）
+- **備註**: 一張圖內多個副圖窗格的上下順序由 TradingView 動態決定，重新整理可能洗牌；各窗格左上角自帶指標名稱，以其為準。
 
 
 ## 技術架構
@@ -148,6 +165,9 @@ node screenshot-api.js
 - **USOXUSDT.P** (美國石油 RWA)
 - **EWJXUSDT.P** (日本 ETF RWA)
 - **EWYXUSDT.P** (韓國 ETF RWA)
+- **XAUTUSDT.P** (黃金 RWA / Tether Gold，透過 `rwa?s=XAUT` fallback)
+- **TVC:USOIL** (WTI 西德州原油，`rwa?s=WTI`) / **TVC:UKOIL** (Brent 布蘭特，`rwa?s=BRENT`) — 原油 CFD、24 小時
+- 其他：`rwa?s={代號}` 會嘗試 `PIONEX:{代號}USDT.P`（能否顯示視 Pionex 上架而定）
 
 ## 專案結構
 
@@ -156,10 +176,8 @@ crypto-watch/
 ├── index.html              # 主頁面
 ├── btc.html                # BTC 深度分析
 ├── eth.html                # ETH 深度分析
-├── sol.html                # SOL 深度分析
-├── xrp.html                # XRP 深度分析
-├── altcoin.html            # 山寨幣通用分析 (?s=WLD|SOL|...) 1h/4h/1d
-├── rwa.html                # RWA 資產分析 (?s=SLVX|USOX|EWJX|EWYX)
+├── altcoin.html            # 山寨幣通用分析 (?s=SOL|XRP|WLD|...) 1h/4h/1d
+├── rwa.html                # RWA 資產分析 (?s=SLVX|USOX|EWJX|EWYX|XAUT|…)
 ├── ma.html                 # MA 分析頁面
 ├── ema.html                # EMA 分析頁面
 ├── 5min.html               # 5分鐘分析頁面
@@ -179,10 +197,15 @@ crypto-watch/
 │   ├── btc.html / eth.html
 │   └── crypto.js           # 1/ 專用指標配置
 ├── m/                      # Shift+M 子目錄 (1w/1M/3M × 4欄)
-│   ├── altcoin.html        # 山寨幣 (?s=WLD|SOL|...)
-│   ├── rwa.html / sol.html / xrp.html
+│   ├── altcoin.html        # 山寨幣 (?s=SOL|XRP|WLD|...)
+│   ├── rwa.html
 │   ├── btc.html / eth.html
 │   └── crypto.js           # m/ 專用長週期指標配置
+├── o/                      # 四組單頁儀表板 (4H × 四組，主圖+三副圖+說明欄)
+│   ├── btc.html / eth.html
+│   ├── altcoin.html        # 山寨幣 (?s=SOL|XRP|BNB|...)
+│   ├── rwa.html            # RWA/原油 (?s=USOX|WTI|BRENT|XAUT|SLVX)
+│   └── crypto.js           # o/ 專用：四組指標配置 (第二組主圖 Hull MA)
 └── screenshots/            # 截圖輸出目錄
 ```
 

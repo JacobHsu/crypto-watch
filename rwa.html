@@ -13,6 +13,9 @@
         'USOX': { symbol: 'PIONEX:USOXUSDT.P', prefix: 'usoxusdt' },
         'EWJX': { symbol: 'PIONEX:EWJXUSDT.P', prefix: 'ewjxusdt' },
         'EWYX': { symbol: 'PIONEX:EWYXUSDT.P', prefix: 'ewyxusdt' },
+        // 原油 CFD（TradingView 內建，24 小時、資料完整；非 Pionex 幣對）
+        'WTI':   { symbol: 'TVC:USOIL', prefix: 'wti' },
+        'BRENT': { symbol: 'TVC:UKOIL', prefix: 'brent' },
       };
 
       const params = new URLSearchParams(window.location.search);

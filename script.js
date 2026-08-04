@@ -3,8 +3,8 @@ const BASE_URL = 'https://jacobhsu.github.io/crypto-watch';
 const SUPPORTED_LINKS = [
   { name: 'BTC',     url: `${BASE_URL}/btc` },
   { name: 'ETH',     url: `${BASE_URL}/eth` },
-  { name: 'SOL',     url: `${BASE_URL}/sol` },
-  { name: 'XRP',     url: `${BASE_URL}/xrp` },
+  { name: 'SOL',     url: `${BASE_URL}/altcoin?s=SOL` },
+  { name: 'XRP',     url: `${BASE_URL}/altcoin?s=XRP` },
   { name: 'XAUT',    url: `${BASE_URL}/rwa?s=XAUT` },
   { name: 'SLVX',    url: `${BASE_URL}/rwa?s=SLVX` },
   { name: 'USOX',    url: `${BASE_URL}/rwa?s=USOX` },
