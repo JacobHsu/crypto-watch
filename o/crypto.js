@@ -10,9 +10,9 @@ const analysisGroups = {
     "STD;Aroon",
   ],
   // 第二組 動能面：判斷短期強弱、轉折與價格加速程度
-  // 主圖 EMA 20 + 副圖 RSI / Stochastic RSI / Rate of Change
+  // 主圖 Hull MA (HMA) + 副圖 RSI / Stochastic RSI / Rate of Change
   group2: [
-    "MAExp@tv-basicstudies",
+    "STD;Hull%1MA",
     "RSI@tv-basicstudies",
     "STD;Stochastic_RSI",
     "ROC@tv-basicstudies",
