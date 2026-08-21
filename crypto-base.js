@@ -15,6 +15,20 @@ const baseChartConfig = {
   container_id: "",
 };
 
+// 時間級別細看頁：檔名 → TradingView interval
+const TIMEFRAME_INTERVALS = {
+  "15m": "15",
+  "1h": "60",
+  "4h": "240",
+  "1d": "1D",
+};
+
+// 已建立細看頁的幣種（對應 btc/ 、eth/ 目錄）
+const DETAIL_SYMBOLS = ["btc", "eth"];
+
+// 快捷鍵字母 → 時間級別
+const TIMEFRAME_KEYS = { h: "1h", f: "4h", d: "1d" };
+
 // 從頁面標題或 URL 自動檢測加密貨幣符號
 function detectCryptoSymbol() {
   // rwa.html 透過 ?s= 參數注入設定
@@ -78,6 +92,29 @@ function createChart(containerId, symbol, interval, indicatorSet, isColumn3 = fa
       container.innerHTML = '<div class="loading">載入失敗</div>';
     }
   }
+}
+
+// 依目前頁面位置算出細看頁目標
+// 回傳 { href, sameTab }；目前幣種沒有細看頁時回傳 null
+function resolveTimeframeTarget(tf) {
+  const path = window.location.pathname;
+
+  // 已在細看頁（btc/1h.html）：同分頁切換級別
+  if (/\/(btc|eth)\/[^/]+\.html$/.test(path)) {
+    return { href: `${tf}.html`, sameTab: true };
+  }
+
+  const { prefix } = detectCryptoSymbol();
+  const sym = prefix.replace("usdt", "");
+  if (!DETAIL_SYMBOLS.includes(sym)) {
+    return null;
+  }
+
+  // 1/ 、m/ 、o/ 等子目錄頁面需回上一層
+  const dir = path.replace(/[^/]*$/, "");
+  const base = /\/(1|m|o)\/$/.test(dir) ? "../" : "";
+
+  return { href: `${base}${sym}/${tf}.html`, sameTab: false };
 }
 
 // 檢查 TradingView 是否已載入並初始化圖表
@@ -151,6 +188,22 @@ window.addEventListener("keydown", function (e) {
       e.preventDefault();
       window.open('https://tradersunion.com/currencies/forecast/ethusd/daily-and-weekly/', '_blank');
       console.log('已開啟 Traders Union ETH 預測頁面');
+    }
+  }
+
+  // Shift+H / Shift+F / Shift+D 開啟 1h / 4h / 1d 細看頁（2×2）
+  // 在細看頁上按則同分頁切換級別
+  if (e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey) {
+    const tf = TIMEFRAME_KEYS[e.key.toLowerCase()];
+    const target = tf ? resolveTimeframeTarget(tf) : null;
+    if (target) {
+      e.preventDefault();
+      if (target.sameTab) {
+        window.location.href = target.href;
+      } else {
+        window.open(target.href, '_blank');
+      }
+      console.log('已開啟 ' + target.href);
     }
   }
 

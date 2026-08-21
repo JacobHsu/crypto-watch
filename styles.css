@@ -70,6 +70,22 @@ html, body {
     position: relative;
 }
 
+/* 單一時間級別細看頁：2x2網格布局 */
+.charts-grid-2x2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    height: 100vh;
+    width: 100vw;
+    gap: 1px;
+    background-color: #2a2e39;
+}
+
+.charts-grid-2x2 > div {
+    background-color: #131722;
+    position: relative;
+}
+
 /* ETH專用的3x5網格布局 */
 .charts-grid-3x5 {
     display: grid;

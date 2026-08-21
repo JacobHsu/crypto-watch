@@ -20,3 +20,4 @@ Thumbs.db
 # 保留截圖文件
 !screenshots/*.png
 !screenshots/*.html
+.gstack/
