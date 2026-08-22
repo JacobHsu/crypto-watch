@@ -139,6 +139,22 @@ html, body {
     line-height: 1.5;
 }
 
+/* 說明欄頂部：時間級別標示
+   o/ 是單一級別頁（四張圖都是 4H），且 hide_top_toolbar 讓圖表本身不顯示級別，
+   所以在這裡標出來，避免看不出目前是哪個時間框架 */
+.info-panel .panel-tf {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #f0b90b;
+    background-color: #1c2030;
+    border: 1px solid #2a2e39;
+    border-radius: 3px;
+    margin: 0 0 10px;
+    padding: 5px 8px;
+    text-align: center;
+}
+
 .info-panel h2 {
     font-size: 13px;
     color: #f0b90b;

@@ -243,10 +243,9 @@
     /* ── CHART COLORS ───────────────── */
     .cg { color: #4caf50; }   /* green  - Lips  / Supertrend buy */
     .cr { color: #e91e63; }   /* red    - Teeth / Supertrend sell */
-    .cb { color: #2196f3; }   /* blue   - Jaw   / SAR */
+    .cb { color: #2196f3; }   /* blue   - Jaw (Alligator) */
     .co { color: #ff9800; }   /* orange - MA simple */
     .cc { color: #00bcd4; }   /* cyan   - EMA */
-    .cw { color: #9c27b0; }   /* purple - special */
 
     /* ── SCORES ─────────────────────── */
     .sec-score {
@@ -372,7 +371,6 @@
         <button class="tf-btn active" onclick="setTF(this)">1H</button>
         <button class="tf-btn" onclick="setTF(this)">4H</button>
         <button class="tf-btn" onclick="setTF(this)">1D</button>
-        <button class="tf-btn" onclick="setTF(this)">1W</button>
       </div>
     </div>
   </div>
@@ -532,17 +530,18 @@ const T = {
   },
 
   ema: {
-    name: "EMA 20 / 50",
-    tree: { q: "兩條指數移動平均線與 K 線的排列？",
-      hint: "EMA20（青色較敏感），EMA50（較慢）。",
+    name: "EMA 20 / 50 / 100",
+    tree: { q: "三條指數移動平均線與 K 線的排列？",
+      hint: "圖上共三條 EMA（青色系）：EMA20 最敏感、EMA50 居中、EMA100 最慢，作為長期趨勢濾網。",
       opts: [
-        { l: "K 線 &gt; <span class='cc'>EMA20</span> &gt; EMA50",
-          sub: "多頭排列 ─ K線在<span class='cc'>青線</span>上方",
+        { l: "K 線 &gt; <span class='cc'>EMA20</span> &gt; EMA50 &gt; EMA100",
+          sub: "完全多頭排列 ─ 由快到慢依序向下堆疊，K線在<span class='cc'>青線</span>上方",
           r: { s: "BUY",  t: "EMA 多頭排列 ─ 上升趨勢確認" } },
-        { l: "EMA 糾纏 / 排列混亂",
+        { l: "EMA 糾纏 / 排列混亂（含只有部分順序正確）",
+          sub: "例如 K線站上 EMA20 但 EMA50 仍在 EMA100 下方 = 尚未確認",
           r: { s: "WAIT", t: "EMA 整理 ─ 趨勢不明確" } },
-        { l: "EMA50 &gt; <span class='cc'>EMA20</span> &gt; K 線",
-          sub: "空頭排列 ─ K線在<span class='cc'>青線</span>下方",
+        { l: "EMA100 &gt; EMA50 &gt; <span class='cc'>EMA20</span> &gt; K 線",
+          sub: "完全空頭排列 ─ K線在<span class='cc'>青線</span>下方",
           r: { s: "SELL", t: "EMA 空頭排列 ─ 下降趨勢確認" } }
       ] }
   },
@@ -557,22 +556,6 @@ const T = {
           sub: "偏上偏下都算 WAIT ─ 沒突破邊界就沒有突破訊號",
           r: { s: "WAIT", t: "通道內整理 ─ 尚未突破，方向待定" } },
         { l: "K 線跌破<b>下軌</b>（創近期新低）", r: { s: "SELL", t: "跌破唐奇安下軌 ─ 空頭跌破確認" } }
-      ] }
-  },
-
-  chandelier: {
-    name: "CHANDELIER EXIT",
-    tree: { q: "吊燈出場線的狀態？",
-      hint: "有兩條線：藍色 Long Exit（追蹤多頭）跟在K線下方；橙色 Short Exit（追蹤空頭）跟在K線上方。",
-      opts: [
-        { l: "<span class='cb'>藍色 Long Exit</span> 在 K 線<b>下方</b>（持續）",
-          r: { s: "BUY",  t: "Long Exit 支撐多頭 ─ 持多訊號" } },
-        { l: "K 線<b>剛跌破</b> <span class='cb'>藍色 Long Exit</span> 線",
-          r: { s: "SELL", t: "Long Exit 被跌破 ─ 多頭出場訊號" } },
-        { l: "<span class='co'>橙色 Short Exit</span> 在 K 線<b>上方</b>（持續）",
-          r: { s: "SELL", t: "Short Exit 壓制空頭 ─ 持空訊號" } },
-        { l: "K 線<b>剛突破</b> <span class='co'>橙色 Short Exit</span> 線",
-          r: { s: "BUY",  t: "Short Exit 被突破 ─ 空頭出場 / 買入訊號" } }
       ] }
   },
 
@@ -606,26 +589,6 @@ const T = {
       ] }
   },
 
-  ichimoku: {
-    name: "ICHIMOKU CLOUD",
-    tree: { q: "K 線相對雲層（色塊）的位置？",
-      hint: "一目均衡表的雲層是圖中的彩色色塊區域。",
-      opts: [
-        { l: "K 線在雲層<b>上方</b>",
-          n: { q: "雲層（右側未來雲）是什麼顏色？",
-            opts: [
-              { l: "<span class='cg'>綠色雲</span>（看漲雲）",
-                r: { s: "BUY",  t: "強勢多頭 ─ 雲上綠雲確認" } },
-              { l: "<span class='cr'>紅色雲</span>（看跌雲）",
-                r: { s: "WAIT", t: "多頭偏弱 ─ 謹慎持多" } }
-            ] } },
-        { l: "K 線在雲層<b>之內</b>",
-          r: { s: "WAIT", t: "雲中整理 ─ 方向不明" } },
-        { l: "K 線在雲層<b>下方</b>",
-          r: { s: "SELL", t: "空頭格局 ─ 雲下壓制" } }
-      ] }
-  },
-
   zigzag: {
     name: "ZIG ZAG",
     tree: { q: "折線的高點和低點序列？",
@@ -653,20 +616,6 @@ const T = {
           r: { s: "WAIT", t: "資金流向不明 ─ 觀望" } },
         { l: "數值在<b>零軸以下</b>（負值），且持續下降",
           r: { s: "SELL", t: "資金持續流出 ─ 空頭動能" } }
-      ] }
-  },
-
-  ma_ribbon: {
-    name: "MA RIBBON",
-    tree: { q: "多條均線帶的狀態？",
-      hint: "均線帶是一組不同週期的移動平均線疊在一起。",
-      opts: [
-        { l: "均線帶整體向<b>上</b>展開，像扇形張開",
-          r: { s: "BUY",  t: "均線帶多頭排列 ─ 趨勢強勢" } },
-        { l: "均線帶糾纏在一起，難以分辨方向",
-          r: { s: "WAIT", t: "均線帶整理 ─ 趨勢轉換中" } },
-        { l: "均線帶整體向<b>下</b>展開，像扇形向下張開",
-          r: { s: "SELL", t: "均線帶空頭排列 ─ 趨勢弱勢" } }
       ] }
   },
 
@@ -739,34 +688,6 @@ const T = {
       ] }
   },
 
-  vwap: {
-    name: "VWAP",
-    tree: { q: "K 線在 VWAP 線的哪一側？",
-      hint: "VWAP（量加權平均價）是當日成交量加權的平均成本線，機構投資人常以此為進出場基準。每日重置，日內參考價值最高。",
-      opts: [
-        { l: "K 線在 VWAP 線<b>上方</b>，且持續站穩",
-          r: { s: "BUY",  t: "價格高於 VWAP ─ 多頭佔優，買方控制" } },
-        { l: "K 線在 VWAP 線<b>附近</b>反覆穿越",
-          r: { s: "WAIT", t: "VWAP 拉鋸 ─ 多空均衡，方向不明" } },
-        { l: "K 線在 VWAP 線<b>下方</b>，且持續站穩",
-          r: { s: "SELL", t: "價格低於 VWAP ─ 空頭佔優，賣方控制" } }
-      ] }
-  },
-
-  divergence: {
-    name: "DIVERGENCE INDICATOR",
-    tree: { q: "指標與 K 線是否出現背離？",
-      hint: "背離 = K 線創新高/低，但指標沒有同步創新高/低。",
-      opts: [
-        { l: "指標與 K 線<b>方向一致</b>，無背離",
-          r: { s: "WAIT", t: "無背離 ─ 繼承當前趨勢方向" } },
-        { l: "<span class='cg'>看漲背離</span>：K 線新低，指標未新低",
-          r: { s: "BUY",  t: "看漲背離 ─ 潛在底部反轉" } },
-        { l: "<span class='cr'>看跌背離</span>：K 線新高，指標未新高",
-          r: { s: "SELL", t: "看跌背離 ─ 潛在頂部反轉" } }
-      ] }
-  },
-
   macd: {
     name: "MACD",
     tree: { q: "MACD 柱狀圖（Histogram）的狀態？",
@@ -781,21 +702,161 @@ const T = {
       ] }
   },
 
-  env: {
-    name: "ENVELOPE",
-    tree: { q: "K 線在包絡線的位置？",
-      hint: "包絡線 = 在均線上下方各平移一定百分比的通道。",
+  // ── PAGE II 專屬：o/ 頁四組副圖指標 ──────────────────────
+  dmi: {
+    name: "DMI / ADX",
+    tree: { q: "+DI 與 −DI 誰在上方？ADX 站上 25 了嗎？",
+      hint: "副圖三條線：+DI（多方力道）、−DI（空方力道）、ADX（趨勢強度，不分方向）。ADX 是門檻，先看它夠不夠高，再看 DI 誰領先。",
       opts: [
-        { l: "K 線在<b>上方包絡線</b>附近",
-          n: { q: "趨勢動能如何？",
+        { l: "<b>+DI 在 −DI 上方</b>，且 <b>ADX &gt; 25</b>",
+          sub: "多方佔優，且趨勢強度足夠",
+          r: { s: "BUY",  t: "+DI 領先且 ADX 確認 ─ 順勢做多" } },
+        { l: "<b>ADX 未站上 25</b>（不管 DI 誰上誰下）",
+          sub: "趨勢強度不足，此時 DI 交叉多為假訊號",
+          r: { s: "WAIT", t: "ADX 偏低 ─ 盤整無趨勢，別追勢" } },
+        { l: "<b>−DI 在 +DI 上方</b>，且 <b>ADX &gt; 25</b>",
+          r: { s: "SELL", t: "−DI 領先且 ADX 確認 ─ 順勢做空" } }
+      ] }
+  },
+
+  aroon: {
+    name: "AROON",
+    tree: { q: "Aroon Up 與 Aroon Down 的相對位置？",
+      hint: "兩條 0~100 的線。Up 高 = 近期常創新高，Down 高 = 近期常創新低。兩線交叉代表趨勢轉換。",
+      opts: [
+        { l: "<b>Up 接近 100</b> 且明顯高於 Down",
+          r: { s: "BUY",  t: "Aroon Up 主導 ─ 上升趨勢" } },
+        { l: "兩線都在<b>中間帶（50 附近）</b>交纏",
+          r: { s: "WAIT", t: "Aroon 無主導方 ─ 趨勢未成形" } },
+        { l: "<b>Down 接近 100</b> 且明顯高於 Up",
+          r: { s: "SELL", t: "Aroon Down 主導 ─ 下降趨勢" } }
+      ] }
+  },
+
+  hull_ma: {
+    name: "HULL MA (HMA)",
+    tree: { q: "K 線在 HMA 的哪一側？HMA 本身的方向？",
+      hint: "HMA 是超低延遲均線，比 EMA 更早反映轉折。看兩件事：K 線位置 + 線的斜率。",
+      opts: [
+        { l: "K 線在 HMA <b>上方</b>，且 HMA <b>上揚</b>",
+          r: { s: "BUY",  t: "HMA 短多 ─ 價格與快線同向向上" } },
+        { l: "K 線貼著 HMA 來回，或 HMA <b>走平</b>",
+          r: { s: "WAIT", t: "HMA 走平 ─ 短線方向未定" } },
+        { l: "K 線在 HMA <b>下方</b>，且 HMA <b>下彎</b>",
+          r: { s: "SELL", t: "HMA 短空 ─ 價格與快線同向向下" } }
+      ] }
+  },
+
+  rsi: {
+    name: "RSI",
+    tree: { q: "RSI 目前落在哪個區間？",
+      hint: "0~100 的振盪器。50 是多空分界，&gt; 70 超買、&lt; 30 超賣。極端區要再看有沒有背離。",
+      opts: [
+        { l: "<b>RSI &gt; 70</b>（超買區）",
+          n: { q: "價格創新高時，RSI 有沒有同步創新高？",
             opts: [
-              { l: "趨勢強勁，K 線持續上升", r: { s: "BUY",  t: "包絡上軌強勢 ─ 多頭動能充足" } },
-              { l: "動能減弱，K 線開始橫盤", r: { s: "WAIT", t: "超買警示 ─ 謹慎追漲" } }
+              { l: "RSI <b>同步</b>創新高",
+                r: { s: "BUY",  t: "超買但同步創高 ─ 強勢趨勢延續" } },
+              { l: "價格創高但 RSI <b>沒有</b>（頂背離）",
+                r: { s: "SELL", t: "頂背離 ─ 動能衰竭，慎防反轉" } }
             ] } },
-        { l: "K 線在<b>中線</b>附近游走",
-          r: { s: "WAIT", t: "包絡中線整理 ─ 方向不明" } },
-        { l: "K 線在<b>下方包絡線</b>附近或跌破",
-          r: { s: "SELL", t: "包絡下軌弱勢 ─ 空頭動能充足" } }
+        { l: "<b>50 ~ 70</b>（偏多但未超買）",
+          r: { s: "BUY",  t: "RSI 站穩多方區 ─ 偏多" } },
+        { l: "<b>45 ~ 55</b> 附近游走",
+          r: { s: "WAIT", t: "RSI 貼近中軸 ─ 多空均衡" } },
+        { l: "<b>30 ~ 50</b>（偏空但未超賣）",
+          r: { s: "SELL", t: "RSI 落入空方區 ─ 偏空" } },
+        { l: "<b>RSI &lt; 30</b>（超賣區）",
+          n: { q: "價格創新低時，RSI 有沒有同步創新低？",
+            opts: [
+              { l: "RSI <b>同步</b>創新低",
+                r: { s: "SELL", t: "超賣且同步創低 ─ 弱勢趨勢延續" } },
+              { l: "價格創低但 RSI <b>沒有</b>（底背離）",
+                r: { s: "BUY",  t: "底背離 ─ 賣壓衰竭，潛在反彈" } }
+            ] } }
+      ] }
+  },
+
+  stoch_rsi: {
+    name: "STOCHASTIC RSI",
+    tree: { q: "%K 與 %D 在哪個高度交叉？",
+      hint: "比 RSI 更敏感的振盪器，0~100，&gt; 80 超買、&lt; 20 超賣。重點看兩線交叉發生在高檔還是低檔。",
+      opts: [
+        { l: "<b>低檔（&lt; 20）</b>，%K 由下往上穿越 %D",
+          r: { s: "BUY",  t: "低檔黃金交叉 ─ 短線反彈訊號" } },
+        { l: "在<b>中間帶（20~80）</b>兩線纏繞，無明確交叉",
+          r: { s: "WAIT", t: "中間帶震盪 ─ 訊號不明確" } },
+        { l: "<b>高檔（&gt; 80）</b>，%K 由上往下穿越 %D",
+          r: { s: "SELL", t: "高檔死亡交叉 ─ 短線回檔訊號" } }
+      ] }
+  },
+
+  roc: {
+    name: "ROC 變動率",
+    tree: { q: "ROC 在零軸的哪一側，往哪個方向走？",
+      hint: "ROC 量的是價格變動的速度。穿越零軸 = 動能轉向；與價格背離 = 動能衰竭。",
+      opts: [
+        { l: "<b>零軸以上</b>，且持續走高",
+          r: { s: "BUY",  t: "ROC 正值放大 ─ 上漲動能增強" } },
+        { l: "在<b>零軸附近</b>來回穿越",
+          r: { s: "WAIT", t: "ROC 貼近零軸 ─ 動能不足" } },
+        { l: "<b>零軸以下</b>，且持續走低",
+          r: { s: "SELL", t: "ROC 負值放大 ─ 下跌動能增強" } }
+      ] }
+  },
+
+  choppiness: {
+    name: "CHOPPINESS INDEX",
+    tree: { q: "CI 數值落在哪一區？",
+      hint: "⚠️ CI 只判斷「有沒有趨勢」，不判斷方向。&gt; 61.8 = 盤整（別追勢），&lt; 38.2 = 趨勢明顯（可順勢）。",
+      opts: [
+        { l: "<b>&lt; 38.2</b>（趨勢明顯）",
+          n: { q: "同一張圖的 K 線與布林通道顯示的方向？",
+            opts: [
+              { l: "K 線向<b>上</b>、貼近布林上軌", r: { s: "BUY",  t: "低 CI + 向上 ─ 趨勢明確，順勢做多" } },
+              { l: "K 線向<b>下</b>、貼近布林下軌", r: { s: "SELL", t: "低 CI + 向下 ─ 趨勢明確，順勢做空" } }
+            ] } },
+        { l: "<b>38.2 ~ 61.8</b>（中間區）",
+          r: { s: "WAIT", t: "CI 中間區 ─ 趨勢強度不明，等待表態" } },
+        { l: "<b>&gt; 61.8</b>（盤整）",
+          sub: "此時所有趨勢型指標的訊號可靠度都會下降",
+          r: { s: "WAIT", t: "CI 高於 61.8 ─ 盤整區，別追勢" } }
+      ] }
+  },
+
+  hist_vol: {
+    name: "HISTORICAL VOLATILITY",
+    tree: { q: "歷史波動率相對最近一段時間是高檔還是低檔？",
+      hint: "HV 只反映波動大小，不含方向。低檔常出現在大行情之前，高檔多見於行情末段。",
+      opts: [
+        { l: "在相對<b>低檔</b>，且開始<b>翻揚</b>",
+          n: { q: "K 線同步往哪個方向突破？",
+            opts: [
+              { l: "向<b>上</b>突破", r: { s: "BUY",  t: "低波動翻揚 + 向上 ─ 行情啟動" } },
+              { l: "向<b>下</b>突破", r: { s: "SELL", t: "低波動翻揚 + 向下 ─ 行情啟動" } },
+              { l: "還沒明確突破",     r: { s: "WAIT", t: "波動剛放大但方向未定 ─ 等突破確認" } }
+            ] } },
+        { l: "在相對<b>低檔</b>且持續低迷",
+          r: { s: "WAIT", t: "波動壓縮中 ─ 蓄勢，等待變盤" } },
+        { l: "在相對<b>高檔</b>（波動已放大一段時間）",
+          r: { s: "WAIT", t: "波動處高檔 ─ 常為行情末段，追價不利" } }
+      ] }
+  },
+
+  mfi: {
+    name: "MFI 資金流量",
+    tree: { q: "MFI 目前的位置與方向？",
+      hint: "量加權版的 RSI，0~100。&gt; 80 超買、&lt; 20 超賣。與 RSI 的差別在於它把成交量算進去。",
+      opts: [
+        { l: "<b>50 以上</b>且持續走高",
+          r: { s: "BUY",  t: "資金持續流入 ─ 買方主導" } },
+        { l: "在 <b>50 附近</b>游走",
+          r: { s: "WAIT", t: "資金流向不明 ─ 觀望" } },
+        { l: "<b>&gt; 80</b> 超買，且價格創新高而 MFI 未同步",
+          sub: "量能沒跟上價格 ─ 背離警訊",
+          r: { s: "SELL", t: "MFI 頂背離 ─ 資金轉弱，慎防反轉" } },
+        { l: "<b>50 以下</b>且持續走低",
+          r: { s: "SELL", t: "資金持續流出 ─ 賣方主導" } }
       ] }
   },
 
@@ -830,70 +891,68 @@ const T = {
       ] }
   },
 
-  chandelier_psar: {
-    name: "↳ CHANDELIER × SAR",
-    tree: { q: "吊燈出場線和 SAR 點的方向是否一致？",
-      hint: "兩個指標都是追蹤趨勢的出場工具。方向相同時訊號更可靠，方向相反時要小心假訊號。",
+  psar_linreg: {
+    name: "↳ SAR × LINEAR REG",
+    tree: { q: "SAR 點位置和迴歸線斜率是否一致？",
+      hint: "SAR 抓短線轉折，線性迴歸看整段趨勢的斜率。兩者同向 = 短線與中期趨勢對齊，訊號較可靠。",
       opts: [
-        { l: "吊燈<span class='cg'>綠色</span>（下方）＋ SAR 點也在 K 線<b>下方</b>",
-          r: { s: "BUY",  t: "吊燈 × SAR 雙重多頭確認 ─ 持多訊號強" } },
-        { l: "吊燈和 SAR <b>方向不一致</b>（一個上一個下）",
-          r: { s: "WAIT", t: "吊燈 × SAR 訊號矛盾 ─ 謹慎，等待一致再行動" } },
-        { l: "吊燈<span class='cr'>紅色</span>（上方）＋ SAR 點也在 K 線<b>上方</b>",
-          r: { s: "SELL", t: "吊燈 × SAR 雙重空頭確認 ─ 持空訊號強" } }
+        { l: "SAR 點在 K 線<b>下方</b> ＋ 迴歸線斜率向<b>上</b>",
+          r: { s: "BUY",  t: "SAR × 迴歸線多頭共振 ─ 短中期趨勢一致" } },
+        { l: "SAR 與迴歸線<b>方向不一致</b>（含迴歸線接近水平）",
+          r: { s: "WAIT", t: "SAR × 迴歸線分歧 ─ 短線與趨勢矛盾，觀望" } },
+        { l: "SAR 點在 K 線<b>上方</b> ＋ 迴歸線斜率向<b>下</b>",
+          r: { s: "SELL", t: "SAR × 迴歸線空頭共振 ─ 短中期趨勢一致" } }
       ] }
   },
 
-  macd_psar_agree: {
-    name: "↳ MACD × SAR 共振",
-    tree: { q: "MACD 柱狀圖方向和 SAR 點位置是否一致？",
-      hint: "MACD 看動能方向，SAR 看趨勢方向。兩者一致 = 動能與趨勢都對齊，進場勝率較高。",
+  supertrend_macd: {
+    name: "↳ SUPERTREND × MACD",
+    tree: { q: "超級趨勢線方向和 MACD 柱狀圖方向是否一致？",
+      hint: "同一張圖（第一組）上的主圖 + 副圖：Supertrend 看趨勢方向，MACD 看動能方向。兩者一致 = 趨勢與動能對齊。",
       opts: [
-        { l: "MACD 正值柱（向上）＋ SAR 點在 K 線<b>下方</b>",
-          r: { s: "BUY",  t: "MACD × SAR 多頭共振 ─ 動能趨勢雙確認" } },
-        { l: "MACD 與 SAR <b>方向不一致</b>",
-          r: { s: "WAIT", t: "MACD × SAR 訊號分歧 ─ 動能與趨勢方向矛盾" } },
-        { l: "MACD 負值柱（向下）＋ SAR 點在 K 線<b>上方</b>",
-          r: { s: "SELL", t: "MACD × SAR 空頭共振 ─ 動能趨勢雙確認" } }
-      ] }
-  },
-
-  tech_ratings: {
-    name: "TECHNICAL RATINGS",
-    tree: { q: "指標右下角顯示的評級文字？",
-      hint: "Technical Ratings 直接用文字顯示綜合技術分析評級。",
-      opts: [
-        { l: "顯示「<span class='cg'>強力買入</span>」或「<span class='cg'>買入</span>」",
-          r: { s: "BUY",  t: "技術指標綜合看漲 ─ 多頭訊號" } },
-        { l: "顯示「<span class='cw'>中性</span>」",
-          r: { s: "WAIT", t: "技術指標中性 ─ 無明確方向" } },
-        { l: "顯示「<span class='cr'>賣出</span>」或「<span class='cr'>強力賣出</span>」",
-          r: { s: "SELL", t: "技術指標綜合看跌 ─ 空頭訊號" } }
+        { l: "K 線在超級趨勢線<b>上方</b> ＋ MACD <b>正值柱</b>",
+          r: { s: "BUY",  t: "趨勢 × 動能多頭共振 ─ 順勢做多勝率高" } },
+        { l: "兩者<b>方向不一致</b>",
+          r: { s: "WAIT", t: "趨勢與動能矛盾 ─ 等待一致再行動" } },
+        { l: "K 線在超級趨勢線<b>下方</b> ＋ MACD <b>負值柱</b>",
+          r: { s: "SELL", t: "趨勢 × 動能空頭共振 ─ 順勢做空勝率高" } }
       ] }
   }
 };
 
 // ═══════════════════════════════════════════════
 // CHECKLIST STRUCTURE  (no timeframes — run once per TF)
+// 每個 col 對應圖表頁面上的同一欄圖表，項目順序＝該圖表載入的指標順序
+//   PAGE I  → {symbol}.html      指標來自 indicators.js  (column1~4)  1H / 4H / 1D
+//   PAGE II → o/{symbol}.html    指標來自 o/crypto.js    (group1~4)   固定 4H
+// PAGE II 每一組 = 一張圖：主圖指標疊在價格上，三個副圖指標各成獨立窗格（Pane）
 // ═══════════════════════════════════════════════
 const STRUCTURE = [
   {
     id: "pageI", label: "A", page: "PAGE I", desc: "Trend · Channel · MA · Exit",
     cols: [
-      { name: "TREND",          items: ["alligator","fractals","multi_time","alligator_fractal"] },
-      { name: "CHANNEL",        items: ["bb","keltner","bb_kc_squeeze","supertrend"] },
-      { name: "MOVING AVERAGE", items: ["ma","ema","donchian","ma_ema_agree"] },
-      { name: "EXIT",           items: ["chandelier","psar","linear_reg","chandelier_psar"] }
+      // COL 1: Multi-Time Period · Fractals · Alligator · Supertrend
+      { name: "TREND",           items: ["multi_time","fractals","alligator","alligator_fractal","supertrend"] },
+      // COL 2: BB · Keltner · MA Cross · Volatility Stop
+      { name: "CHANNEL",         items: ["bb","keltner","bb_kc_squeeze","ma_cross","vol_stop"] },
+      // COL 3: MA 20/50 · EMA 20/50/100 · Donchian
+      { name: "MOVING AVERAGE",  items: ["ma","ema","donchian","ma_ema_agree"] },
+      // COL 4: Zig Zag · PSAR · Linear Regression · VWMA
+      { name: "TREND / EXIT",    items: ["zigzag","psar","linear_reg","psar_linreg","vwma"] }
     ]
   },
   {
-    id: "pageII", label: "B", page: "PAGE II", desc: "Cloud · Volume · Signal · Momentum",
+    id: "pageII", label: "B", page: "PAGE II", suffix: "Pane",
+    desc: "4H 固定 · Trend · Momentum · Volatility · Volume",
     cols: [
-      { name: "CLOUD / STRUCTURE", items: ["ichimoku","zigzag","cmf"] },
-      { name: "TREND / VOLUME",    items: ["ma_ribbon","vwma","obv"] },
-      { name: "VOLATILITY",        items: ["vol_stop","supertrend","atr"] },
-      { name: "SIGNAL",            items: ["ma_cross","vwap","divergence"] },
-      { name: "MOMENTUM",          items: ["macd","psar","env","macd_psar_agree"] }
+      // 第一組 趨勢面：Supertrend(主圖) + MACD / DMI / Aroon(副圖)
+      { name: "第一組 · 趨勢面", items: ["supertrend","macd","dmi","aroon","supertrend_macd"] },
+      // 第二組 動能面：Hull MA(主圖) + RSI / Stochastic RSI / ROC(副圖)
+      { name: "第二組 · 動能面", items: ["hull_ma","rsi","stoch_rsi","roc"] },
+      // 第三組 波動面：Bollinger Bands(主圖) + ATR / Choppiness / Historical Volatility(副圖)
+      { name: "第三組 · 波動面", items: ["bb","atr","choppiness","hist_vol"] },
+      // 第四組 量價面：VWMA(主圖) + OBV / MFI / CMF(副圖)
+      { name: "第四組 · 量價面", items: ["vwma","obv","mfi","cmf"] }
     ]
   }
 ];
@@ -916,7 +975,7 @@ function build() {
     hdr.className = 'sec-hdr';
     hdr.innerHTML = `
       <div class="sec-hdr-top">
-        <span>━━ ${sec.label} &nbsp;─&nbsp; ${sec.page}</span>
+        <span>━━ ${sec.label} &nbsp;─&nbsp; ${sec.page}${sec.suffix ? ` &nbsp;─&nbsp; ${sec.suffix}` : ''}</span>
         <button class="reset-all" onclick="resetSection('${sec.id}')">重置</button>
       </div>
       <div class="sec-hdr-desc">${sec.desc}</div>`;

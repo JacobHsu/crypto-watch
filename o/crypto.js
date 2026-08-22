@@ -1,5 +1,10 @@
-// o/ 頁面：4 小時級別 · 四組技術分析
+// o/ 頁面：四組技術分析（副圖面板）
 // 每一組 = 一張圖表：主圖指標疊在價格走勢圖上，三個副圖指標各自成為下方獨立窗格
+//
+// 時間級別由 ?t= 參數決定（15m / 1h / 4h / 1d），未指定或無法辨識時回退 4h：
+//   o/btc.html            → 4H（預設）
+//   o/btc.html?t=1d       → 1D
+//   o/altcoin.html?s=SOL&t=1d  → 與 ?s= 併用
 const analysisGroups = {
   // 第一組 趨勢面：判斷主要方向、趨勢強度與趨勢是否正在形成
   // 主圖 SuperTrend + 副圖 MACD / Directional Movement / Aroon
@@ -35,11 +40,48 @@ const analysisGroups = {
   ],
 };
 
-// 初始化圖表：四組並排，全部使用 4 小時（240）級別
+// 時間級別 → 說明欄頂端顯示的文字
+const PANE_TF_LABELS = {
+  "15m": "15M · 15 分鐘級別",
+  "1h": "1H · 1 小時級別",
+  "4h": "4H · 4 小時級別",
+  "1d": "1D · 日線級別",
+};
+
+const DEFAULT_PANE_TF = "4h";
+
+// 從 ?t= 取出時間級別；未指定或無法辨識時回退到預設值
+// TIMEFRAME_INTERVALS 由 crypto-base.js 提供（15m / 1h / 4h / 1d）
+function detectPaneTimeframe() {
+  const raw = (new URLSearchParams(window.location.search).get("t") || "").toLowerCase();
+  const key = TIMEFRAME_INTERVALS[raw] ? raw : DEFAULT_PANE_TF;
+
+  if (raw && key !== raw) {
+    console.warn(`無法辨識的時間級別 ?t=${raw}，改用預設 ${DEFAULT_PANE_TF}`);
+  }
+
+  return { key, interval: TIMEFRAME_INTERVALS[key], label: PANE_TF_LABELS[key] };
+}
+
+// 把時間級別反映到分頁標題與說明欄標示
+// HTML 的靜態標題帶 "- 4H" 作為 JS 失效時的 fallback，這裡先去尾再重新掛上
+function applyPaneTimeframeUI(tf) {
+  document.title = document.title.replace(/\s+-\s+[0-9A-Za-z]+$/, "") + " - " + tf.key.toUpperCase();
+
+  const label = document.querySelector(".panel-tf");
+  if (label) {
+    label.textContent = tf.label;
+  }
+}
+
+const paneTimeframe = detectPaneTimeframe();
+applyPaneTimeframeUI(paneTimeframe);
+
+// 初始化圖表：四組並排，全部使用同一個時間級別
 function initializeCharts() {
   const { symbol, prefix } = detectCryptoSymbol();
-  const interval = "240"; // 4 小時
-  console.log(`TradingView 已載入，開始創建 ${symbol} 4H 四組技術分析圖表...`);
+  const { key, interval } = paneTimeframe;
+  console.log(`TradingView 已載入，開始創建 ${symbol} ${key.toUpperCase()} 四組技術分析圖表...`);
 
   ["group1", "group2", "group3", "group4"].forEach((g, i) => {
     setTimeout(
