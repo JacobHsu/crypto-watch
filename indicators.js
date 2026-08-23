@@ -5,7 +5,7 @@ const indicatorSets = {
     "STD;Multi-Time%Period%Charts",
     "STD;Whilliams_Fractals",
     "STD;Williams_Alligator",
-    "STD;Supertrend"
+    "STD;PSAR"
   ],
   column2: [
     "BB@tv-basicstudies",
@@ -18,12 +18,11 @@ const indicatorSets = {
     { "id": "MASimple@tv-basicstudies", "inputs": { "length": 50 } },
     { "id": "MAExp@tv-basicstudies",    "inputs": { "length": 20 } },
     { "id": "MAExp@tv-basicstudies",    "inputs": { "length": 50 } },
-    { "id": "MAExp@tv-basicstudies",    "inputs": { "length": 100 } },
     { "id": "STD;Donchian_Channels" },
   ],
   column4: [
     "STD;Zig_Zag",
-    "STD;PSAR",
+    "STD;Supertrend",
     "STD;Linear_Regression",
     "STD;VWMA"
   ],
