@@ -43,11 +43,16 @@
     <script defer src="../tf.js"></script>
   </head>
   <body>
-    <div class="charts-grid-2x2">
-      <div id="tradingview_btcusdt_col1"></div>
-      <div id="tradingview_btcusdt_col2"></div>
-      <div id="tradingview_btcusdt_col3"></div>
-      <div id="tradingview_btcusdt_col4"></div>
+    <div class="page-with-check">
+      <div class="charts-grid-2x2">
+        <div id="tradingview_btcusdt_col1"></div>
+        <div id="tradingview_btcusdt_col2"></div>
+        <div id="tradingview_btcusdt_col3"></div>
+        <div id="tradingview_btcusdt_col4"></div>
+      </div>
+
+      <!-- 右側：To The Moon Checklist（帶入本頁 symbol / 時間級別） -->
+      <iframe class="check-panel" src="../check.html?symbol=BTC&tf=1D" title="To The Moon Checklist" loading="lazy"></iframe>
     </div>
 
     <script>

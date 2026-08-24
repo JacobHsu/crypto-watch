@@ -1162,6 +1162,21 @@ build();
   document.head.appendChild(script);
 })();
 
+// 由網址參數預設 symbol / timeframe，供 btc/、eth/ 細看頁以 iframe 嵌入時帶入
+(function() {
+  const params = new URLSearchParams(window.location.search);
+
+  const symbol = (params.get('symbol') || '').trim().toUpperCase();
+  if (symbol) document.getElementById('symbol-display').textContent = symbol;
+
+  const tf = (params.get('tf') || '').trim().toUpperCase();
+  if (tf) {
+    const btns = [...document.querySelectorAll('.tf-btn')];
+    const target = btns.find(b => b.textContent.trim().toUpperCase() === tf);
+    if (target) btns.forEach(b => b.classList.toggle('active', b === target));
+  }
+})();
+
 const _d = new Date();
 document.getElementById('hdr-date').textContent =
   `${_d.getFullYear()}-${String(_d.getMonth()+1).padStart(2,'0')}-${String(_d.getDate()).padStart(2,'0')}`;

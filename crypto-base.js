@@ -58,29 +58,21 @@ function detectCryptoSymbol() {
 
 // 創建圖表的函數
 // isColumn3: 使用各頁面自定義的 column3ChartConfig（含 studies_overrides）
-function createChart(containerId, symbol, interval, indicatorSet, isColumn3 = false) {
-  let config;
+// overrides: 呼叫端的額外設定，最後套用（例如細看頁四格都要顯示側邊工具列）
+function createChart(containerId, symbol, interval, indicatorSet, isColumn3 = false, overrides = {}) {
+  const preset = isColumn3
+    ? { ...column3ChartConfig }
+    : { ...baseChartConfig, studies: indicatorSet };
 
-  if (isColumn3) {
-    config = {
-      ...column3ChartConfig,
-      container_id: containerId,
-      symbol: symbol,
-      interval: interval,
-      timezone: "Asia/Taipei",
-      autosize: true,
-    };
-  } else {
-    config = {
-      ...baseChartConfig,
-      container_id: containerId,
-      symbol: symbol,
-      interval: interval,
-      timezone: "Asia/Taipei",
-      autosize: true,
-      studies: indicatorSet,
-    };
-  }
+  const config = {
+    ...preset,
+    container_id: containerId,
+    symbol: symbol,
+    interval: interval,
+    timezone: "Asia/Taipei",
+    autosize: true,
+    ...overrides,
+  };
 
   try {
     new TradingView.widget(config);
