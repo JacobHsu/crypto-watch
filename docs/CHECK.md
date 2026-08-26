@@ -22,6 +22,9 @@
 若要核對 4H，重置後再跑一遍即可。
 適用任意幣種：btc / eth / sol / xrp 等。
 
+> 想讓 Comet 這類 AI 瀏覽器代為核對、直接在對話輸出報告，
+> 見 [AI 瀏覽器判讀（Comet 等）](#ai-瀏覽器判讀comet-等)。
+
 ### Header 欄位
 | 欄位 | 用途 |
 |------|------|
@@ -53,10 +56,85 @@
 
 ### 分數計算
 - 每個 Section 底部顯示 BUY / WAIT / SELL 各項統計
-- **最終判斷**：BUY ≥ 60% → `▲ GO`，SELL ≥ 60% → `▼ NO-GO`，其餘 → `◈ WAIT`
+- **最終判斷**：BUY ≥ 60% → `▲ BUY`，SELL ≥ 60% → `▼ SELL`，其餘 → `◈ WAIT`
+- 一項都還沒核對時顯示 `— NOT CHECKED`，不是 `◈ WAIT`
+- 分母只算**已核對**項目，不需填滿；下方另外標示覆蓋率（如 `已核對 19/36（53%）· A 19/19 · B 0/17`）供自行斟酌
 
 ### 列印
 直接 `Ctrl+P`，互動面板自動隱藏，輸出為乾淨的黑白飛行檢查表格式。
+
+---
+
+## AI 瀏覽器判讀（Comet 等）
+
+`check.html` 內建一份**判讀指引**，讓 Comet 這類 AI 瀏覽器扮演使用者，
+對照圖表逐項核對後在對話中輸出報告 —— 不需要真的去點那 36 個項目。
+
+### 給 Comet 的指令
+
+```
+打開 https://jacobhsu.github.io/crypto-watch/check.html，
+依頁面裡的判讀指引核對並輸出報告。
+```
+
+不需要帶任何網址參數。要換幣種或級別，在對話裡直接講（例如「改看 ETH 4H」），
+或先在頁面上點好 TIMEFRAME、改好 SYMBOL 再叫它讀。
+
+### 指引怎麼取得
+
+| 管道 | 說明 |
+|------|------|
+| 隱形內嵌 | 頁面底部的 `#ai-brief`，用 `clip-path` 視覺隱藏但**仍參與排版**（不是 `display:none`），文字留在 accessibility tree 裡，AI 讀頁面就自動取得 |
+| `?ai=1` | 整頁只輸出純文字指引。header 的「🤖 AI 判讀指引（純文字）」連結會帶上目前的 symbol / tf |
+
+指引全文由 `T` 與 `STRUCTURE` **自動展開**，不是另外維護的文件 ——
+改任何一項的判斷規則，指引會同步跟著變，不會脫節。
+
+### 幣種與級別如何決定
+
+沒有網址參數時，一律以頁面 header 目前顯示的 SYMBOL / TIMEFRAME 為準（預設 `BTC` / `1H`）。
+改動 SYMBOL 或按 TIMEFRAME 按鈕會即時重寫內嵌指引，AI 不會讀到過期的值。
+
+指引裡的圖表頁網址依幣種自動換算：
+
+| 幣種 | Section A | Section B | 2×2 細看頁 |
+|------|-----------|-----------|-----------|
+| BTC / ETH | `btc.html` | `o/btc.html?t=1h` | `btc/1h.html` |
+| 其他幣種 | `altcoin.html?s=SOL` | `o/altcoin.html?s=SOL&t=1d` | 無（只有 `btc/`、`eth/` 有細看頁，會自動省略） |
+
+### 指引內容
+
+1. **角色** — 你是這份檢查表的使用者，逐項確認
+2. **硬規則**（6 條）— 防幻覺用，見下
+3. **版面對照** — `{symbol}.html` 是 3 列 × 4 欄，第 1 列 = 1H、第 2 列 = 4H、第 3 列 = 1D；各欄實際載入哪些指標
+4. **36 項完整決策樹** — 含兩層追問的項目會展開成巢狀
+
+關鍵的防幻覺規則：
+
+```
+看不清楚、指標沒顯示、無法確認  → 一律選 WAIT，禁止用市場常識或價格印象推測
+每一項都要附「證據」            → 一句話描述圖上的具體空間關係或數值
+寫不出具體證據                  → 該項改回 WAIT
+```
+
+輸出格式：
+
+```
+[編號] 項目名稱 | BUY|WAIT|SELL | 證據：<你在圖上看到什麼>
+...
+BUY: n · WAIT: n · SELL: n · 已核對 n/36
+FINAL: ▲ BUY / ◈ WAIT / ▼ SELL
+```
+
+### 判讀準確率的注意事項
+
+TradingView 圖表是**跨域 iframe 裡的 canvas**，DOM 讀不到指標數值，AI 只能靠視覺判讀。
+因此：
+
+- `{symbol}.html` 是 12 張圖擠一頁，每張約 300px 寬，判讀難度高
+- 指引裡已附上 `{symbol}/{tf}.html`（2×2 大圖）作為替代，圖大很多，準確率較高
+- **務必檢查 AI 回報的「證據」欄**。寫得出「綠線最上、紅線居中、藍線最下，K 棒在三線上方」
+  這種具體空間關係才可信；只回「趨勢向上」這類空話代表它在猜，該項應視為 WAIT
 
 ---
 
@@ -68,12 +146,15 @@
 
 | 欄位 | 圖表載入的指標 |
 |------|---------------|
-| COL 1 — TREND | Multi-Time Period · Williams Fractals · Williams Alligator · Supertrend |
+| COL 1 — TREND | Multi-Time Period · Williams Fractals · Williams Alligator · Parabolic SAR |
 | COL 2 — CHANNEL | Bollinger Bands · Keltner Channel · MA Cross · Volatility Stop |
-| COL 3 — MOVING AVERAGE | MA 20/50 · EMA 20/50/100 · Donchian Channels |
-| COL 4 — TREND / EXIT | Zig Zag · Parabolic SAR · Linear Regression · VWMA |
+| COL 3 — MOVING AVERAGE | MA 20/50 · EMA 20/50 · Donchian Channels |
+| COL 4 — TREND / EXIT | Zig Zag · Supertrend · Linear Regression · VWMA |
 
-（`↳` 開頭的組合判斷項不是獨立指標，是同一欄兩個指標的交叉確認。）
+（`↳` 開頭的組合判斷項不是獨立指標，是兩個指標的交叉確認。）
+
+> ⚠️ `↳ SAR × LINEAR REG` 是唯一的**跨欄**組合：PSAR 在 COL 1、Linear Regression 在 COL 4，
+> 需要同時看兩張圖。其餘組合項的兩個指標都在同一欄。
 
 ### COL 1 — TREND（趨勢系統）
 
@@ -149,17 +230,16 @@
 
 ---
 
-#### SUPERTREND（超級趨勢線）
-> 跟隨趨勢的動態支撐/阻力線。
+#### PARABOLIC SAR（拋物線停損）
+> 一排跟隨趨勢的小圓點，出現在 K 線上方或下方。
 
-**⚠️ 重要：以 K 線位置為準，顏色是結果不是原因。**
-
+**判斷邏輯：**
 ```
-K 線在線的上方（不管線是綠或紅）  → 🟢 BUY
-K 線在線的下方（不管線是綠或紅）  → 🔴 SELL
+SAR 點持續在 K 線下方    → 🟢 BUY（上升趨勢）
+SAR 點剛翻到 K 線下方    → 🟢 BUY（趨勢轉換入場）
+SAR 點持續在 K 線上方    → 🔴 SELL（下降趨勢）
+SAR 點剛翻到 K 線上方    → 🔴 SELL（出場訊號）
 ```
-
-> 若看到紅線但 K 線在線上方，這是趨勢剛轉換的訊號，選「K線在上方」= BUY。
 
 ---
 
@@ -248,16 +328,17 @@ MA50 > MA20 > K線（空頭排列）  → 🔴 SELL
 
 ---
 
-#### EMA 20 / 50 / 100（指數移動平均線）
-> 圖上共三條 EMA（青色系）：EMA20 最敏感、EMA50 居中、EMA100 最慢，作為長期趨勢濾網。
+#### EMA 20 / 50（指數移動平均線）
+> 圖上共兩條 EMA（青色系）：EMA20 較敏感、EMA50 較慢。
+> 同一欄還有 MA 20/50（橙色），兩組線疊在一起，靠顏色分辨。
 
 **判斷邏輯：**
 ```
-K線 > EMA20 > EMA50 > EMA100（完全多頭排列）  → 🟢 BUY
-EMA 糾纏或排列混亂                             → ⬛ WAIT
+K線 > EMA20 > EMA50（多頭排列）  → 🟢 BUY
+兩條 EMA 糾纏或交叉混亂           → ⬛ WAIT
   ⚠️ 含只有部分順序正確的情況
-    （例如 K線站上 EMA20，但 EMA50 仍在 EMA100 下方 = 尚未確認）
-EMA100 > EMA50 > EMA20 > K線（完全空頭排列）  → 🔴 SELL
+    （例如 K線站上 EMA20，但 EMA20 仍在 EMA50 下方 = 尚未確認）
+EMA50 > EMA20 > K線（空頭排列）  → 🔴 SELL
 ```
 
 ---
@@ -301,16 +382,17 @@ MA 和 EMA 都空頭排列  → 🔴 SELL（共振確認）
 
 ---
 
-#### PARABOLIC SAR（拋物線停損）
-> 一排跟隨趨勢的小圓點，出現在 K 線上方或下方。
+#### SUPERTREND（超級趨勢線）
+> 跟隨趨勢的動態支撐/阻力線。
 
-**判斷邏輯：**
+**⚠️ 重要：以 K 線位置為準，顏色是結果不是原因。**
+
 ```
-SAR 點持續在 K 線下方    → 🟢 BUY（上升趨勢）
-SAR 點剛翻到 K 線下方    → 🟢 BUY（趨勢轉換入場）
-SAR 點持續在 K 線上方    → 🔴 SELL（下降趨勢）
-SAR 點剛翻到 K 線上方    → 🔴 SELL（出場訊號）
+K 線在線的上方（不管線是綠或紅）  → 🟢 BUY
+K 線在線的下方（不管線是綠或紅）  → 🔴 SELL
 ```
+
+> 若看到紅線但 K 線在線上方，這是趨勢剛轉換的訊號，選「K線在上方」= BUY。
 
 ---
 
@@ -603,7 +685,7 @@ OBV 與 K 線同步下降  → 🔴 SELL（量價齊跌）
 | `↳ ALLIGATOR × FRACTAL` | 鱷魚確認碎形有效性 | COL 1 TREND | A |
 | `BB / KC SQUEEZE` | 布林 × 肯特納擠壓偵測 | COL 2 CHANNEL | A |
 | `↳ MA × EMA 共振` | 兩組均線方向一致性 | COL 3 MOVING AVERAGE | A |
-| `↳ SAR × LINEAR REG` | SAR + 迴歸線斜率雙確認 | COL 4 TREND / EXIT | A |
+| `↳ SAR × LINEAR REG` | SAR + 迴歸線斜率雙確認 | COL 1 + COL 4（跨欄） | A |
 | `↳ SUPERTREND × MACD` | 趨勢 + 動能雙確認 | 第一組 · 趨勢面 | B |
 
 ---
@@ -611,9 +693,13 @@ OBV 與 K 線同步下降  → 🔴 SELL（量價齊跌）
 ## 最終判斷邏輯
 
 ```
-已核對項目中，BUY 佔比 ≥ 60%  → ▲ GO（看漲，可考慮買入）
-已核對項目中，SELL 佔比 ≥ 60% → ▼ NO-GO（看跌，避免多單）
+一項都還沒核對                  → — NOT CHECKED（尚未開始，不是結論）
+已核對項目中，BUY 佔比 ≥ 60%  → ▲ BUY（看漲，可考慮買入）
+已核對項目中，SELL 佔比 ≥ 60% → ▼ SELL（看跌，避免多單）
 其餘情況                        → ◈ WAIT（方向不明，觀望）
+
+分母只算已核對項目，隨選隨變，不需填滿 ─ 只跑 Section A 也會給方向。
+覆蓋率（如 19/36）另行標示，數字太小時結論僅供參考。
 ```
 
 > 此為參考建議，非投資建議。最終決策仍需結合風險管理與個人判斷。
@@ -632,7 +718,7 @@ OBV 與 K 線同步下降  → 🔴 SELL（量價齊跌）
 | **CMF** · Chaikin Money Flow | 蔡金資金流量 | 成交量 | 正值上升 → BUY（資金流入）；負值下降 → SELL | B |
 | **DMI / ADX** | 趨向指標 | 趨勢追蹤 | +DI 在上且 ADX > 25 → BUY；−DI 在上且 ADX > 25 → SELL；ADX < 25 → WAIT | B |
 | **Donchian Channels** · DC | 唐奇安通道 | 波動性 | 突破上軌（創新高）→ BUY；跌破下軌 → SELL | A |
-| **EMA** · Exponential Moving Average | 指數移動平均線 | 移動均線 | K線 > EMA20 > EMA50 > EMA100 → BUY；反之 → SELL | A |
+| **EMA** · Exponential Moving Average | 指數移動平均線 | 移動均線 | K線 > EMA20 > EMA50 → BUY；反之 → SELL | A |
 | **Historical Volatility** · HV | 歷史波動率 | 波動性 | 只反映波動大小；低檔翻揚 + K線突破方向 → 行情啟動；高檔 → 末段慎追 | B |
 | **Hull MA** · HMA | 赫爾均線 | 移動均線 | K線在 HMA 上且上揚 → BUY；在下且下彎 → SELL；走平 → WAIT | B |
 | **Keltner Channel** · KC | 肯特納通道 | 波動性 | 突破上軌站穩 → BUY；跌破下軌站穩 → SELL | A |

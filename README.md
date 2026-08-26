@@ -100,7 +100,7 @@
 - **訪問**: https://jacobhsu.github.io/crypto-watch/ema
 
 ### 交易決策 Checklist (`check.html`)
-- **說明**: 買賣前的逐項檢查表。對著圖表逐一核對指標，每項用引導式問答得出 `▲ BUY` / `─ WAIT` / `▼ SELL`，最後依 60% 門檻給出 `▲ GO` / `◈ WAIT` / `▼ NO-GO`
+- **說明**: 買賣前的逐項檢查表。對著圖表逐一核對指標，每項用引導式問答得出 `▲ BUY` / `─ WAIT` / `▼ SELL`，最後依 60% 門檻給出 `▲ BUY` / `◈ WAIT` / `▼ SELL`
 - **兩個段落各自對應一個圖表頁**（共 36 個核對項目）：
 
   | 段落 | 對照頁面 | 項目數 |
@@ -110,6 +110,7 @@
 
   > 核對時 `o/` 的 `?t=` 要與 Checklist 上方選的 TIMEFRAME 一致。
 - **開啟方式**: 在幣種分頁（btc / eth / altcoin / rwa）按 **Shift+C**，首頁無效
+- **AI 瀏覽器代填**: 頁面內建判讀指引，可讓 Comet 等 AI 瀏覽器對照圖表產出核對報告。用法見 [`docs/CHECK.md`](docs/CHECK.md#ai-瀏覽器判讀comet-等)
 - **完整說明書**: [`docs/CHECK.md`](docs/CHECK.md) — 每個指標的判讀邏輯、顏色對照、指標索引
 - **訪問**: https://jacobhsu.github.io/crypto-watch/check
 

@@ -272,9 +272,16 @@
     .final-val.buy  { color: var(--buy); }
     .final-val.sell { color: var(--sell); }
     .final-val.wait { color: var(--wait); }
+    .final-val.none { color: var(--dim); }
     .final-score { font-size: 10px; color: var(--dim); margin-top: 6px; }
     .final-score .b { color: var(--buy); }
     .final-score .s { color: var(--sell); }
+    .final-cov {
+      font-size: 10px;
+      color: var(--dim);
+      margin-top: 5px;
+      letter-spacing: 0.5px;
+    }
 
     /* ── SECTION HEADER ─────────────── */
     .sec-hdr-top {
@@ -330,6 +337,41 @@
       .qr-float { display: none; }
     }
 
+    /* ── AI BRIEF ───────────────────── */
+    /* 視覺隱藏但仍參與排版 ─ 用 clip 而非 display:none，
+       這樣文字留在 accessibility tree 裡，AI 瀏覽器與螢幕閱讀器才讀得到 */
+    #ai-brief {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      border: 0;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: pre-wrap;
+    }
+
+    .hdr-ai {
+      margin-top: 6px;
+      padding-top: 5px;
+      border-top: 1px solid var(--border);
+      font-size: 9px;
+      text-align: center;
+    }
+    .hdr-ai a { color: var(--dim); text-decoration: none; letter-spacing: 1px; }
+    .hdr-ai a:hover { color: var(--accent); }
+
+    #ai-brief-plain {
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: var(--font);
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
     /* ── PRINT ──────────────────────── */
     @media print {
       body {
@@ -350,6 +392,8 @@
       .item-row:hover { background: none; }
       .reset-all   { display: none; }
       .qr-float    { display: none; }
+      .hdr-ai      { display: none; }
+      #ai-brief    { display: none; }
       .cg, .cr, .cb, .co, .cc { color: #000 !important; }
     }
   </style>
@@ -374,6 +418,7 @@
       </div>
     </div>
   </div>
+  <div class="hdr-ai"><a id="ai-link" href="?ai=1" target="_blank">🤖 AI 判讀指引（純文字）</a></div>
 </div>
 
 <!-- QR CODE (floating right, PC only) -->
@@ -388,10 +433,11 @@
 <!-- FINAL -->
 <div class="final">
   <div class="final-lbl">━━ FINAL DECISION ━━━━━━━━━━━━━━━━━━━━━━━━━</div>
-  <div class="final-val wait" id="final-val">◈ WAIT</div>
+  <div class="final-val none" id="final-val">— NOT CHECKED</div>
   <div class="final-score" id="final-score">
     <span class="b">▲ BUY: 0</span> &nbsp;·&nbsp; ─ WAIT: 0 &nbsp;·&nbsp; <span class="s">▼ SELL: 0</span>
   </div>
+  <div class="final-cov" id="final-cov">&nbsp;</div>
 </div>
 
 <script>
@@ -530,18 +576,18 @@ const T = {
   },
 
   ema: {
-    name: "EMA 20 / 50 / 100",
-    tree: { q: "三條指數移動平均線與 K 線的排列？",
-      hint: "圖上共三條 EMA（青色系）：EMA20 最敏感、EMA50 居中、EMA100 最慢，作為長期趨勢濾網。",
+    name: "EMA 20 / 50",
+    tree: { q: "兩條指數移動平均線與 K 線的排列？",
+      hint: "圖上共兩條 EMA（<span class='cc'>青色系</span>）：EMA20 較敏感、EMA50 較慢。同一欄還有 MA 20/50（<span class='co'>橙色</span>），別看錯顏色。",
       opts: [
-        { l: "K 線 &gt; <span class='cc'>EMA20</span> &gt; EMA50 &gt; EMA100",
-          sub: "完全多頭排列 ─ 由快到慢依序向下堆疊，K線在<span class='cc'>青線</span>上方",
+        { l: "K 線 &gt; <span class='cc'>EMA20</span> &gt; EMA50",
+          sub: "多頭排列 ─ 由快到慢依序向下堆疊，K線在<span class='cc'>青線</span>上方",
           r: { s: "BUY",  t: "EMA 多頭排列 ─ 上升趨勢確認" } },
-        { l: "EMA 糾纏 / 排列混亂（含只有部分順序正確）",
-          sub: "例如 K線站上 EMA20 但 EMA50 仍在 EMA100 下方 = 尚未確認",
+        { l: "兩條 EMA 糾纏 / 交叉混亂",
+          sub: "例如 K線站上 EMA20 但 EMA20 仍在 EMA50 下方 = 尚未確認",
           r: { s: "WAIT", t: "EMA 整理 ─ 趨勢不明確" } },
-        { l: "EMA100 &gt; EMA50 &gt; <span class='cc'>EMA20</span> &gt; K 線",
-          sub: "完全空頭排列 ─ K線在<span class='cc'>青線</span>下方",
+        { l: "EMA50 &gt; <span class='cc'>EMA20</span> &gt; K 線",
+          sub: "空頭排列 ─ K線在<span class='cc'>青線</span>下方",
           r: { s: "SELL", t: "EMA 空頭排列 ─ 下降趨勢確認" } }
       ] }
   },
@@ -894,7 +940,7 @@ const T = {
   psar_linreg: {
     name: "↳ SAR × LINEAR REG",
     tree: { q: "SAR 點位置和迴歸線斜率是否一致？",
-      hint: "SAR 抓短線轉折，線性迴歸看整段趨勢的斜率。兩者同向 = 短線與中期趨勢對齊，訊號較可靠。",
+      hint: "⚠️ 兩個指標不在同一張圖：PSAR 在 <b>COL 1</b>，Linear Regression 在 <b>COL 4</b>。SAR 抓短線轉折，線性迴歸看整段趨勢的斜率。兩者同向 = 短線與中期趨勢對齊，訊號較可靠。",
       opts: [
         { l: "SAR 點在 K 線<b>下方</b> ＋ 迴歸線斜率向<b>上</b>",
           r: { s: "BUY",  t: "SAR × 迴歸線多頭共振 ─ 短中期趨勢一致" } },
@@ -931,19 +977,20 @@ const STRUCTURE = [
   {
     id: "pageI", label: "A", page: "PAGE I", desc: "Trend · Channel · MA · Exit",
     cols: [
-      // COL 1: Multi-Time Period · Fractals · Alligator · Supertrend
-      { name: "TREND",           items: ["multi_time","fractals","alligator","alligator_fractal","supertrend"] },
+      // COL 1: Multi-Time Period · Fractals · Alligator · PSAR
+      { name: "TREND",           items: ["multi_time","fractals","alligator","alligator_fractal","psar"] },
       // COL 2: BB · Keltner · MA Cross · Volatility Stop
       { name: "CHANNEL",         items: ["bb","keltner","bb_kc_squeeze","ma_cross","vol_stop"] },
-      // COL 3: MA 20/50 · EMA 20/50/100 · Donchian
+      // COL 3: MA 20/50 · EMA 20/50 · Donchian
       { name: "MOVING AVERAGE",  items: ["ma","ema","donchian","ma_ema_agree"] },
-      // COL 4: Zig Zag · PSAR · Linear Regression · VWMA
-      { name: "TREND / EXIT",    items: ["zigzag","psar","linear_reg","psar_linreg","vwma"] }
+      // COL 4: Zig Zag · Supertrend · Linear Regression · VWMA
+      //   psar_linreg 跨欄：PSAR 在 COL 1、Linear Regression 在本欄
+      { name: "TREND / EXIT",    items: ["zigzag","supertrend","linear_reg","psar_linreg","vwma"] }
     ]
   },
   {
     id: "pageII", label: "B", page: "PAGE II", suffix: "Pane",
-    desc: "4H 固定 · Trend · Momentum · Volatility · Volume",
+    desc: "級別由 ?t= 指定 · Trend · Momentum · Volatility · Volume",
     cols: [
       // 第一組 趨勢面：Supertrend(主圖) + MACD / DMI / Aroon(副圖)
       { name: "第一組 · 趨勢面", items: ["supertrend","macd","dmi","aroon","supertrend_macd"] },
@@ -956,6 +1003,21 @@ const STRUCTURE = [
     ]
   }
 ];
+
+// ═══════════════════════════════════════════════
+// 判斷門檻
+//   已核對項目中 BUY 或 SELL 需達此佔比才給方向
+//   分母只算「已核對」項目 ─ 不要求填滿，可只跑 Section A
+// ═══════════════════════════════════════════════
+const DECISION_MIN = 0.6;
+
+// 各 Section 的可核對項目數（跳過 T 裡沒有定義的 key，與 build() 一致）
+const SECTION_TOTALS = {};
+STRUCTURE.forEach(sec => {
+  SECTION_TOTALS[sec.id] = sec.cols.reduce(
+    (n, col) => n + col.items.filter(k => T[k]).length, 0);
+});
+const TOTAL_ITEMS = Object.values(SECTION_TOTALS).reduce((a, b) => a + b, 0);
 
 // ═══════════════════════════════════════════════
 // STATE
@@ -996,7 +1058,7 @@ function build() {
     const sc = document.createElement('div');
     sc.className = 'sec-score';
     sc.id = `sc·${sec.id}`;
-    sc.innerHTML = scoreHTML(0, 0, 0);
+    sc.innerHTML = scoreHTML(0, 0, 0, 0, SECTION_TOTALS[sec.id]);
     secDiv.appendChild(sc);
 
     root.appendChild(secDiv);
@@ -1095,12 +1157,15 @@ function resetSection(secId) {
 // ═══════════════════════════════════════════════
 // SCORES
 // ═══════════════════════════════════════════════
-function scoreHTML(b, w, s) {
-  return `<span class="b">▲ BUY: ${b}</span> &nbsp;·&nbsp; ─ WAIT: ${w} &nbsp;·&nbsp; <span class="s">▼ SELL: ${s}</span>`;
+function scoreHTML(b, w, s, done, total) {
+  const cov = total ? ` &nbsp;·&nbsp; ${done}/${total}` : '';
+  return `<span class="b">▲ BUY: ${b}</span> &nbsp;·&nbsp; ─ WAIT: ${w} &nbsp;·&nbsp; <span class="s">▼ SELL: ${s}</span>${cov}`;
 }
 
 function updateScores() {
   let gb = 0, gw = 0, gs = 0;
+  const perSection = [];
+
   STRUCTURE.forEach(sec => {
     let b = 0, w = 0, s = 0;
     sec.cols.forEach(col => col.items.forEach(key => {
@@ -1109,19 +1174,36 @@ function updateScores() {
       else if (v === 'SELL') { s++; gs++; }
       else if (v === 'WAIT') { w++; gw++; }
     }));
+    const done = b + w + s;
+    perSection.push(`${sec.label} ${done}/${SECTION_TOTALS[sec.id]}`);
+
     const el = document.getElementById(`sc·${sec.id}`);
-    if (el) el.innerHTML = scoreHTML(b, w, s);
+    if (el) el.innerHTML = scoreHTML(b, w, s, done, SECTION_TOTALS[sec.id]);
   });
 
-  const total = gb + gw + gs;
-  const fv = document.getElementById('final-val');
+  const done = gb + gw + gs;
+  const fv   = document.getElementById('final-val');
+  const cov  = document.getElementById('final-cov');
   document.getElementById('final-score').innerHTML = scoreHTML(gb, gw, gs);
 
-  if (total === 0) { fv.className = 'final-val wait'; fv.textContent = '◈ WAIT'; return; }
-  const bPct = gb / total, sPct = gs / total;
-  if      (bPct >= 0.6) { fv.className = 'final-val buy';  fv.textContent = '▲ GO'; }
-  else if (sPct >= 0.6) { fv.className = 'final-val sell'; fv.textContent = '▼ NO-GO'; }
-  else                  { fv.className = 'final-val wait'; fv.textContent = '◈ WAIT'; }
+  // 一項都沒核對 ─ 不是 WAIT，是「還沒開始」
+  if (done === 0) {
+    fv.className = 'final-val none';
+    fv.textContent = '— NOT CHECKED';
+    cov.className = 'final-cov';
+    cov.textContent = `尚未核對任何項目 · 0 / ${TOTAL_ITEMS}`;
+    return;
+  }
+
+  // 覆蓋率只作資訊揭露，不擋結論 ─ 只填 Section A 也照樣出方向
+  cov.className = 'final-cov';
+  cov.textContent = `已核對 ${done}/${TOTAL_ITEMS}`
+    + `（${Math.round(done / TOTAL_ITEMS * 100)}%） · ${perSection.join(' · ')}`;
+
+  const bPct = gb / done, sPct = gs / done;
+  if      (bPct >= DECISION_MIN) { fv.className = 'final-val buy';  fv.textContent = '▲ BUY'; }
+  else if (sPct >= DECISION_MIN) { fv.className = 'final-val sell'; fv.textContent = '▼ SELL'; }
+  else                           { fv.className = 'final-val wait'; fv.textContent = '◈ WAIT'; }
 }
 
 function editSymbol() {
@@ -1135,17 +1217,270 @@ function editSymbol() {
 function saveSymbol(inp) {
   const val = inp.value.trim().toUpperCase() || 'BTC';
   inp.outerHTML = `<span id="symbol-display" class="symbol-val" onclick="editSymbol()">${val}</span>`;
+  refreshAIBrief();
 }
 
 function setTF(btn) {
   document.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  refreshAIBrief();
 }
 
-build();
+// ═══════════════════════════════════════════════
+// AI BRIEF
+// 給 AI 瀏覽器（Comet 等）讀的判讀指引。
+// 全文由 T / STRUCTURE 自動展開 ─ 改判斷規則會自動同步，不需維護第二份。
+// ═══════════════════════════════════════════════
 
-// QR Code
-(function() {
+// 每張圖實際載入的指標（來源：indicators.js / o/crypto.js）
+const CHART_LAYOUT = {
+  pageI: {
+    unit: "欄",
+    charts: [
+      "Multi-Time Period · Williams Fractals · Williams Alligator · Parabolic SAR",
+      "Bollinger Bands · Keltner Channel · MA Cross · Volatility Stop",
+      "MA 20（橙）· MA 50（橙）· EMA 20（青）· EMA 50（青）· Donchian Channels",
+      "Zig Zag · Supertrend · Linear Regression · VWMA"
+    ]
+  },
+  pageII: {
+    unit: "組",
+    charts: [
+      "主圖 Supertrend ＋ 副圖 MACD / DMI·ADX / Aroon",
+      "主圖 Hull MA ＋ 副圖 RSI / Stochastic RSI / ROC",
+      "主圖 Bollinger Bands ＋ 副圖 ATR / Choppiness Index / Historical Volatility",
+      "主圖 VWMA ＋ 副圖 OBV / MFI / Chaikin Money Flow"
+    ]
+  }
+};
+
+// 幣種 → 圖表頁網址。BTC / ETH 有專屬頁，其餘走 altcoin.html?s=
+// 2×2 細看頁（{sym}/{tf}.html）目前只有 btc/ 與 eth/ 目錄
+function chartPages(SYM, TF) {
+  const sym = SYM.toLowerCase();
+  const own = ['BTC', 'ETH'].includes(SYM);
+  return {
+    pageA:  own ? `${sym}.html` : `altcoin.html?s=${SYM}`,
+    pageB:  own ? `o/${sym}.html?t=${TF.toLowerCase()}` : `o/altcoin.html?s=${SYM}&t=${TF.toLowerCase()}`,
+    detail: own ? `${sym}/${TF.toLowerCase()}.html` : ''
+  };
+}
+
+// 需要額外提醒的項目（跨圖等）
+const ITEM_NOTES = {
+  "pageI·psar_linreg": "⚠️ 跨欄：PSAR 在第 1 欄、Linear Regression 在第 4 欄，需同時看兩張圖。"
+};
+
+// 去掉選項字串裡的 HTML 標籤與實體，還原成純文字
+function plain(s) {
+  return String(s == null ? '' : s)
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&gt;/g, '>')
+    .replace(/&lt;/g, '<')
+    .replace(/&amp;/g, '&')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// 遞迴展開決策樹：opts[].r 是結果，opts[].n 是追問的下一層
+function briefNode(node, pad) {
+  const out = [`${pad}Q：${plain(node.q)}`];
+  if (node.hint) out.push(`${pad}   說明：${plain(node.hint)}`);
+
+  node.opts.forEach(o => {
+    if (o.r) {
+      out.push(`${pad}   → [${o.r.s}] ${plain(o.l)}`);
+      if (o.sub) out.push(`${pad}            ※ ${plain(o.sub)}`);
+    } else if (o.n) {
+      out.push(`${pad}   → 若「${plain(o.l)}」，再往下判斷：`);
+      if (o.sub) out.push(`${pad}            ※ ${plain(o.sub)}`);
+      out.push(...briefNode(o.n, pad + '      '));
+    }
+  });
+  return out;
+}
+
+function buildAIBrief(symbol, tf) {
+  const SYM = (symbol || 'BTC').toUpperCase();
+  const TF  = (tf || '1H').toUpperCase();
+  const P   = chartPages(SYM, TF);
+  const base = window.location.href.replace(/[^/]*(\?.*)?$/, '');
+
+  const L = [
+    '════════════════════════════════════════════════════',
+    'AI 判讀指引 ─ TO THE MOON CHECKLIST',
+    '════════════════════════════════════════════════════',
+    '',
+    '【你的角色】',
+    '你是這份檢查表的使用者。請打開下方指定的圖表頁面，對照圖表，',
+    '像使用者一樣「逐項確認」：為每個項目挑出你在圖上實際看到的那個選項，',
+    '得出該項的 BUY / WAIT / SELL。',
+    '',
+    '【本次核對的幣種與級別】',
+    `本頁 header 目前顯示　SYMBOL = ${SYM}　·　TIMEFRAME = ${TF}`,
+    '若使用者在對話中另外指定了幣種或時間框架，以使用者指定的為準；',
+    '此時請依下列規則自行換算圖表頁網址，不要沿用下面寫死的檔名：',
+    '  BTC → btc.html　·　ETH → eth.html　·　其他幣種 → altcoin.html?s=幣種代號',
+    '  Section B 一律加 o/ 前綴並帶 ?t=時間框架（15m / 1h / 4h / 1d）',
+    `本頁所在目錄：${base}`,
+    '',
+    '【硬規則 ─ 違反就等於這份報告無效】',
+    '1. 只根據圖上「實際看得到」的內容判斷。看不清楚、指標沒顯示、無法確認',
+    '   → 一律選 WAIT。禁止用市場常識、新聞或價格印象推測。',
+    '2. 每一項都要附「證據」：一句話描述你在圖上看到的具體空間關係或數值，',
+    '   例如「綠線最上、紅線居中、藍線最下，K 棒整體在三線上方」。',
+    '   寫不出具體證據的項目 → 該項改回 WAIT。',
+    '3. 只能從該項列出的選項中選一個。不可自創選項、不可自創項目、不可跳過項目。',
+    '4. 標示「再往下判斷」的項目是兩層決策：先判斷第一層，再依追問決定最終結果。',
+    '5. Section A 與 Section B 必須用同一個時間框架。',
+    '6. 不需要點擊本頁任何按鈕，直接在對話中輸出結果即可。',
+    '',
+    '【輸出格式】',
+    '每項一行：',
+    '   [編號] 項目名稱 | BUY|WAIT|SELL | 證據：<你在圖上看到什麼>',
+    '跑完後附統計：',
+    `   BUY: n · WAIT: n · SELL: n · 已核對 n/${TOTAL_ITEMS}`,
+    '   FINAL: ▲ BUY / ◈ WAIT / ▼ SELL',
+    '',
+    '【計分規則】',
+    '分母只算已核對的項目，不需要填滿。',
+    `已核對項目中 BUY 佔比 ≥ ${Math.round(DECISION_MIN * 100)}% → ▲ BUY；`,
+    `SELL 佔比 ≥ ${Math.round(DECISION_MIN * 100)}% → ▼ SELL；其餘 → ◈ WAIT。`,
+    '一項都沒核對 → — NOT CHECKED（這不是 WAIT，是還沒開始）。',
+    `只做 Section A（${SECTION_TOTALS.pageI} 項）也可以，不必湊滿 ${TOTAL_ITEMS} 項。`,
+    ''
+  ];
+
+  let n = 0;
+  STRUCTURE.forEach(sec => {
+    const lay = CHART_LAYOUT[sec.id];
+    L.push('────────────────────────────────────────────────────');
+    L.push(`■ SECTION ${sec.label} ─ ${sec.page}${sec.suffix ? ' ─ ' + sec.suffix : ''}`
+      + `　（${SECTION_TOTALS[sec.id]} 項）`);
+    L.push(`  ${sec.desc}`);
+    L.push('────────────────────────────────────────────────────');
+
+    if (sec.id === 'pageI') {
+      L.push(`圖表來源：${P.pageA} ─ 3 列 × 4 欄，共 12 張圖`);
+      L.push('  列（由上到下）：第 1 列 = 1H · 第 2 列 = 4H · 第 3 列 = 1D');
+      L.push(`  → 只看與本次 TIMEFRAME（${TF}）相符的那一列，其餘兩列忽略。`);
+      if (P.detail) {
+        L.push(`  也可改用 ${P.detail}（2×2 大圖、單一級別，圖大很多，判讀準確率較高）：`);
+        L.push('    左上 = 第 1 欄 · 右上 = 第 2 欄 · 左下 = 第 3 欄 · 右下 = 第 4 欄');
+      }
+    } else if (sec.id === 'pageII') {
+      L.push(`圖表來源：${P.pageB} ─ 4 張圖`);
+      L.push('  每張圖 = 1 個主圖指標疊在價格上 ＋ 3 個副圖窗格（Pane）排在下方。');
+      L.push(`  ?t= 必須與本次 TIMEFRAME（${TF}）一致，否則等於拿兩個週期的訊號混算。`);
+    }
+
+    if (lay) {
+      L.push('');
+      L.push(`各${lay.unit}實際載入的指標：`);
+      lay.charts.forEach((c, i) => L.push(`  第 ${i + 1} ${lay.unit}：${c}`));
+    }
+    L.push('');
+
+    sec.cols.forEach((col, ci) => {
+      const where = lay ? `第 ${ci + 1} ${lay.unit}` : '';
+      L.push(`▸ ${col.name}　（看${where}）`);
+
+      col.items.forEach(key => {
+        const def = T[key];
+        if (!def) return;
+        n++;
+        const id = `${sec.id}·${key}`;
+        L.push('');
+        L.push(`  [${n}] ${plain(def.name)}　（看${where}｜代號 ${sec.id}.${key}）`);
+        if (ITEM_NOTES[id]) L.push(`       ${ITEM_NOTES[id]}`);
+        L.push(...briefNode(def.tree, '       '));
+      });
+      L.push('');
+    });
+  });
+
+  L.push('════════════════════════════════════════════════════');
+  L.push(`以上共 ${n} 項。請依【輸出格式】逐項回報，不要省略任何一項。`);
+  L.push('════════════════════════════════════════════════════');
+
+  return L.join('\n');
+}
+
+// 視覺隱藏但留在 accessibility tree ─ AI 瀏覽器讀得到，人看不到
+function injectAIBrief() {
+  const div = document.createElement('div');
+  div.id = 'ai-brief';
+  div.setAttribute('aria-label', 'AI 判讀指引');
+  div.textContent = buildAIBrief(currentSymbol(), currentTF());
+  document.body.appendChild(div);
+}
+
+// SYMBOL / TIMEFRAME 一改，內嵌指引就跟著重寫 ─ 免得 AI 讀到過期的幣種或級別
+function refreshAIBrief() {
+  const div = document.getElementById('ai-brief');
+  if (div) div.textContent = buildAIBrief(currentSymbol(), currentTF());
+}
+
+// ?ai=1 ─ 整頁只輸出純文字指引，方便檢視或貼給其他 AI
+function renderAIPage(symbol, tf) {
+  document.title = `AI 判讀指引 ─ ${(symbol || 'BTC').toUpperCase()} ${(tf || '1H').toUpperCase()}`;
+  const pre = document.createElement('pre');
+  pre.id = 'ai-brief-plain';
+  pre.textContent = buildAIBrief(symbol, tf);
+  document.body.replaceChildren(pre);
+}
+
+// ═══════════════════════════════════════════════
+// BOOT
+// ═══════════════════════════════════════════════
+
+// 由網址參數預設 symbol / timeframe，供 btc/、eth/ 細看頁以 iframe 嵌入時帶入
+function readParams() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    ai:     (params.get('ai') || '').trim(),
+    symbol: (params.get('symbol') || '').trim().toUpperCase(),
+    tf:     (params.get('tf') || '').trim().toUpperCase()
+  };
+}
+
+function applyParams(p) {
+  if (p.symbol) document.getElementById('symbol-display').textContent = p.symbol;
+
+  if (p.tf) {
+    const btns = [...document.querySelectorAll('.tf-btn')];
+    const target = btns.find(b => b.textContent.trim().toUpperCase() === p.tf);
+    if (target) btns.forEach(b => b.classList.toggle('active', b === target));
+  }
+
+  // 「AI 判讀指引」連結沿用目前的 symbol / tf
+  const link = document.getElementById('ai-link');
+  if (link) {
+    const q = new URLSearchParams(window.location.search);
+    q.set('ai', '1');
+    link.href = `?${q}`;
+  }
+}
+
+// 沒有網址參數時，一律以頁面 header 目前顯示的值為準
+function currentSymbol() {
+  const el = document.getElementById('symbol-display');
+  return (el ? el.textContent.trim().toUpperCase() : '') || 'BTC';
+}
+
+function currentTF() {
+  const active = document.querySelector('.tf-btn.active');
+  return active ? active.textContent.trim().toUpperCase() : '1H';
+}
+
+function showDate() {
+  const d = new Date();
+  document.getElementById('hdr-date').textContent =
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function initQR() {
   const url = window.location.href;
   const script = document.createElement('script');
   script.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
@@ -1160,26 +1495,21 @@ build();
     });
   };
   document.head.appendChild(script);
-})();
+}
 
-// 由網址參數預設 symbol / timeframe，供 btc/、eth/ 細看頁以 iframe 嵌入時帶入
-(function() {
-  const params = new URLSearchParams(window.location.search);
+const PARAMS = readParams();
 
-  const symbol = (params.get('symbol') || '').trim().toUpperCase();
-  if (symbol) document.getElementById('symbol-display').textContent = symbol;
+if (PARAMS.ai) {
+  renderAIPage(PARAMS.symbol, PARAMS.tf);
+} else {
+  build();
+  updateScores();
+  applyParams(PARAMS);
+  showDate();
+  initQR();
+  injectAIBrief();
+}
 
-  const tf = (params.get('tf') || '').trim().toUpperCase();
-  if (tf) {
-    const btns = [...document.querySelectorAll('.tf-btn')];
-    const target = btns.find(b => b.textContent.trim().toUpperCase() === tf);
-    if (target) btns.forEach(b => b.classList.toggle('active', b === target));
-  }
-})();
-
-const _d = new Date();
-document.getElementById('hdr-date').textContent =
-  `${_d.getFullYear()}-${String(_d.getMonth()+1).padStart(2,'0')}-${String(_d.getDate()).padStart(2,'0')}`;
 </script>
 </body>
 </html>
