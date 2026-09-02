@@ -27,6 +27,9 @@
 
       document.title = s + 'USDT Technical Analysis';
       window.__RWA_CONFIG__ = rwaConfig;
+      // 對照表以外的代號交給 crypto-base.js 問 TradingView；派網有少數交易對的
+      // symbol 代碼跟代號對不上（XYZX→XYZUSDT.P、0G→ZEROGUSDT.P…）需要反查
+      window.__SYMBOL_AUTODETECT__ = RWA_SYMBOLS[s] ? null : { ticker: s, prefer: 'PIONEX' };
 
       // favicon
       (function() {

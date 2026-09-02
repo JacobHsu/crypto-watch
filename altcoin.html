@@ -20,13 +20,16 @@
 
       const params = new URLSearchParams(window.location.search);
       const s = (params.get('s') || 'SOL').toUpperCase();
-      const altConfig = ALTCOIN_SYMBOLS[s] || {
+
+      document.title = s + 'USDT Technical Analysis';
+      // 先以 Binance 現貨為預設；容器 id 只吃 prefix，換交易所不影響版面
+      window.__RWA_CONFIG__ = ALTCOIN_SYMBOLS[s] || {
         symbol: 'BINANCE:' + s + 'USDT',
         prefix: s.toLowerCase() + 'usdt',
       };
-
-      document.title = s + 'USDT Technical Analysis';
-      window.__RWA_CONFIG__ = altConfig;
+      // 對照表以外的代號交給 crypto-base.js 問 TradingView，Binance 沒有這個
+      // 現貨就改走派網（BSPX / QQQX / NVDAX / XYZX 等 RWA、美股代幣）
+      window.__SYMBOL_AUTODETECT__ = ALTCOIN_SYMBOLS[s] ? null : { ticker: s, prefer: 'BINANCE' };
 
       // favicon
       (function() {

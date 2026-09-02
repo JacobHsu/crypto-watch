@@ -109,14 +109,106 @@ function resolveTimeframeTarget(tf) {
   return { href: `${base}${sym}/${tf}.html`, sameTab: false };
 }
 
+// ── 交易對自動偵測 ────────────────────────────────────────────────
+// 一律問 TradingView scanner，不問交易所自己的 API：
+//   1. scanner 就是圖表的資料來源，「scanner 查得到」等於「圖畫得出來」
+//   2. Binance 只在 200 回應帶 Access-Control-Allow-Origin，查無交易對的 400
+//      不帶，瀏覽器會整個擋掉，前端分不出「沒這個幣」與「連不上 API」；
+//      scanner 帶 no_404=true 時查無資料是 200 + null，可以正常判讀
+const TV_SCANNER = "https://scanner.tradingview.com";
+
+// TradingView 上是否有這個 symbol
+function tvSymbolExists(symbol) {
+  const url = `${TV_SCANNER}/symbol?symbol=${encodeURIComponent(symbol)}&fields=close&no_404=true`;
+  return fetch(url)
+    .then((res) => (res.ok ? res.json() : null))
+    .then((data) => Boolean(data && data.close !== undefined))
+    .catch(() => false);
+}
+
+// 派網有少數交易對的 symbol 代碼跟代號對不上，例如
+// XYZX→XYZUSDT.P、0G→ZEROGUSDT.P、2Z→TWOZUSDT.P、4→FOURUSDT.P、
+// EDEN→OPENEDENUSDT.P、AIA→DEAGENTAIUSDT.P。
+// 這種只能反過來用 description 撈（描述才是真正的代號）。
+function tvFindPionexSymbol(ticker) {
+  // 不要帶 Content-Type：scanner 的 Access-Control-Allow-Headers 只有 Referer / Accept，
+  // 帶了會觸發 preflight 然後被擋掉。省略時瀏覽器送 text/plain（CORS 安全清單、
+  // 不觸發 preflight），scanner 一樣吃得下 JSON body。
+  return fetch(`${TV_SCANNER}/crypto/scan`, {
+    method: "POST",
+    body: JSON.stringify({
+      filter: [
+        { left: "exchange", operation: "equal", right: "PIONEX" },
+        { left: "description", operation: "match", right: `${ticker} USDT` },
+      ],
+      columns: ["description"],
+      range: [0, 20],
+    }),
+  })
+    .then((res) => (res.ok ? res.json() : null))
+    .then((body) => {
+      const rows = (body && body.data) || [];
+      // description 形如 "XYZX USDT PERPETUAL"；反向盤（"USDT QQQX PERP"）不會中
+      const hit = rows.find((r) => r.d[0].toUpperCase().startsWith(`${ticker} USDT `));
+      return hit ? hit.s : null;
+    })
+    .catch(() => null);
+}
+
+// 派網代號 → 可用的 symbol；先照命名規則猜，猜不中再用 description 反查
+function resolvePionexSymbol(ticker) {
+  const guess = `PIONEX:${ticker}USDT.P`;
+  return tvSymbolExists(guess).then((ok) => (ok ? guess : tvFindPionexSymbol(ticker)));
+}
+
+// 頁面對照表以外的代號要用哪個交易所
+// altcoin.html 預設 BINANCE:{代號}USDT，rwa.html 預設 PIONEX:{代號}USDT.P，
+// 預設值查無資料時才換到另一邊（派網的 RWA / 美股代幣 Binance 沒有現貨，
+// 反之派網也沒有多數山寨幣）。全部查不到就 fail-open 沿用頁面原本的預設值。
+// 回傳 Promise（不會 reject）或 null（該頁面不需要偵測）。
+function resolveSymbolExchange() {
+  const detect = window.__SYMBOL_AUTODETECT__;
+  if (!detect) {
+    return null;
+  }
+
+  const { ticker, prefer } = detect;
+  const binanceSymbol = `BINANCE:${ticker}USDT`;
+
+  const lookup =
+    prefer === "PIONEX"
+      ? resolvePionexSymbol(ticker).then((sym) =>
+          sym || tvSymbolExists(binanceSymbol).then((ok) => (ok ? binanceSymbol : null))
+        )
+      : tvSymbolExists(binanceSymbol).then((ok) => (ok ? null : resolvePionexSymbol(ticker)));
+
+  return lookup.then((symbol) => {
+    if (!symbol || symbol === window.__RWA_CONFIG__.symbol) {
+      return;
+    }
+    window.__RWA_CONFIG__ = { symbol, prefix: `${ticker.toLowerCase()}usdt` };
+    console.log(`${ticker} 改用 ${symbol}`);
+  });
+}
+
+window.__SYMBOL_READY__ = resolveSymbolExchange();
+
 // 檢查 TradingView 是否已載入並初始化圖表
 // initializeCharts() 由各頁面的 crypto.js 定義
 function initializeIfReady() {
-  if (typeof TradingView !== "undefined") {
-    initializeCharts();
-  } else {
+  if (typeof TradingView === "undefined") {
     console.log("等待 TradingView 載入...");
     setTimeout(initializeIfReady, 100);
+    return;
+  }
+
+  // altcoin.html / rwa.html 的交易對偵測是非同步的，
+  // 等 window.__SYMBOL_READY__ 定案再建圖；其他頁面沒有這個旗標就直接建
+  const ready = window.__SYMBOL_READY__;
+  if (ready && typeof ready.then === "function") {
+    ready.then(() => initializeCharts());
+  } else {
+    initializeCharts();
   }
 }
 

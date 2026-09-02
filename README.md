@@ -38,9 +38,13 @@
 (eth 同理)
 
 ### 山寨幣通用頁面 (`altcoin.html`)
-- **說明**: 通用山寨幣分析，透過 `?s=` 參數切換幣種，未定義的幣種自動組成 `BINANCE:XUSDT`
+- **說明**: 通用山寨幣分析，透過 `?s=` 參數切換幣種，未定義的幣種自動組成 `BINANCE:{代號}USDT`
 - **預設支援**: SOL, XRP, BNB, DOGE, ADA, SUI, PEPE, WLD 等（未列出的幣種自動 fallback）
-- **交易所**: Binance (現貨)
+- **交易所自動偵測**: 未列在對照表的代號會問 TradingView 有沒有 `BINANCE:{代號}USDT`，
+  查無就自動改用派網永續。所以派網的 RWA / 美股代幣（`?s=BSPX`、`?s=QQQX`、`?s=NVDAX`、
+  `?s=XYZX`…）直接打 `altcoin?s=` 也能正常顯示，不必記得換成 `rwa?s=`
+  - 詳見下方 [交易對自動偵測](#交易對自動偵測)
+- **交易所**: Binance (現貨) → 查無則 Pionex (永續)
 - **訪問**: https://jacobhsu.github.io/crypto-watch/altcoin?s=WLD
 
 #### 鍵盤快捷鍵（在任意幣種頁面按下）
@@ -85,6 +89,44 @@
 - **原油 CFD**: WTI (`TVC:USOIL` 西德州)、BRENT (`TVC:UKOIL` 布蘭特) — 24 小時連續、資料完整（非 Pionex 幣對）
 - **任意代號 (fallback)**: `?s=` 也可帶入內建清單以外的代號，會自動組成 `PIONEX:{代號}USDT.P`（prefix 為 `{代號小寫}usdt`）。是否有圖表取決於 Pionex 是否上架該交易對。
   - 例：`?s=XAUT` → `PIONEX:XAUTUSDT.P`（黃金 / Tether Gold）
+- **美股 / 指數代幣**: 派網把美股與 ETF 代幣化成永續，代號＝原始 ticker 加 `X`，同樣走 `?s=` fallback
+  - 指數／ETF：`BSPX`、`SPYX`、`QQQX`、`TQQQX`、`SOXLX`、`GLDX`、`SLVX`、`USOX`、`UNGX`、`EWJX`、`EWYX`
+  - 個股：`NVDAX`、`TSLAX`、`AAPLX`、`AMDX`、`AVGOX`、`METAX`、`AMZNX`、`NFLXX`、`MSTRX`、`COINX`、`HOODX`、`PLTRX`、`CRCLX`、`ORCLX`、`CRMX`、`INTCX`、`ARMX`、`SMCIX`、`LMTX`、`RTXX`、`CVXX`、`NKEX`、`XYZX` 等
+  - 清單持續增加，未列出的代號直接試 `?s=` 即可；`altcoin?s=` 也會自動轉到派網
+
+## 交易對自動偵測
+
+`altcoin.html` 與 `rwa.html` 對「未列在頁面對照表」的 `?s=` 代號會在執行期問一次
+TradingView，確定圖表畫得出來才建圖。實作在 `crypto-base.js`
+（`resolveSymbolExchange()`），八份頁面（根目錄、`1/`、`m/`、`o/` 各兩份）共用。
+
+- **為什麼問 TradingView 而不是問交易所**
+  - `scanner.tradingview.com` 就是圖表的資料來源，「scanner 查得到」等於「圖畫得出來」
+  - Binance API 只在 200 回應帶 `Access-Control-Allow-Origin`，查無交易對的 400 不帶，
+    瀏覽器會整個擋掉，前端分不出「沒這個幣」和「連不上 API」；
+    scanner 帶 `no_404=true` 時查無資料是 200 + `null`，可以正常判讀
+- **解析順序**
+  - `altcoin.html`：`BINANCE:{代號}USDT` → 查無則 `PIONEX:{代號}USDT.P` → 再查無則 description 反查
+  - `rwa.html`：`PIONEX:{代號}USDT.P` → description 反查 → 再查無則 `BINANCE:{代號}USDT`
+  - 全部查不到（或 scanner 連不上）時 fail-open，沿用頁面原本的預設值
+- **為什麼需要 description 反查**：派網有少數交易對的 TradingView symbol 代碼跟代號對不上，
+  這時只能用 description（描述才是真正的代號）反查
+
+  | `?s=` 代號 | 實際 symbol | | `?s=` 代號 | 實際 symbol |
+  |---|---|---|---|---|
+  | `XYZX` (Block) | `PIONEX:XYZUSDT.P` | | `PUMP` | `PIONEX:PUMPFUNUSDT.P` |
+  | `0G` | `PIONEX:ZEROGUSDT.P` | | `NEIRO` | `PIONEX:NEIROCTOUSDT.P` |
+  | `2Z` | `PIONEX:TWOZUSDT.P` | | `LIT` | `PIONEX:LIGHTERUSDT.P` |
+  | `4` | `PIONEX:FOURUSDT.P` | | `AIA` | `PIONEX:DEAGENTAIUSDT.P` |
+  | `EDEN` | `PIONEX:OPENEDENUSDT.P` | | `WTI` | `PIONEX:CLUSDT.P`（另走 `TVC:USOIL`）|
+
+  > `0G`、`2Z`、`EDEN`、`PUMP`、`NEIRO` Binance 現貨也有，走 `altcoin?s=` 會留在 Binance；
+  > 要看派網永續請改用 `rwa?s=`。
+- **覆蓋率**：派網在 TradingView 共 602 個 symbol，其中 559 個 USDT 正向永續，
+  上述規則 100% 都取得到（546 個靠命名規則、13 個靠 description 反查）。
+  其餘 43 個是反向盤（`USDT/QQQX`）與交叉盤（`AAVE/ETH`），`?s=` 語法本來就無法表達
+- **成本**：已列在頁面對照表的代號（SOL / XRP / SLVX…）完全不打 API；
+  其他代號 1～3 個請求，每個約數十 bytes
 - **交易所**: Pionex
 - **訪問**: https://jacobhsu.github.io/crypto-watch/rwa?s=SLVX
   - 黃金：https://jacobhsu.github.io/crypto-watch/rwa?s=XAUT
@@ -210,6 +252,7 @@ node screenshot-api.js
 - **EWYXUSDT.P** (韓國 ETF RWA)
 - **XAUTUSDT.P** (黃金 RWA / Tether Gold，透過 `rwa?s=XAUT` fallback)
 - **TVC:USOIL** (WTI 西德州原油，`rwa?s=WTI`) / **TVC:UKOIL** (Brent 布蘭特，`rwa?s=BRENT`) — 原油 CFD、24 小時
+- **美股 / 指數代幣**: BSPX、SPYX、QQQX、NVDAX、TSLAX、AAPLX、AMDX、MSTRX、COINX… （代號＝原始 ticker + `X`）
 - 其他：`rwa?s={代號}` 會嘗試 `PIONEX:{代號}USDT.P`（能否顯示視 Pionex 上架而定）
 
 ## 專案結構
