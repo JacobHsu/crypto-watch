@@ -15,7 +15,7 @@
 | 原版用途 | 週線圖的中長期情境分析 |
 | 改造後用途 | **日線圖的次日方向預測** |
 | 本目錄 | `skills/technical-analyst/` — 開發用，改造在此進行 |
-| 已安裝 | `.claude/skills/technical-analyst/` — Claude Code 實際載入的位置，**目前仍是原版** |
+| 已安裝 | `.claude/skills/technical-analyst/` — Claude Code 實際載入的位置，**已同步**（5 個執行檔，不含 `zh-TW/` 與本檔） |
 
 「openclaw」是散佈通路的名字，不是格式的名字。這份 skill 用的是 Anthropic Agent Skills 規格（frontmatter 只有 `name` + `description`），Claude Code 直接可載入，不需要 `npx sundial-hub add`——複製進 `.claude/skills/` 即可。
 
@@ -29,6 +29,7 @@ technical-analyst/
 ├── references/
 │   ├── technical_analysis_framework.md         判斷準則（英文，執行用）· 通用
 │   ├── indicator_reading_rules.md              ★ 單一指標查表 · 通用
+│   ├── symbol_calibration_notes.md             BTC/ETH 實證校準 · 選用，僅涵蓋這兩個標的
 │   └── chart_sources.md                        ★ 取圖來源 · 唯一的專案耦合點
 ├── assets/
 │   └── analysis_template.md                    報告模板（英文，執行用）· 通用
@@ -37,6 +38,7 @@ technical-analyst/
 │   ├── technical_analysis_framework.zh-TW.md
 │   ├── analysis_template.zh-TW.md
 │   ├── indicator_reading_rules.zh-TW.md
+│   ├── symbol_calibration_notes.zh-TW.md
 │   └── chart_sources.zh-TW.md
 └── README.md                                   本檔
 ```
@@ -237,6 +239,34 @@ Microlink 免費層有每日配額，一次預測消耗兩次抓圖。截圖寫�
 
 - [x] **通用性回退**（2026-08-30）：移走 `chart_sources.md` 後載入 skill，它依 Step 0 第 3 分支退回請求貼圖並說明圖上需要什麼——沒有報錯、沒有自行亂抓、沒有憑既有知識硬給方向。證實專案耦合確實只在那一個檔案
 - [x] **已同步** `.claude/skills/technical-analyst/`（5 個執行檔，不含 `zh-TW/` 與 README）
+
+## BTC/ETH 實證校準（2026-09-05 新增）
+
+姊妹專案 `py-tvscreener` 用程式化方式讀 TradingView 資料，跑過一次真正的回測（`docs/indicator-backtest/README.md`）：
+針對 BTC、ETH 分別量測每個技術指標訊號出現後 24 小時價格是否真的照預期方向走，算出相對於 baseline 的 edge。
+結果發現這個 skill 原本的通用判讀規則，在這兩個標的上有幾處明顯不對：
+
+- **趨勢對齊類讀數**（ADX/DI 方向、Aroon 主導方、SAR 位置、MA/EMA 排列與交叉，以及三者的「同向確認」）edge
+  接近零甚至為負——ETH 的 ADX 偏多讀數 edge 是 **−9.5pp，比丟銅板還差**
+- **動能極端值讀數**（RSI/MFI/CCI/Ultimate Oscillator 的超買超賣）反而是全報告最強的一群，尤其是超買預測回落
+  的方向，edge 最高到 **+16.6pp**
+- 全報告單一最強訊號是一個具體組合：RSI>70 且 MFI>80 同時成立，而這兩個指標其實早就畫在 `o/{symbol}.html?t=1d`
+  頁面上，只是從沒被這樣組合判讀過
+
+**新增檔案**：`references/symbol_calibration_notes.md`（+ `zh-TW/` 對照版）——選用檔案，只涵蓋 BTC/ETH，跟
+`chart_sources.md` 一樣的「刪掉就退回通用行為」設計。**改動既有檔案**：`SKILL.md`（Step 2 多讀一個檔案）、
+`indicator_reading_rules.md`（新增 CCI/Ultimate Oscillator 查表、兩條新 Confluence Check、既有幾條 Trap
+加上跨檔案提示）、`technical_analysis_framework.md`（§1、§8 各加一段校準提示）。**不違反 Hard Rule 8**——新檔
+只調整「哪個證據類別該多信/少信」，不做計票或算分。
+
+同時把 `o/crypto.js`（`o/btc.html`、`o/eth.html`、`o/altcoin.html`、`o/rwa.html` 共用）第一、二組原本的 Aroon、
+ROC 換成 CCI、Ultimate Oscillator，讓 skill 未來真的看得到這兩個回測證實有效、但先前完全沒被截圖的指標。
+
+- [x] **已同步** 上述 4 個執行用參考檔到 `.claude/skills/technical-analyst/`
+- [x] **已驗證**（2026-09-05，本機 Puppeteer 起本地伺服器截圖，未動用 Microlink 每日額度）：`CCI@tv-basicstudies`
+  與 `STD;Ultimate_Oscillator` 兩個猜測的 study ID 一次就對，`o/btc.html?t=1d` 與 `o/eth.html?t=1d` 兩頁的
+  CCI、UO 窗格都正確渲染且圖例有讀數（`CCI 20 close 63.48`、`UO 7 14 28 56.43` 等），不是空白窗格或有名字沒
+  數值。確認過的圖例文字已補進 `chart_sources.md`
 
 ### 待辦
 

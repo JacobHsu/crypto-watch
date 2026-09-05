@@ -91,6 +91,18 @@ Read: references/indicator_reading_rules.md
 
 It gives the correct reading for each individual indicator and, more importantly, the misreading traps for each. Where the two files disagree, the framework wins — the lookup says what an indicator shows, the framework says what it is worth for tomorrow.
 
+If the instrument being forecast is BTC or ETH, also read:
+
+```
+Read: references/symbol_calibration_notes.md
+```
+
+It calibrates how much weight trend-alignment evidence versus momentum-extreme evidence deserves for that
+specific symbol, based on an independent empirical backtest. It does not override Hard Rule 8 — it only informs
+which named-evidence categories should carry more or less weight when judging the evidence-count thresholds in
+Step 4. If the file is absent, or the instrument isn't covered by it, skip it silently and proceed with the
+generic treatment.
+
 ### Step 3: Analyze Each Chart Systematically
 
 For each chart image, conduct a systematic analysis following this sequence. Record a one-sentence evidence note for every item.

@@ -38,12 +38,19 @@ The `?t=1d` parameter is required. Without it the page defaults to 4H, which is 
 
 | Group | Main plot | Panes |
 |-------|-----------|-------|
-| 1 · Trend | Supertrend | **MACD** · DMI/ADX · Aroon |
-| 2 · Momentum | Hull MA (HMA) | **RSI** · **Stochastic RSI** · ROC |
+| 1 · Trend | Supertrend | **MACD** · DMI/ADX · CCI |
+| 2 · Momentum | Hull MA (HMA) | **RSI** · **Stochastic RSI** · Ultimate Oscillator |
 | 3 · Volatility | Bollinger Bands | **ATR** · Choppiness Index · Historical Volatility |
 | 4 · Volume/Flow | VWMA 20 | OBV · MFI · Chaikin Money Flow |
 
 This page supplies momentum (framework §5) and volatility (§6) — the two categories that carry the most weight for a one-day horizon. Volume bars are drawn on all four main plots.
+
+**Aroon and ROC used to occupy the group 1 and group 2 fourth panes and were deliberately dropped.**
+`symbol_calibration_notes.md` found Aroon carries ~0 (BTC) to negative (ETH) empirical edge at this horizon, and
+ROC's closest tested analogues (Awesome Oscillator, Momentum) score similarly weak — CCI and Ultimate Oscillator
+replaced them because they are among the highest-edge indicators in that same backtest (CCI +6.7pp ETH, Ultimate
+Oscillator +16.6pp BTC, the single strongest signal in the report). If an older capture or cached screenshot
+still shows Aroon/ROC instead, treat it as stale and re-capture with `force=true`.
 
 **This page does not contain MA 20/50 or EMA 20/50.**
 
@@ -148,7 +155,7 @@ This retry path is not hypothetical. In testing, a capture of the supplement pag
 
 The indicator legends are rendered as part of the canvas and are legible at the capture settings above. **Quote the numbers.** Values confirmed readable on a verification capture:
 
-- `o/btc.html?t=1d` — `MACD 12 26 close 9 501.42`, `RSI 14 close 70.81`, `Stoch RSI 3 3 14 14 close 61.64 72.59`, `ATR 14 RMA 2,197.29`, `CHOP 14 0 29.76`, `HV 10 48.10`, `MFI 14 79.08`, `OBV −1.17M`, `CMF 20 0.27`, `DMI 14 14 42.8175 38.2621 11.6689`, `Aroon 14 85.71% 0.00%`
+- `o/btc.html?t=1d` — `MACD 12 26 close 9 501.42`, `RSI 14 close 70.81`, `Stoch RSI 3 3 14 14 close 61.64 72.59`, `ATR 14 RMA 2,197.29`, `CHOP 14 0 29.76`, `HV 10 48.10`, `MFI 14 79.08`, `OBV −1.17M`, `CMF 20 0.27`, `DMI 14 14 42.8175 38.2621 11.6689`, `CCI 20 close 63.48`, `UO 7 14 28 56.43` (Ultimate Oscillator's legend abbreviates to `UO`, with its three period parameters printed before the value)
 - `btc/1d.html` — `開/高/低/收` on every chart header, `MA 20 close 71,765.82`, `MA 50 close 67,331.59`, `EMA 20 close 73,605.51`, `EMA 50 close 69,361.73`, `BB 20 close 2 ...`, `DC 20 0 ...`, `SAR 0.02 0.02 0.2 74,811.22`
 
 Evidence citing an exact legend value is stronger than evidence describing a line's position. Prefer the number whenever it is readable.

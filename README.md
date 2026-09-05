@@ -162,10 +162,12 @@ TradingView，確定圖表畫得出來才建圖。實作在 `crypto-base.js`
   - `o/btc.html` → 4H ・ `o/btc.html?t=1d` → 1D ・ `o/altcoin.html?s=SOL&t=1d` → 與 `?s=` 併用
   - 目前級別會反映在分頁標題（`… - 1D`）與說明欄頂端的標示上
 - **四組配置**:
-  - 第一組 趨勢面：SuperTrend + MACD / DMI / Aroon
-  - 第二組 動能面：Hull MA (HMA) + RSI / Stochastic RSI / ROC
+  - 第一組 趨勢面：SuperTrend + MACD / DMI / CCI
+  - 第二組 動能面：Hull MA (HMA) + RSI / Stochastic RSI / Ultimate Oscillator
   - 第三組 波動面：Bollinger Bands + ATR / Choppiness / Historical Volatility
   - 第四組 量價面：VWMA 20 + OBV / MFI / CMF
+  - > 原本第一、二組第四格是 Aroon / ROC，依 py-tvscreener 對 BTC/ETH 的實證回測（見
+    > `skills/technical-analyst/references/symbol_calibration_notes.md`）換成 CCI / Ultimate Oscillator
 - **頁面**: `o/btc.html`、`o/eth.html`（SOL / XRP 等改用下方動態頁）
 - **動態頁面**:
   - `o/altcoin.html?s=XRP`（山寨幣，支援 SOL / XRP / BNB / DOGE / ADA / SUI / PEPE… 未列出者 fallback `BINANCE:{代號}USDT`）

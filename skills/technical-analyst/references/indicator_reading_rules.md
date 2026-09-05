@@ -44,7 +44,7 @@ A `neutral` reading is a real observation ("I looked, and the chart does not res
 - Bullish: dots below price · Bearish: dots above price
 - A fresh flip to the other side is the entry/exit signal and is worth noting separately from a long-established position.
 
-**Trap**: a flip that happened many sessions ago carries far less information for tomorrow than one that just occurred.
+**Trap**: a flip that happened many sessions ago carries far less information for tomorrow than one that just occurred. For BTC/ETH, see `symbol_calibration_notes.md` — SAR side alone has empirically weak (BTC) to negative (ETH) edge at this horizon; a fresh flip is still worth noting, but do not treat a long-standing side alone as directional evidence for these two symbols.
 
 ### Williams Alligator
 Three displaced averages: jaw (slowest), teeth, lips (fastest).
@@ -131,7 +131,10 @@ Upper = highest high of N periods, lower = lowest low.
 - Bearish: fast crossing down through slow (death cross)
 - Neutral: no crossover, averages running parallel
 
-**Trap**: no crossover means the existing trend continues — it is not a signal in either direction.
+**Trap**: no crossover means the existing trend continues — it is not a signal in either direction. For BTC/ETH,
+see `symbol_calibration_notes.md` — MA/EMA ordering and crosses across nearly every period tested show ~0 to
+negative edge at this horizon; treat "bullish alignment" as a much weaker piece of evidence for these two symbols
+than the generic framework guidance implies.
 
 ### VWMA (volume-weighted)
 **Read**: price position plus the average's slope.
@@ -159,7 +162,16 @@ The framework's §5 governs interpretation for all of these. The rules below onl
 - Bullish: above 50 and rising · Bearish: below 50 and falling
 - Neutral: oscillating around 45–55
 
-**Trap**: in the extreme zones, level alone is not a reading — check for divergence. Price making a new high while RSI does not is bearish divergence; the mirror case is bullish divergence. Per the framework, **overbought in a strong trend routinely persists and is not a sell signal by itself.**
+**Trap**: in the extreme zones, level alone is not a reading — check for divergence. Price making a new high while RSI does not is bearish divergence; the mirror case is bullish divergence. Per the framework, **overbought in a strong trend routinely persists and is not a sell signal by itself.** For BTC/ETH specifically, see `symbol_calibration_notes.md` — extreme RSI readings are empirically among the strongest evidence this skill has access to, which cuts against reading overbought/oversold as neutral by default for these two symbols.
+
+### CCI (Commodity Channel Index)
+**Read**: side of the zero line for trend bias; the ±100 bands for extremes.
+- Bullish: above +100 (strong upside momentum) · Bearish: below −100 (strong downside momentum)
+- Neutral: oscillating between −100 and +100
+
+**Trap**: unlike RSI/Stochastic, CCI has no fixed upper/lower bound — "extreme" is a threshold (±100), not a
+percentage ceiling, so a very large reading is not automatically more meaningful than one just past the
+threshold. Treat crossing ±100 as the signal, not the raw magnitude beyond it.
 
 ### MACD
 **Read**: histogram sign and whether bars are expanding or contracting.
@@ -180,6 +192,17 @@ The framework's §5 governs interpretation for all of these. The rules below onl
 - Bullish: above zero and rising · Bearish: below zero and falling
 - Neutral: oscillating across zero
 
+### Ultimate Oscillator
+A weighted blend of three timeframes into one 0–100 line, designed to reduce the false divergences a single-
+period oscillator produces.
+**Read**: the 30/70 extremes, same shape as RSI.
+- Bullish: below 30 (oversold) · Bearish: above 70 (overbought)
+- Neutral: oscillating in the 30–70 mid band
+
+**Trap**: because it blends three periods, it lags a single-period oscillator at turns — do not expect it to
+lead RSI or Stochastic RSI at an exact reversal candle. Its value is in the extremes being less prone to a false
+signal, not in early timing.
+
 ### DMI / ADX
 Three lines: +DI (bull strength), −DI (bear strength), ADX (trend strength, **directionless**).
 **Read**: ADX first as a gate, then which DI leads.
@@ -187,13 +210,17 @@ Three lines: +DI (bull strength), −DI (bear strength), ADX (trend strength, **
 - Bearish: −DI above +DI **and** ADX above 25
 - Neutral: ADX below 25, regardless of which DI leads
 
-**Trap**: **ADX is a threshold, not a direction.** Below 25 the DI crossovers are mostly noise. A rising ADX confirms whatever direction is already in place; it never supplies one.
+**Trap**: **ADX is a threshold, not a direction.** Below 25 the DI crossovers are mostly noise. A rising ADX confirms whatever direction is already in place; it never supplies one. For ETH specifically, see `symbol_calibration_notes.md` — an ADX-confirmed bullish reading has empirically negative edge; do not treat this reading as confirmation for that symbol.
 
 ### Aroon
 Two 0–100 lines: Up (recency of new highs), Down (recency of new lows).
 **Read**: which line dominates and how decisively.
 - Bullish: Up near 100 and clearly above Down · Bearish: Down near 100 and clearly above Up
 - Neutral: both entangled near the middle
+
+**Trap**: for BTC/ETH, see `symbol_calibration_notes.md` — this reading has been empirically near-zero (BTC) to
+negative (ETH, both directions) at the ~24h horizon. A dominant Aroon reading should not, alone, move a
+probability for these two symbols.
 
 ---
 
@@ -255,8 +282,15 @@ Two indicators pointing the same way is materially stronger evidence than either
 | **MA × EMA** | Both sets in the same directional order — confirmed | Orders disagree — a transition in progress, neutral |
 | **SAR × Linear Regression** | Dots below price with regression sloping up, or the mirror — short and medium term aligned | Directions differ, or regression near flat — neutral |
 | **Supertrend × MACD** | Price on the bullish side of Supertrend with a positive histogram, or the mirror — trend and momentum resonate | Trend and momentum disagree — this is the most common real conflict; treat it as evidence of an unpredictable session |
+| **RSI × MFI dual-extreme** | Both simultaneously overbought (RSI>70 and MFI>80) or both simultaneously oversold (RSI<30 and MFI<20) — for BTC/ETH this is the strongest empirically-validated confluence in `symbol_calibration_notes.md`, especially the dual-overbought (Bear) case | Only one is extreme while the other is mid-range — treat as a single ordinary RSI or MFI reading, not this confluence |
+| **RSI extreme × ADX>20** | An extreme RSI reading (>70 or <30) while ADX confirms the market is actively trending (>20, direction-agnostic) — reinforces the RSI reading, most notably for ETH per `symbol_calibration_notes.md` | ADX below 20 (a quiet/ranging market) alongside an extreme RSI — read the RSI extreme on its own, without the reinforcement |
 
 **These pairs are not extra evidence items.** A confluence check qualifies the two readings it combines; it does not add a third.
+
+**For BTC/ETH**, `symbol_calibration_notes.md` found the opposite is also true: a pairing that sounds like it
+should reinforce — the ADX+Aroon+SAR three-way trend alignment — carries almost no empirical edge at this
+horizon. Confluence is not automatically stronger just because more indicators agree; check the calibration
+notes before treating an alignment as meaningful for these two symbols.
 
 ---
 

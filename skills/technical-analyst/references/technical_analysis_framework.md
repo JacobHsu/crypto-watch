@@ -74,6 +74,12 @@ Fall back to visual spatial relationships only when the legend is cropped, overl
 
 Trend sets the prior, not the conclusion. A strong daily uptrend makes an Up outcome somewhat more likely than a Down one, but the effect on a single session is modest — trend alone rarely justifies moving more than 10 percentage points away from an even split. Short-term momentum and proximity to levels carry more weight over one candle.
 
+For BTC or ETH, check `references/symbol_calibration_notes.md` before granting trend/MA-alignment evidence even
+this much weight. An independent empirical backtest found trend-following readings (MA order and crosses, ADX+DI
+direction, Aroon dominance, SAR side) carry ~0 to negative real-world edge for these two symbols at a comparable
+horizon — for ETH, an ADX-confirmed bullish reading is actively counter-predictive. Where that file covers the
+symbol, its findings should push the generic 10pp allowance downward, not upward.
+
 ## 2. Support and Resistance Analysis
 
 ### Identifying Support Levels
@@ -348,6 +354,12 @@ Begin near an even split across the three outcomes and move away from it only in
 | **Above 70%** | Not permitted from chart data alone |
 
 "Categories" means the sections of this framework: trend, levels, moving averages, volume, momentum, volatility, price action. Three momentum readings that all say the same thing count as one category, not three.
+
+For BTC or ETH, weight categories per `references/symbol_calibration_notes.md` when it covers the symbol: a
+category it flags as empirically negative (e.g. trend/MA-alignment for either symbol, ADX-bullish specifically
+for ETH) should not, by itself, count toward these thresholds even if it nominally satisfies the category-count
+rule — it does not count as "one category of supporting evidence" if the calibration notes say that category has
+not historically supported this outcome for this symbol.
 
 ### What Counts as Evidence
 

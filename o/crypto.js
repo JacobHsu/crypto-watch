@@ -7,20 +7,24 @@
 //   o/altcoin.html?s=SOL&t=1d  → 與 ?s= 併用
 const analysisGroups = {
   // 第一組 趨勢面：判斷主要方向、趨勢強度與趨勢是否正在形成
-  // 主圖 SuperTrend + 副圖 MACD / Directional Movement / Aroon
+  // 主圖 SuperTrend + 副圖 MACD / Directional Movement / CCI
+  // 原本第四個副圖是 Aroon；py-tvscreener 對 BTC/ETH 的實證回測顯示 Aroon 幾乎是雜訊
+  // （BTC 兩方向 edge 皆 ~+1pp）甚至負向（ETH 兩方向皆 ~-2pp），換成 CCI（ETH edge +6.7pp）
   group1: [
     "STD;Supertrend",
     "MACD@tv-basicstudies",
     "STD;DMI",
-    "STD;Aroon",
+    "CCI@tv-basicstudies",
   ],
   // 第二組 動能面：判斷短期強弱、轉折與價格加速程度
-  // 主圖 Hull MA (HMA) + 副圖 RSI / Stochastic RSI / Rate of Change
+  // 主圖 Hull MA (HMA) + 副圖 RSI / Stochastic RSI / Ultimate Oscillator
+  // 原本第四個副圖是 ROC；py-tvscreener 從未直接回測 ROC，但同類指標（Awesome Oscillator、
+  // Momentum）edge 都接近零，換成 Ultimate Oscillator（BTC 全報告最強單一訊號，edge +16.6pp）
   group2: [
     "STD;Hull%1MA",
     "RSI@tv-basicstudies",
     "STD;Stochastic_RSI",
-    "ROC@tv-basicstudies",
+    "STD;Ultimate_Oscillator",
   ],
   // 第三組 波動面：判斷波動壓縮、擴張與是否容易走出趨勢
   // 主圖 Bollinger Bands + 副圖 ATR / Choppiness Index / Historical Volatility
