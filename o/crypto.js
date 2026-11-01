@@ -87,9 +87,20 @@ function initializeCharts() {
   const { key, interval } = paneTimeframe;
   console.log(`TradingView 已載入，開始創建 ${symbol} ${key.toUpperCase()} 四組技術分析圖表...`);
 
+  // 頁面可宣告 window.__COMPACT_LAYOUT__ = { query, hide }：符合 query 時拿掉 hide 內的副圖
+  const compact = window.__COMPACT_LAYOUT__;
+  const compactMql = compact ? window.matchMedia(compact.query) : null;
+  const studiesFor = (g) =>
+    compactMql && compactMql.matches
+      ? analysisGroups[g].filter((st) => !compact.hide.includes(st))
+      : analysisGroups[g];
+  if (compactMql) {
+    compactMql.addEventListener("change", () => location.reload());
+  }
+
   ["group1", "group2", "group3", "group4"].forEach((g, i) => {
     setTimeout(
-      () => createChart(`tradingview_${prefix}_${g}`, symbol, interval, analysisGroups[g], false),
+      () => createChart(`tradingview_${prefix}_${g}`, symbol, interval, studiesFor(g), false),
       100 * (i + 1)
     );
   });

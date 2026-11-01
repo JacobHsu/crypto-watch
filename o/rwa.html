@@ -6,6 +6,10 @@
     <title>RWA Technical Analysis - 4H</title>
     <link rel="icon" type="image/png" id="favicon">
     <link rel="stylesheet" href="../styles.css" />
+    <style>
+      /* 小螢幕（<html class="compact">）隱藏圖上已拿掉的副圖說明 */
+      html.compact .info-panel .compact-hide { display: none !important; }
+    </style>
     <script>
       // RWA 符號對照表（與根目錄 rwa.html 一致）
       const RWA_SYMBOLS = {
@@ -27,6 +31,16 @@
 
       document.title = s + ' Technical Analysis - 4H';
       window.__RWA_CONFIG__ = rwaConfig;
+      // 小螢幕每組少一個副圖（DMI / UO / HV / OBV），其餘三窗格才不會擠到看不清
+      // crypto.js 依此在建圖時過濾；跨越斷點時重新載入以重建圖表
+      window.__COMPACT_LAYOUT__ = {
+        query: '(max-width: 1600px), (max-height: 900px)',
+        hide: ['STD;DMI', 'STD;Ultimate_Oscillator', 'STD;Historical_Volatility', 'STD;On_Balance_Volume'],
+      };
+      // 說明欄跟圖表用同一個判斷，避免兩邊不同步
+      if (window.matchMedia(window.__COMPACT_LAYOUT__.query).matches) {
+        document.documentElement.classList.add('compact');
+      }
       // 對照表以外的代號交給 crypto-base.js 問 TradingView；派網有少數交易對的
       // symbol 代碼跟代號對不上（XYZX→XYZUSDT.P、0G→ZEROGUSDT.P…）需要反查
       window.__SYMBOL_AUTODETECT__ = RWA_SYMBOLS[s] ? null : { ticker: s, prefer: 'PIONEX' };
@@ -76,8 +90,8 @@
           <dd>翻到 K 線下方轉多、翻到上方轉空；可當順勢移動停損。</dd>
           <dt>MACD<span class="tag">副圖</span></dt>
           <dd>DIF 上穿 DEA＝黃金交叉(多)、下穿＝死亡交叉(空)；柱狀由負轉正動能轉多；頂背離轉弱。</dd>
-          <dt>DMI / ADX<span class="tag">副圖</span></dt>
-          <dd>+DI 高於 −DI＝多方佔優；ADX &gt; 25 趨勢強、&lt; 20 視為盤整。</dd>
+          <dt class="compact-hide">DMI / ADX<span class="tag">副圖</span></dt>
+          <dd class="compact-hide">+DI 高於 −DI＝多方佔優；ADX &gt; 25 趨勢強、&lt; 20 視為盤整。</dd>
           <dt>CCI 商品通道指標<span class="tag">副圖</span></dt>
           <dd>&gt; 100 超買強勢、&lt; −100 超賣弱勢；穿越 ±100 才是訊號，數值本身沒有上下限。</dd>
         </dl>
@@ -90,8 +104,8 @@
           <dd>&gt; 70 超買、&lt; 30 超賣、50 為多空分界；價創高而 RSI 未同步＝頂背離。</dd>
           <dt>Stochastic RSI<span class="tag">副圖</span></dt>
           <dd>比 RSI 更敏感；低檔 %K 上穿 %D＝買進、高檔死叉＝賣出。</dd>
-          <dt>Ultimate Oscillator<span class="tag">副圖</span></dt>
-          <dd>&gt; 70 超買、&lt; 30 超賣；綜合三個週期計算，較不易被單一背離誤導，但轉折反應比單一週期指標慢。</dd>
+          <dt class="compact-hide">Ultimate Oscillator<span class="tag">副圖</span></dt>
+          <dd class="compact-hide">&gt; 70 超買、&lt; 30 超賣；綜合三個週期計算，較不易被單一背離誤導，但轉折反應比單一週期指標慢。</dd>
         </dl>
 
         <h2>第三組 · 波動面</h2>
@@ -102,16 +116,16 @@
           <dd>數值越大波動越大；常用來設停損(1.5～2 倍)；放大代表行情加速。</dd>
           <dt>Choppiness Index<span class="tag">副圖</span></dt>
           <dd>&gt; 61.8 盤整（別追勢）、&lt; 38.2 趨勢明顯（順勢操作）。</dd>
-          <dt>Historical Volatility<span class="tag">副圖</span></dt>
-          <dd>歷史波動率；低檔常先於大行情、高檔多見於行情末段。</dd>
+          <dt class="compact-hide">Historical Volatility<span class="tag">副圖</span></dt>
+          <dd class="compact-hide">歷史波動率；低檔常先於大行情、高檔多見於行情末段。</dd>
         </dl>
 
         <h2>第四組 · 量價面</h2>
         <dl>
           <dt>VWMA 20<span class="tag">主圖</span></dt>
           <dd>成交量加權均線；K 線在其上且上揚＝帶量走多，比一般 MA 更真實。</dd>
-          <dt>OBV 能量潮<span class="tag">副圖</span></dt>
-          <dd>與價格同步創高＝量價齊揚；價漲而 OBV 走平/下彎＝背離警訊。</dd>
+          <dt class="compact-hide">OBV 能量潮<span class="tag">副圖</span></dt>
+          <dd class="compact-hide">與價格同步創高＝量價齊揚；價漲而 OBV 走平/下彎＝背離警訊。</dd>
           <dt>MFI 資金流量<span class="tag">副圖</span></dt>
           <dd>量加權的 RSI；&gt; 80 超買、&lt; 20 超賣；與價背離示資金轉弱。</dd>
           <dt>CMF 蔡金資金流<span class="tag">副圖</span></dt>
